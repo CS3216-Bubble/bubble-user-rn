@@ -29,10 +29,8 @@
     3. Install and setup Android Virtual Device.
         ``` bash
         android avd
-
-        // User GUI to create emulator device...
-
         ```
+        
 5. Install dependencies.
     ``` bash
     npm install
