@@ -29,6 +29,7 @@
         ``` bash
         android avd
         ```
+        
 5. Install dependencies.
     ``` bash
     npm install
