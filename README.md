@@ -20,7 +20,6 @@
     1. Setup Android Environment and $PATH in .bashrc and .profile.
     ```
     // Locate the Android SDK yourself. It might not be the same as ANDROID_HOME here.
-
     export ANDROID_HOME=/Users/<YOUR_USERNAME>/Library/Android/sdk
     export PATH=$PATH:$ANDROID_HOME/tools
     export PATH=$PATH:$ANDROID_HOME/platform-tools
@@ -29,9 +28,6 @@
     3. Install and setup Android Virtual Device.
         ``` bash
         android avd
-
-        // User GUI to create emulator device...
-
         ```
 5. Install dependencies.
     ``` bash
@@ -42,7 +38,6 @@
     react-native run-android
     ```
     > If you encounter Server 500 Error, try to kill the process that is sharing the same port as the emulator and try again.
-
 7.  Run with iOS.
     ``` bash
     react-native run-ios
