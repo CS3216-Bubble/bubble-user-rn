@@ -2,48 +2,71 @@
  * Chat View
  */
 
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
+
 import {
-    AppRegistry,
-    StyleSheet,
     Text,
     View
 } from 'react-native';
 
+import {
+    Container,
+    Header,
+    Content,
+    Button,
+    Icon,
+    Title
+} from 'native-base';
+
+
+import {
+    Styles
+} from '../styles/common-styles';
+
+import {
+    Actions
+} from 'react-native-router-flux';
+
 export class ChatView extends Component {
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Chat View
-        </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit this js.
-        </Text>
-                <Text style={styles.instructions}>
-                    Double tap R on your keyboard to reload,{'\n'}
-                    Shake or press menu button for dev menu
-        </Text>
-            </View>
+            <Container>
+                <Header>
+                    <Button transparent onPress={Actions.pop}>
+                        <Text> Back </Text>
+                    </Button>
+                    <Title>{this.props.roomId}</Title>
+                </Header>
+                <Content>
+                    <View style={Styles.container}>
+                        <Text style={Styles.welcome}>
+                            Chat View
+                        </Text>
+                        <Text style={Styles.instructions}>
+                            To get started, edit this js.
+                        </Text>
+                        <Text style={Styles.instructions}>
+                            {'\n'}This is chat #{this.props.roomId},{'\n'}
+                            and I am user #{this.props.user}.{'\n'}
+                        </Text>
+                        <Text onPress={Actions.pop} style={Styles.instructions}>
+                            {'\n'}Go Back{'\n'}
+                        </Text>
+                        <Text style={Styles.instructions}>
+                            For Android: {'\n'}
+                            Double tap R on your keyboard to reload,{'\n'}
+                            Shake or press menu button for dev menu
+                        </Text>
+                        <Text style={Styles.instructions}>
+                            For iOS: {'\n'}
+                            Press Cmd + R on your keyboard to reload,{'\n'}
+                            Shake or press Cmd + R for dev menu
+                        </Text>
+                    </View>
+                </Content>
+            </Container>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});
