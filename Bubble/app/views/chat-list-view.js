@@ -12,7 +12,9 @@ import {
     View,
     Platform,
     Navigator,
+    NavigatorIOS,
     NavigationBarRouteMapper,
+    TouchableHighlight,
 } from 'react-native';
 
 // Native Base Components
@@ -30,95 +32,99 @@ import {
     Toolbar
 } from 'native-base';
 
-// Styling ... to be migrated
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-    toolbar: {
-        height: 56,
-        backgroundColor: '#4883da',
-    },
-    centralise: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    }
-});
+// Styles
+import { Styles } from '../styles/common-styles';
 
-var navbarAndroidAdds = {
-
-    LeftButton: function (route, navigator, index, navState) {
-        if (index === 0) {
-            return null;
-        }
-
-        var previousRoute = navState.routeStack[index - 1];
-        return (null);
-    },
-
-    RightButton: function (route, navigator, index, navState) {
-        return (null);
-    },
-
-    Title: function (route, navigator, index, navState) {
-        return (<Title style={{ color: 'white', margin: 0, textAlign: 'center' }}>
-            Chat List View
-        </Title>);
-    },
-
-};
+// Views
+import { SettingsView } from './settings-view';
+import { ProfileView } from './profile-view';
 
 export class ChatListView extends Component {
 
-    //*** START OF IOS NAV METHODS ***//
-
-    static propTypes = {
-        title: PropTypes.string.isRequired,
-        navigator: PropTypes.object.isRequired,
-    }
+    routeMapper;
 
     constructor(props, context) {
         super(props, context);
-        this._onForward = this._onForward.bind(this);
-        this._onBack = this._onBack.bind(this);
+
+        this.nextRoute = {
+            index: 'settings-view',
+            title: 'Settings View',
+            leftButton: "BACK",
+            rightButton: "PROFILE",
+        };
+
+        // Describe the Android Navigation Bar
+        this.routeMapper = {
+
+            LeftButton: function (route, navigator, index, navState) {
+
+                // var previousRoute = navState.routeStack[index - 1];
+                // return (
+                //     <TouchableHighlight onPress={() => { navigator.pop() } }>
+                //         <Text style={{ color: 'white', marginTop: 17, marginLeft: 10, textAlign: 'center' }}>
+                //             BACK
+                // </Text>
+                //     </TouchableHighlight>
+                // );
+
+                return null;
+            },
+            Title: function (route, navigator, index, navState) {
+                return (<Title style={{ color: 'white', marginTop: 15, textAlign: 'center' }}>
+                    Chat List View
+                </Title>);
+            },
+            RightButton: function (route, navigator, index, navState) {
+
+                return (
+                    <TouchableHighlight onPress={() => {
+                        _navigator.push({
+                            index: 'settings-view',
+                            title: 'Settings View',
+                            leftButton: "BACK",
+                            rightButton: "PROFILE",
+                        })
+                    } }>
+                        <Text style={{ color: 'white', marginTop: 17, marginRight: 10, textAlign: 'center' }}>
+                            SETTINGS
+                        </Text>
+                    </TouchableHighlight>
+                );
+            }
+        };
+
+        this.onForward = this.onForward.bind(this);
+        this.onBackward = this.onBackward.bind(this);
+        // this.routeMapper = this.routeMapper.bind(this);
+        // this.nextRoute = this.nextRoute.bind(this);
     }
 
-    _onForward(nextRoute) {
+    // Enter logic: Push a route into the navigator
+    onForward(nextRoute) {
         this.props.navigator.push(nextRoute);
     }
 
-    _onBack() {
+    // Return logic: Pop a route from the navigator
+    onBackward() {
         this.props.navigator.pop();
     }
 
-    //*** END OF IOS NAV METHODS ***//
+    // Android Layout
+    androidScene() {
+        var nextRoute = {
+            index: 'settings-view',
+            title: 'Settings View',
+            leftButton: "BACK",
+            rightButton: "PROFILE",
+        };
 
+        const profileRoute = {
+            index: 'profile-view',
+            title: 'Profile View',
+            leftButton: "BACK",
+            rightButton: "",
+        };
 
-    //*** START OF ANDROID NAV METHODS ***//
-
-    gotoNext() {
-        // this.props.navigator.push();
-    }
-
-    gotoPrev() {
-        // this.props.navigator.pop();
-    }
-
-    renderScene(route, navigator) {
         return (
             <Container>
 
@@ -127,82 +133,100 @@ export class ChatListView extends Component {
 
                 <Content>
                     <View>
-                        <Text style={styles.welcome}>Chat List View Android</Text>
-                        <Text style={styles.instructions}>To get started, edit this js.</Text>
-                        <Text style={styles.instructions}>
+                        <Text style={Styles.welcome}>Chat List View Android</Text>
+                        <Text style={Styles.instructions}>To get started, edit this js.</Text>
+                        <Text style={Styles.instructions}>
                             Double tap R on your keyboard to reload,{'\n'}
                             Shake or press menu button for dev menu</Text>
                     </View>
+
+                    <TouchableHighlight onPress={() => { _navigator.push(nextRoute) } }>
+                        <Text style={{ marginTop: 200, alignSelf: 'center' }}>
+                            Go Settings!
+                        </Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight onPress={() => { _navigator.push(profileRoute) } }>
+                        <Text style={{ marginTop: 10, alignSelf: 'center' }}>
+                            Go Profile!
+                        </Text>
+                    </TouchableHighlight>
+
                 </Content>
 
             </Container>
         );
     }
 
-    //*** END OF ANDROID NAV METHODS ***//
+    // iOS Layout
+    iosScene() {
+        const nextRoute = {
+            component: SettingsView,
+            title: 'Settings View',
+        };
+
+        const profileRoute = {
+            component: ProfileView,
+            title: 'Profile View',
+        };
+
+        return (<Container>
+
+            <Content>
+
+                <View style={{ marginTop: 60 }}>
+                    <Text style={Styles.welcome}>Chat List View IOS</Text>
+                    <Text style={Styles.instructions}>To get started, edit this js.</Text>
+                    <Text style={Styles.instructions}>
+                        Press Cmd+R to reload,{'\n'}
+                        Cmd+D or shake for dev menu
+                            </Text>
+                </View>
+
+                <TouchableHighlight onPress={() => { this.onForward(nextRoute) } }>
+                    <Text style={{ marginTop: 200, alignSelf: 'center' }}>
+                        Go Settings!
+                    </Text>
+                </TouchableHighlight>
 
 
-    // Display Layout
+                <TouchableHighlight onPress={() => { this.onForward(profileRoute) } }>
+                    <Text style={{ marginTop: 10, alignSelf: 'center' }}>
+                        Go Profile!
+                    </Text>
+                </TouchableHighlight>
+            </Content>
+
+            <Footer>
+            </Footer>
+
+        </Container>);
+    }
+
     render() {
 
-        if (Platform.OS === 'ios')
-            return (
-                <Container>
+        // IOS 
+        if (Platform.OS === 'ios') {
+            return this.iosScene();
+        }
 
-                    <Content>
-
-                        <View style={{marginTop: 60}}>
-                            <Text style={styles.welcome}>Chat List View IOS</Text>
-                            <Text style={styles.instructions}>To get started, edit this js.</Text>
-                            <Text style={styles.instructions}>
-                                Press Cmd+R to reload,{'\n'}
-                                Cmd+D or shake for dev menu
-                            </Text>
-                        </View>
-                    </Content>
-
-                    <Footer>
-                    </Footer>
-
-                </Container>
-            )
-        else
+        // ANDROID
+        else {
+            var current = {
+                index: 'chat-list-view',
+                title: 'Chat List View',
+                leftButton: "",
+                rightButton: "SETTINGS",
+            };
             return (
                 <Navigator
-                    renderScene={this.renderScene.bind(this)}
+                    initialRoute={current}
+                    renderScene={this.androidScene}
                     navigationBar={
                         <Navigator.NavigationBar
-                            style={{ backgroundColor: '#246dd5', alignItems: 'center' }}
-                            navigationStyles={Navigator.NavigationBar.StylesIOS}
-                            routeMapper={navbarAndroidAdds} />
+                            routeMapper={this.routeMapper} />
                     }
-                    />
-            );
+                    />);
+        }
     }
 }
-
-
-/*** Old Code ***/
-
-// <Container>
-
-//     <Header>
-//         <Title>{this.props.title}</Title>
-//         <Button transparent>Search</Button>
-//         <Button transparent>Options</Button>
-//     </Header>
-
-//     <Content>
-//         <View>
-//             <Text style={styles.welcome}>Chat List View Android</Text>
-//             <Text style={styles.instructions}>To get started, edit this js.</Text>
-//             <Text style={styles.instructions}>
-//                 Double tap R on your keyboard to reload,{'\n'}
-//                 Shake or press menu button for dev menu</Text>
-//         </View>
-//     </Content>
-
-//     <Footer>
-//     </Footer>
-
-// </Container>

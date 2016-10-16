@@ -11,93 +11,78 @@ import {
     StyleSheet,
     Text,
     View,
-    Navigator
+    Navigator,
+    TouchableHighlight
 } from 'react-native';
 
-// All Views
-import { ChatListView } from './app/views/chat-list-view';
-import { ChatView } from './app/views/chat-view.js';
-import { ContactListView } from './app/views/contact-list-view';
-import { CreateChatView } from './app/views/create-chat-view';
-import { CreateSOSChatView } from './app/views/create-sos-chat-view';
-import { LandingView } from './app/views/landing-view';
-import { OnboardingView } from './app/views/onboarding-view';
-import { ProfileView } from './app/views/profile-view';
-import { SettingsView } from './app/views/settings-view';
+// Native Base Components
+import {
+    Container,
+    Header,
+    Title,
+    Content,
+    Footer,
+    FooterTab,
+    Button,
+    Icon,
+    InputGroup,
+    Input,
+    Toolbar
+} from 'native-base';
 
+// Route Maps
+import { SceneRenderer } from './app/routing/route-maps-android';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+// Styles
+import { Styles } from './app/styles/common-styles';
+
+// Describe the Android Navigation Bar
+var routeMapper = {
+
+    LeftButton: function (route, navigator, index, navState) {
+
+        // var previousRoute = navState.routeStack[index - 1];
+        return null;
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
+    Title: function (route, navigator, index, navState) {
+        return (<Title style={{ color: 'white', marginTop: 15, textAlign: 'center' }}>
+            Chat List View
+                </Title>);
     },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-});
+    RightButton: function (route, navigator, index, navState) {
+
+        return (
+            <TouchableHighlight onPress={() => {
+                _navigator.push({
+                    index: 'settings-view',
+                    title: 'Settings View',
+                    leftButton: "BACK",
+                    rightButton: "PROFILE",
+                })
+            } }>
+                <Text style={{ color: 'white', marginTop: 17, marginRight: 10, textAlign: 'center' }}>
+                    SETTINGS
+                        </Text>
+            </TouchableHighlight>
+        );
+    }
+};
 
 export default class Bubble extends Component {
 
-    renderScene(route, navigator) {
-        _navigator = navigator;
-        switch (route.index) {
-            case 'home':
-                return (<ChatListView navigator={navigator} title="Chat List View" />);
-            case 'chat-list-view':
-                return (<ChatListView navigator={navigator} title="Chat List View" />);
-            case 'chat-view':
-                return (<ChatView navigator={navigator} title="chat-view" />)
-            case 'contact-list-view':
-                return (<ContactListView navigator={navigator} title="contact-list-view" />)
-            case 'create-chat-view':
-                return (<CreateChatView navigator={navigator} title="create-chat-view" />)
-            case 'create-sos-chat-view':
-                return (<CreateSOSChatView navigator={navigator} title="create-sos-chat-view" />)
-            case 'landing-view':
-                return (<LandingView navigator={navigator} title="landing-view" />)
-            case 'onboarding-view':
-                return (<OnboardingView navigator={navigator} title="onboarding-view" />)
-            case 'profile-view':
-                return (<ProfileView navigator={navigator} title="profile-view" />)
-            case 'settings-view':
-                return (<SettingsView navigator={navigator} title="settings-view" />)
-            default:
-                return (<ChatListView navigator={navigator} title="home" />);
-        }
-    }
-
     render() {
+        var current = {
+            index: 'chat-list-view',
+            title: 'Chat List View',
+            leftButton: "",
+            rightButton: "SETTINGS",
+        };
         return (
             <Navigator
-                initialRoute={{ index: 'home' }}
-                renderScene={(route, navigator) => this.renderScene(route, navigator)} />
-        );
+                initialRoute={current}
+                renderScene={(route, navigator) => SceneRenderer(route, navigator)}
+                />);
     }
 }
 
 AppRegistry.registerComponent('Bubble', () => Bubble);
-
-
-/*** Old code ***/
-
-// <View style={styles.container}>
-//   <Text style={styles.welcome}>
-//     Welcome to React Native!
-//   </Text>
-//   <Text style={styles.instructions}>
-//     To get started, edit index.android.js
-//   </Text>
-//   <Text style={styles.instructions}>
-//     Double tap R on your keyboard to reload,{'\n'}
-//     Shake or press menu button for dev menu
-//   </Text>
-// </View>
