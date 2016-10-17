@@ -18,11 +18,11 @@ export default class ProfileComponent extends Component {
             </ListItem>
             <ListItem iconLeft>
               <Icon name='ios-thumbs-up' />
-              <Text>{this.props.user.numThanks}thanks</Text>
+              <Text>{this.props.user.numThanks} thanks</Text>
             </ListItem>
             <ListItem iconLeft>
               <Icon name='ios-heart' />
-              <Text>{this.props.user.numCheers}cheers</Text>
+              <Text>{this.props.user.numCheers} cheers</Text>
             </ListItem>
             <ListItem>
               <Button block primary>Enter Magic Key</Button>
