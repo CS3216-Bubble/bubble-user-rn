@@ -76,18 +76,18 @@ export default class ChatListView extends Component {
 
         return (
             <Container>
-              <Header>
-                <Title>Chats</Title>
-                <Button transparent>
-                    <Text></Text>
-                </Button>
-                <Button transparent onPress={joinRoom}>
-                    <Text>Join</Text>
-                </Button>
-              </Header>
-              <Content>
-                <ChatListComponent />
-              </Content>
+                <Header>
+                    <Title>Chats</Title>
+                    <Button transparent>
+                        <Text></Text>
+                    </Button>
+                    <Button transparent onPress={joinRoom}>
+                        <Text>Join</Text>
+                    </Button>
+                </Header>
+                <Content>
+                    <ChatListComponent />
+                </Content>
             </Container>
         );
     }

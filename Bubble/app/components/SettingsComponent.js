@@ -8,9 +8,9 @@ import { Actions } from 'react-native-router-flux';
 export default class SettingsComponent extends Component {
     render() {
         return (
-          <View style={Styles.container}>
-              <Text>Settings page</Text>
-          </View>
+            <View style={Styles.container}>
+                <Text>Settings page</Text>
+            </View>
         );
     }
 }

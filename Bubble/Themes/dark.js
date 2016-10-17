@@ -6,7 +6,7 @@ var borderRadiusBase = 4;
 var contentPadding = 10;
 
 module.exports = {
-    brandPrimary : '#428bca',
+    brandPrimary: '#428bca',
     brandInfo: '#5bc0de',
     brandSuccess: '#5cb85c',
     brandDanger: '#d9534f',
@@ -18,22 +18,22 @@ module.exports = {
 
     fontSizeBase: 15,
 
-    get fontSizeH1 () {
+    get fontSizeH1() {
         return multiply(fontSizeBase, 1.8);
     },
-    get fontSizeH2 () {
+    get fontSizeH2() {
         return multiply(fontSizeBase, 1.6);
     },
-    get fontSizeH3 () {
+    get fontSizeH3() {
         return multiply(fontSizeBase, 1.4);
     },
-    get btnTextSize () {
+    get btnTextSize() {
         return multiply(fontSizeBase, 1.2);
     },
 
     borderRadiusBase: borderRadiusBase,
 
-    get borderRadiusLarge () {
+    get borderRadiusLarge() {
         return multiply(fontSizeBase, 5.8);
     },
 
@@ -41,34 +41,34 @@ module.exports = {
     toolbarDefaultBg: '#505052',
     toolbarInverseBg: '#222',
 
-    get btnPrimaryBg () {
+    get btnPrimaryBg() {
         return this.brandPrimary;
     },
-    get btnPrimaryColor () {
+    get btnPrimaryColor() {
         return this.textColor;
     },
-    get btnSuccessBg () {
+    get btnSuccessBg() {
         return this.brandSuccess;
     },
-    get btnSuccessColor () {
+    get btnSuccessColor() {
         return this.textColor;
     },
-    get btnDangerBg () {
+    get btnDangerBg() {
         return this.brandDanger;
     },
-    get btnDangerColor () {
+    get btnDangerColor() {
         return this.textColor;
     },
-    get btnInfoBg () {
+    get btnInfoBg() {
         return this.brandInfo;
     },
-    get btnInfoColor () {
+    get btnInfoColor() {
         return this.textColor;
     },
-    get btnWarningBg () {
+    get btnWarningBg() {
         return this.brandWarning;
     },
-    get btnWarningColor () {
+    get btnWarningColor() {
         return this.textColor;
     },
 
@@ -79,7 +79,7 @@ module.exports = {
     inputGroupMarginBottom: 10,
     inputColorPlaceholder: 'rgba(256,256,256,0.8)',
     inputPaddingLeft: 5,
-    get inputPaddingLeftIcon () {
+    get inputPaddingLeftIcon() {
         return multiply(this.inputPaddingLeft, 8);
     },
 

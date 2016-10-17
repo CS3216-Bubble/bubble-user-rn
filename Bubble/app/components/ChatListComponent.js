@@ -86,15 +86,15 @@ export default class ChatListComponent extends Component {
         var listChats = [];
         for (var chatCount = 0; chatCount < chatRooms.length; ++chatCount) {
             var chat = chatRooms[chatCount];
-            
+
             var listCategories = [];
             for (var catCount = 0; catCount < chat.categories.length; ++catCount) {
                 var category = chat.categories[catCount];
 
                 listCategories.push(
-                <Button key={category} transparent textStyle={{ color: '#87838B' }}>
-                    {category}
-                </Button>
+                    <Button key={category} transparent textStyle={{ color: '#87838B' }}>
+                        {category}
+                    </Button>
                 );
             }
 
@@ -104,11 +104,11 @@ export default class ChatListComponent extends Component {
                 <Card key={chat.roomId} style={Styles.card}>
 
                     <CardItem>
-                        <View style={{flex: 1, flexDirection: 'row'}}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
                             <TouchableHighlight style={Styles.imageContainer}>
                                 <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
                             </TouchableHighlight>
-                            <View style={{flex: 1, flexDirection: 'column'}}>
+                            <View style={{ flex: 1, flexDirection: 'column' }}>
                                 <Text>
                                     Snappy Koala
                                 </Text>
@@ -126,7 +126,7 @@ export default class ChatListComponent extends Component {
                         <Text>
                             {chat.roomDescription}
                         </Text>
-                        <View style={{flex: 1, flexDirection: 'row'}}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
                             {listCategories}
                         </View>
                     </CardItem>
@@ -140,7 +140,7 @@ export default class ChatListComponent extends Component {
         }
 
         return (
-            <ScrollView style={{flex: 1}}>
+            <ScrollView style={{ flex: 1 }}>
                 {listChats}
             </ScrollView>
         );

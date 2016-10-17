@@ -1,6 +1,6 @@
 import Color from 'color';
 
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 export default {
 
@@ -10,61 +10,61 @@ export default {
 
 
     // Button
-    btnFontFamily: (Platform.OS === 'ios' ) ? 'HelveticaNeue' : 'Roboto_medium',
+    btnFontFamily: (Platform.OS === 'ios') ? 'HelveticaNeue' : 'Roboto_medium',
     btnDisabledBg: '#b5b5b5',
     btnDisabledClr: '#f1f1f1',
 
-    get btnPrimaryBg () {
+    get btnPrimaryBg() {
         return this.brandPrimary;
     },
-    get btnPrimaryColor () {
+    get btnPrimaryColor() {
         return this.inverseTextColor;
     },
-    get btnInfoBg () {
+    get btnInfoBg() {
         return this.brandInfo;
     },
-    get btnInfoColor () {
+    get btnInfoColor() {
         return this.inverseTextColor;
     },
-    get btnSuccessBg () {
+    get btnSuccessBg() {
         return this.brandSuccess;
     },
-    get btnSuccessColor () {
+    get btnSuccessColor() {
         return this.inverseTextColor;
     },
-    get btnDangerBg () {
+    get btnDangerBg() {
         return this.brandDanger;
     },
-    get btnDangerColor () {
+    get btnDangerColor() {
         return this.inverseTextColor;
     },
-    get btnWarningBg () {
+    get btnWarningBg() {
         return this.brandWarning;
     },
-    get btnWarningColor () {
+    get btnWarningColor() {
         return this.inverseTextColor;
     },
-    get btnTextSize () {
-        return (Platform.OS==='ios') ? this.fontSizeBase* 1.1 :
-        this.fontSizeBase-1;
+    get btnTextSize() {
+        return (Platform.OS === 'ios') ? this.fontSizeBase * 1.1 :
+            this.fontSizeBase - 1;
     },
-    get btnTextSizeLarge () {
-        return this.fontSizeBase* 1.5;
+    get btnTextSizeLarge() {
+        return this.fontSizeBase * 1.5;
     },
-    get btnTextSizeSmall () {
-        return this.fontSizeBase* .8;
+    get btnTextSizeSmall() {
+        return this.fontSizeBase * .8;
     },
-    get borderRadiusLarge () {
-        return this.fontSizeBase* 3.8;
+    get borderRadiusLarge() {
+        return this.fontSizeBase * 3.8;
     },
 
     buttonPadding: 6,
 
-    get iconSizeLarge () {
-        return this.iconFontSize* 1.5;
+    get iconSizeLarge() {
+        return this.iconFontSize * 1.5;
     },
-    get iconSizeSmall () {
-        return this.iconFontSize* .6;
+    get iconSizeSmall() {
+        return this.iconFontSize * .6;
     },
 
 
@@ -79,7 +79,7 @@ export default {
 
 
     // Color
-    brandPrimary : '#5067FF',
+    brandPrimary: '#5067FF',
     brandInfo: '#5bc0de',
     brandSuccess: '#5cb85c',
     brandDanger: '#d9534f',
@@ -88,39 +88,39 @@ export default {
 
 
     // Font
-    fontFamily: (Platform.OS === 'ios' ) ? 'HelveticaNeue' : 'Roboto',
+    fontFamily: (Platform.OS === 'ios') ? 'HelveticaNeue' : 'Roboto',
     fontSizeBase: 15,
 
-    get fontSizeH1 () {
-        return this.fontSizeBase*1.8;
+    get fontSizeH1() {
+        return this.fontSizeBase * 1.8;
     },
-    get fontSizeH2 () {
-        return this.fontSizeBase* 1.6;
+    get fontSizeH2() {
+        return this.fontSizeBase * 1.6;
     },
-    get fontSizeH3 () {
-        return this.fontSizeBase* 1.4;
+    get fontSizeH3() {
+        return this.fontSizeBase * 1.4;
     },
 
 
     // Footer
     footerHeight: 55,
-    footerDefaultBg: (Platform.OS === 'ios' ) ? '#F8F8F8' : '#4179F7',
+    footerDefaultBg: (Platform.OS === 'ios') ? '#F8F8F8' : '#4179F7',
 
 
     //FooterTab
-    tabBarTextColor: (Platform.OS === 'ios' ) ? '#6b6b6b' : '#b3c7f9',
-    tabBarActiveTextColor: (Platform.OS === 'ios' ) ? '#007aff' : '#fff',
-    tabActiveBgColor: (Platform.OS=='ios') ? '#cde1f9' : undefined,
+    tabBarTextColor: (Platform.OS === 'ios') ? '#6b6b6b' : '#b3c7f9',
+    tabBarActiveTextColor: (Platform.OS === 'ios') ? '#007aff' : '#fff',
+    tabActiveBgColor: (Platform.OS == 'ios') ? '#cde1f9' : undefined,
 
 
     // Header
     iosToolbarBtnColor: '#007aff',
-    toolbarDefaultBg: (Platform.OS === 'ios' ) ? '#F8F8F8' : '#4179F7',
-    toolbarHeight: (Platform.OS === 'ios' ) ? 64 : 56,
-    toolbarIconSize: (Platform.OS === 'ios' ) ? 20 : 22,
+    toolbarDefaultBg: (Platform.OS === 'ios') ? '#F8F8F8' : '#4179F7',
+    toolbarHeight: (Platform.OS === 'ios') ? 64 : 56,
+    toolbarIconSize: (Platform.OS === 'ios') ? 20 : 22,
     toolbarInputColor: '#CECDD2',
     toolbarInverseBg: '#222',
-    toolbarTextColor: (Platform.OS==='ios') ? '#000' : '#fff',
+    toolbarTextColor: (Platform.OS === 'ios') ? '#000' : '#fff',
     get statusBarColor() {
         return Color(this.toolbarDefaultBg).darken(0.2).hexString();
     },
@@ -128,7 +128,7 @@ export default {
 
     // Icon
     iconFamily: 'Ionicons',
-    iconFontSize: (Platform.OS === 'ios' ) ? 30 : 28,
+    iconFontSize: (Platform.OS === 'ios') ? 30 : 28,
     iconMargin: 7,
 
 
@@ -138,10 +138,10 @@ export default {
     inputSuccessBorderColor: '#2b8339',
     inputErrorBorderColor: '#ed2f2f',
 
-    get inputColor () {
+    get inputColor() {
         return this.textColor;
     },
-    get inputColorPlaceholder () {
+    get inputColorPlaceholder() {
         return '#575757';
     },
 
@@ -149,8 +149,8 @@ export default {
     inputHeightBase: 40,
     inputPaddingLeft: 5,
 
-    get inputPaddingLeftIcon () {
-        return this.inputPaddingLeft* 8;
+    get inputPaddingLeftIcon() {
+        return this.inputPaddingLeft * 8;
     },
 
 
@@ -159,8 +159,8 @@ export default {
     lineHeightH1: 32,
     lineHeightH2: 27,
     lineHeightH3: 22,
-    iconLineHeight: (Platform.OS === 'ios' ) ? 37 : 30,
-    lineHeight: (Platform.OS === 'ios' ) ? 20 : 24,
+    iconLineHeight: (Platform.OS === 'ios') ? 37 : 30,
+    lineHeight: (Platform.OS === 'ios') ? 20 : 24,
 
 
     // List
@@ -203,13 +203,13 @@ export default {
 
 
     // Title
-    titleFontSize: (Platform.OS === 'ios' ) ? 17 : 19,
-    subTitleFontSize: (Platform.OS === 'ios' ) ? 12 : 14,
+    titleFontSize: (Platform.OS === 'ios') ? 17 : 19,
+    subTitleFontSize: (Platform.OS === 'ios') ? 12 : 14,
     subtitleColor: '#8e8e93',
 
 
     // Other
-    borderRadiusBase: (Platform.OS === 'ios' ) ? 5 : 2,
+    borderRadiusBase: (Platform.OS === 'ios') ? 5 : 2,
     borderWidth: 1,
     contentPadding: 10,
 

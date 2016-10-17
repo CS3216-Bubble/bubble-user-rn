@@ -15,7 +15,7 @@ export default class SettingsView extends Component {
                     <Title>Settings</Title>
                 </Header>
                 <Content>
-                  <SettingsComponent />
+                    <SettingsComponent />
                 </Content>
             </Container>
         );
