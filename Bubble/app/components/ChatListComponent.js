@@ -98,45 +98,45 @@ export default class ChatListComponent extends Component {
                 );
             }
 
+            var chatCard = (
+              <Card key={chat.roomId} style={Styles.card}>
 
+                  <CardItem>
+                      <View style={{flex: 1, flexDirection: 'row'}}>
+                          <TouchableHighlight style={Styles.imageContainer}>
+                              <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
+                          </TouchableHighlight>
+                          <View style={{flex: 1, flexDirection: 'column'}}>
+                              <Text>
+                                  Snappy Koala
+                              </Text>
+                              <Text note>
+                                  {chat.lastActive}
+                              </Text>
+                          </View>
+                      </View>
+                  </CardItem>
 
-            listChats.push(
-                <Card key={chat.roomId} style={Styles.card}>
+                  <CardItem cardBody button onPress={() => Actions.chatView({chat: chat})}>
+                      <Title>
+                          {chat.roomName}
+                      </Title>
+                      <Text>
+                          {chat.roomDescription}
+                      </Text>
+                      <View style={{flex: 1, flexDirection: 'row'}}>
+                          {listCategories}
+                      </View>
+                  </CardItem>
 
-                    <CardItem>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TouchableHighlight style={Styles.imageContainer}>
-                                <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
-                            </TouchableHighlight>
-                            <View style={{ flex: 1, flexDirection: 'column' }}>
-                                <Text>
-                                    Snappy Koala
-                                </Text>
-                                <Text note>
-                                    {chat.lastActive}
-                                </Text>
-                            </View>
-                        </View>
-                    </CardItem>
+                  <CardItem header>
+                      <Text>{chat.numberOfUsers} of {chat.userLimit} participants</Text>
+                  </CardItem>
 
-                    <CardItem cardBody>
-                        <Title>
-                            {chat.roomName}
-                        </Title>
-                        <Text>
-                            {chat.roomDescription}
-                        </Text>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            {listCategories}
-                        </View>
-                    </CardItem>
-
-                    <CardItem header>
-                        <Text>{chat.numberOfUsers} of {chat.userLimit} participants</Text>
-                    </CardItem>
-
-                </Card>
+              </Card>
             );
+
+            listChats.push(chatCard);
         }
 
         return (

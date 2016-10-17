@@ -13,7 +13,7 @@ export default class ChatListView extends Component {
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
         var userId = "00007";
-        const joinRoom = () => Actions.chatView({ roomId: roomId, user: userId });
+        const joinRoom = () => Actions.chatView({ roomId: roomId, user: userId, chat: {roomName: "Hello World"}});
 
         // [Stub] Payload for populating Chat List
         var chatRoom1 = {
