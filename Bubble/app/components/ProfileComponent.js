@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { ScrollView } from 'react-native';
-import { List, ListItem, Thumbnail, Text, Button } from 'native-base';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { List, ListItem, Thumbnail, Text, Button, Icon } from 'native-base';
 
 export default class ProfileComponent extends Component {
   static propTypes = {
@@ -25,7 +24,7 @@ export default class ProfileComponent extends Component {
               <Text>{this.props.user.numCheers} cheers</Text>
           </ListItem>
           <ListItem>
-            <Button block danger>Logout</Button>
+            <Button block primary>Enter Magic Key</Button>
           </ListItem>
           <ListItem itemDivider>
               <Text>History</Text>

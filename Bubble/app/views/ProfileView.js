@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 import ProfileComponent from '../components/ProfileComponent';
 
-export class ProfileView extends Component {
+export default class ProfileView extends Component {
   state = {
     user: {
       name: 'User John',

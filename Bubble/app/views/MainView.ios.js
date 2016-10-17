@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
-import { Container, Content, Header, Title } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import ChatListView from './ChatListView';
@@ -33,6 +32,7 @@ export default class MainView extends Component {
   };
 
   render() {
+    console.log("lakjflkaf");
     return (
         <TabBarIOS>
           <Icon.TabBarItemIOS

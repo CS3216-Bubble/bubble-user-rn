@@ -7,7 +7,6 @@ import { Actions } from 'react-native-router-flux';
 
 export default class ChatListComponent extends Component {
     render() {
-
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
         var userId = "00007";

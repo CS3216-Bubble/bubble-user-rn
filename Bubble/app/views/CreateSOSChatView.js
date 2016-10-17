@@ -1,21 +1,8 @@
-/**
- * Create SOS Chat View
- */
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import { Styles } from '../styles/common-styles';
 
-import React, {
-    Component
-} from 'react';
-
-import {
-    Text,
-    View
-} from 'react-native';
-
-import {
-    Styles
-} from '../styles/common-styles';
-
-export class CreateSOSChatView extends Component {
+export default class CreateSOSChatView extends Component {
     render() {
         return (
             <View style={Styles.container}>

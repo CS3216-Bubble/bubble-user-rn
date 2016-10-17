@@ -1,26 +1,13 @@
-/**
- * Landing View
- */
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import { Styles } from '../styles/common-styles';
 
-import React, {
-    Component
-} from 'react';
-
-import {
-    Text,
-    View
-} from 'react-native';
-
-import {
-    Styles
-} from '../styles/common-styles';
-
-export class LandingView extends Component {
+export default class CreateChatView extends Component {
     render() {
         return (
             <View style={Styles.container}>
                 <Text style={Styles.welcome}>
-                    Landing View
+                    Create Chat View
         </Text>
                 <Text style={Styles.instructions}>
                     To get started, edit this js.

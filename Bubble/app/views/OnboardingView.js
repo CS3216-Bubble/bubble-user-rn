@@ -1,21 +1,8 @@
-/**
- * Onboarding View
- */
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import { Styles } from '../styles/common-styles';
 
-import React, {
-    Component
-} from 'react';
-
-import {
-    Text,
-    View
-} from 'react-native';
-
-import {
-    Styles
-} from '../styles/common-styles';
-
-export class OnboardingView extends Component {
+export default class OnboardingView extends Component {
     render() {
         return (
             <View style={Styles.container}>

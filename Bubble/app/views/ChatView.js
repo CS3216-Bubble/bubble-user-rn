@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 import ChatComponent from '../components/ChatComponent';
 
-export class ChatView extends Component {
+export default class ChatView extends Component {
     render() {
         return (
             <Container>

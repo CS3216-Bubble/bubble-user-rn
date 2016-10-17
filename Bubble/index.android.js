@@ -1,49 +1,25 @@
-/**
- * Bubble Android
- * https://github.com/CS3216-Bubble
- */
-
-// React
-import React, {
-    Component
-} from 'react';
-
-// React Native Components
-import {
-    AppRegistry, Navigator
-} from 'react-native';
-
-// Routing
-import {
-    Scene,
-    Router,
-    Actions,
-    Route,
-    Schema,
-    Animations,
-    TabBar
-} from 'react-native-router-flux';
+import React, { Component } from 'react';
+import { AppRegistry } from 'react-native';
+import { Scene, Router, Actions, Route, Schema, Animations } from 'react-native-router-flux';
 
 // Views
-import { MainView } from './app/views/MainView';
-import { ChatView } from './app/views/ChatView';
-import { ContactListView } from './app/views/contact-list-view';
-import { CreateChatView } from './app/views/create-chat-view';
-import { CreateSOSChatView } from './app/views/create-sos-chat-view';
-import { LandingView } from './app/views/landing-view';
-import { OnboardingView } from './app/views/onboarding-view';
+import MainView from './app/views/MainView';
+import ChatView from './app/views/ChatView';
+import ContactListView from './app/views/ContactListView';
+import CreateChatView from './app/views/CreateChatView';
+import CreateSOSChatView from './app/views/CreateSOSChatView';
+import LandingView from './app/views/LandingView';
+import OnboardingView from './app/views/OnboardingView';
 
 // Styles
-import {
-    Styles
-} from './app/styles/common-styles';
+import { Styles } from './app/styles/common-styles';
 
 export default class Bubble extends Component {
 
     render() {
         return (
-            <Router hideNavBar={true}>
-                <Scene key="root">
+            <Router>
+                <Scene key="root" hideNavBar={true}>
                     <Scene key="main" component={MainView} title="Main" initial={true} />
                     <Scene key="chatView" component={ChatView} title="Chat" />
                     <Scene key="contactListView" component={ContactListView} title="Useful Hotlines" />

@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 import SettingsComponent from '../components/SettingsComponent';
 
-export class SettingsView extends Component {
+export default class SettingsView extends Component {
     render() {
         return (
             <Container>
