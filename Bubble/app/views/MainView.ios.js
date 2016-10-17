@@ -57,19 +57,18 @@ export default class MainView extends Component {
             }}>
             {this._renderContent()}
           </Icon.TabBarItemIOS>
+          <Icon.TabBarItemIOS
+            title="Settings"
+            iconName="ios-settings"
+            selected={this.state.selectedTab === 'settings'}
+            onPress={() => {
+              this.setState({
+                selectedTab: 'settings',
+              });
+            }}>
+            {this._renderContent()}
+          </Icon.TabBarItemIOS>
         </TabBarIOS>
-        <Icon.TabBarItemIOS
-          title="Settings"
-          iconName="ios-settings"
-          selected={this.state.selectedTab === 'settings'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'settings',
-            });
-          }}>
-          {this._renderContent()}
-        </Icon.TabBarItemIOS>
-      </TabBarIOS>
     );
   }
 }

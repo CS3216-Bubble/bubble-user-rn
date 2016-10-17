@@ -26,7 +26,7 @@ import {
 
 // Views
 import { MainView } from './app/views/MainView';
-import { ChatView } from './app/views/chat-view.js';
+import { ChatView } from './app/views/ChatView';
 import { ContactListView } from './app/views/contact-list-view';
 import { CreateChatView } from './app/views/create-chat-view';
 import { CreateSOSChatView } from './app/views/create-sos-chat-view';
