@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Image, Text, View, TouchableHighlight } from 'react-native';
+import { Image, Text, View, TouchableHighlight, ScrollView } from 'react-native';
 
 import {
     Card,
@@ -140,9 +140,9 @@ export default class ChatListComponent extends Component {
         }
 
         return (
-            <View>
+            <ScrollView style={{flex: 1}}>
                 {listChats}
-            </View>
+            </ScrollView>
         );
     }
 }
