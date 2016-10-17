@@ -19,6 +19,29 @@ export default class MainView extends Component {
       imgSrc: 'https://www.dropbox.com/s/2fth5ceonfa3iww/group.png?raw=1',
       numThanks: 42,
       numCheers: 21,
+    },
+    selectedTab: 0
+  }
+
+  onChangeTab(tab) {
+    console.log(tab);
+    // Depending on tab, show different icons in header
+  }
+
+  _renderTabAction() {
+    switch (this.state.selectedTab) {
+      case 0:
+        return (
+          
+        );
+      case 1:
+        return (
+
+        );
+      case 2:
+        return (
+
+        );
     }
   }
 
@@ -27,9 +50,10 @@ export default class MainView extends Component {
       <Container>
         <Header>
           <Title>Bubble</Title>
+          {this._renderTabAction()}
         </Header>
         <View style={{flex: 1}}>
-          <Tabs theme={light}>
+          <Tabs theme={light} onChangeTab={this.onChangeTab}>
             <ChatListComponent tabLabel='Chats' tabBgColor='#4883da' user={this.state.user}/>
             <ProfileComponent tabLabel='Profile' tabBgColor='#4883da' />
             <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' />
