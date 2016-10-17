@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Container, Content, Header, Title, Tabs } from 'native-base';
+import { Container, Content, Header, Title, Tabs, Button } from 'native-base';
+
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import ChatListComponent from '../components/ChatListComponent';
 import ProfileComponent from '../components/ProfileComponent';
@@ -29,33 +31,49 @@ export default class MainView extends Component {
   }
 
   _renderTabAction() {
-    switch (this.state.selectedTab) {
-      case 0:
-        return (
-          
-        );
-      case 1:
-        return (
 
-        );
-      case 2:
-        return (
-
-        );
-    }
   }
 
   render() {
+
+    var headerButton;
+    switch (this.state.selectedTab) {
+      case 0:
+        headerButton = (
+          <Button transparent>
+            <Icon size={24} name="more-vert" color="#fff"/>
+          </Button>
+        );
+      case 1:
+        headerButton = (
+          <Button transparent>
+            <Icon size={24} name="more-vert" color="#fff"/>
+          </Button>
+        );
+      case 2:
+        headerButton = (
+          <Button transparent>
+            <Icon size={24} name="more-vert" color="#fff"/>
+          </Button>
+        );
+      default:
+        headerButton = (
+          <Button transparent>
+            <Icon size={24} name="more-vert" color="#fff"/>
+          </Button>
+        );
+    }
+
     return (
       <Container>
-        <Header>
+        <Header iconRight>
           <Title>Bubble</Title>
-          {this._renderTabAction()}
+          { headerButton }
         </Header>
         <View style={{flex: 1}}>
           <Tabs theme={light} onChangeTab={this.onChangeTab}>
-            <ChatListComponent tabLabel='Chats' tabBgColor='#4883da' user={this.state.user}/>
-            <ProfileComponent tabLabel='Profile' tabBgColor='#4883da' />
+            <ChatListComponent tabLabel='Chats' tabBgColor='#4883da' />
+            <ProfileComponent tabLabel='Profile' tabBgColor='#4883da' user={this.state.user} />
             <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' />
           </Tabs>
         </View>

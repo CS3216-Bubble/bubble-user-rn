@@ -29,7 +29,6 @@ export default class MainView extends Component {
   };
 
   render() {
-    console.log("lakjflkaf");
     return (
         <TabBarIOS>
           <Icon.TabBarItemIOS
