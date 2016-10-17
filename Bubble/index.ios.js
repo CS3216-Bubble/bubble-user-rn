@@ -12,7 +12,7 @@ import LandingView from './app/views/LandingView';
 import OnboardingView from './app/views/OnboardingView';
 
 // Styles
-import { Styles } from './app/styles/common-styles';
+import { Styles } from './app/styles/Styles';
 
 export default class Bubble extends Component {
 

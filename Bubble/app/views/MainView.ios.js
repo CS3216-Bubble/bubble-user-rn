@@ -17,17 +17,14 @@ export default class MainView extends Component {
         return (
           <ChatListView />
         );
-        break;
       case 'profile':
         return (
           <ProfileView />
         );
-        break;
       case 'settings':
         return (
           <SettingsView />
         );
-        break;
     }
   };
 

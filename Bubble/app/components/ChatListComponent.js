@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
 
-import { Styles } from '../styles/common-styles';
+import { Image, Text, View, TouchableHighlight } from 'react-native';
+
+import {
+    Card,
+    CardItem,
+    Title,
+    Button
+} from 'native-base';
+
+import { Styles } from '../styles/Styles';
 
 import { Actions } from 'react-native-router-flux';
 
 export default class ChatListComponent extends Component {
+
     render() {
+
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
         var userId = "00007";
@@ -71,28 +81,68 @@ export default class ChatListComponent extends Component {
         // [Stub] Chat List
         var chatRooms = [chatRoom1, chatRoom2, chatRoom3, chatRoom4, chatRoom5];
 
+        // this.state.chatRooms = chatRooms;
+
+        var listChats = [];
+        for (var chatCount = 0; chatCount < chatRooms.length; ++chatCount) {
+            var chat = chatRooms[chatCount];
+            
+            var listCategories = [];
+            for (var catCount = 0; catCount < chat.categories.length; ++catCount) {
+                var category = chat.categories[catCount];
+
+                listCategories.push(
+                <Button key={category} transparent textStyle={{ color: '#87838B' }}>
+                    {category}
+                </Button>
+                );
+            }
+
+
+
+            listChats.push(
+                <Card key={chat.roomId} style={Styles.card}>
+
+                    <CardItem>
+                        <View style={{flex: 1, flexDirection: 'row'}}>
+                            <TouchableHighlight style={Styles.imageContainer}>
+                                <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
+                            </TouchableHighlight>
+                            <View style={{flex: 1, flexDirection: 'column'}}>
+                                <Text>
+                                    Snappy Koala
+                                </Text>
+                                <Text note>
+                                    {chat.lastActive}
+                                </Text>
+                            </View>
+                        </View>
+                    </CardItem>
+
+                    <CardItem cardBody>
+                        <Title>
+                            {chat.roomName}
+                        </Title>
+                        <Text>
+                            {chat.roomDescription}
+                        </Text>
+                        <View style={{flex: 1, flexDirection: 'row'}}>
+                            {listCategories}
+                        </View>
+                    </CardItem>
+
+                    <CardItem header>
+                        <Text>{chat.numberOfUsers} of {chat.userLimit} participants</Text>
+                    </CardItem>
+
+                </Card>
+            );
+        }
+
         return (
-          <View style={Styles.container}>
-              <Text style={Styles.welcome}>
-                  Chat List View
-              </Text>
-              <Text style={Styles.instructions}>
-                  To get started, edit this js.
-              </Text>
-              <Text onPress={joinRoom} style={Styles.instructions}>
-                  ENTER A CHAT HERE.
-              </Text>
-              <Text style={Styles.instructions}>
-                  For Android: {'\n'}
-                  Double tap R on your keyboard to reload,{'\n'}
-                  Shake or press menu button for dev menu
-              </Text>
-              <Text style={Styles.instructions}>
-                  For iOS: {'\n'}
-                  Press Cmd + R on your keyboard to reload,{'\n'}
-                  Shake or press Cmd + R for dev menu
-              </Text>
-          </View>
+            <View>
+                {listChats}
+            </View>
         );
     }
 }

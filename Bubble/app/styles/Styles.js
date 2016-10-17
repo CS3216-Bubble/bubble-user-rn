@@ -31,4 +31,23 @@ export var Styles = StyleSheet.create({
     wrapper: {
         flex: 1,
     },
+    imageContainer: {
+        height: 36,
+        width: 36,
+        borderRadius: 18,
+        justifyContent: 'space-between',
+        marginRight: 10
+    },
+    image: {
+        height: 36,
+        width: 36,
+        borderRadius: 18,
+        justifyContent: 'space-between'
+    },
+    card: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20
+    }
 });

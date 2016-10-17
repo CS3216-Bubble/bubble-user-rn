@@ -18,7 +18,7 @@ export default class ChatView extends Component {
                     <Title>{this.props.roomId}</Title>
                 </Header>
                 <Content>
-                  <ChatComponent />
+                  <ChatComponent roomId={this.props.roomId} user={this.props.user}/>
                 </Content>
             </Container>
         );
