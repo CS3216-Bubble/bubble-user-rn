@@ -14,132 +14,195 @@ export default class ChatService extends Component {
         const host = 'http://localhost:3000';
         this.socket = io(host, { transports: ['websocket'] });
 
+        /*** Listeners ***/
+
         this.socket.on('connect', () => {
             console.log('connected!');
         });
 
-        this.socket.on('list_rooms', function (data) {
-            console.log('list rooms', data);
-        })
-
+        // createRoom emits a response:
+        //     roomId: string
         this.socket.on('create_room', function (data) {
-            console.log('create room', data);
+            console.log('created room!', data);
         })
 
+        // joinRoom emits a response:
+        //     roomId: string
+        //     user: string
+        this.socket.on('join_room', function (data) {
+            console.log('joined room!', data);
+        })
+
+        // exitRoom emits a response:
+        //     roomId: string
+        //     user: string
+        this.socket.on('exit_room', function (data) {
+            console.log('exited room!', data);
+        })
+
+        // listRooms emits a response:
+        //     rooms: string[]
+        this.socket.on('list_rooms', function (data) {
+            console.log('listed rooms!', data);
+        })
+
+        // listRooms emits a response:
+        //     roomId: string
+        //     roomName: string
+        //     roomType: number
+        //     userLimit: number
+        //     roomDescription: string
+        //     categories: string[]
+        //     numUsers: number
+        //     lastActive: Date
+        this.socket.on('view_room', function (data) {
+            console.log('viewed room!', data);
+        })
+
+        // didBeginTyping emits a response:
+        //     roomId: string,
+        //     user: string
+        this.socket.on('typing', function (data) {
+            console.log('is typing!', data);
+        })
+
+        // didEndTyping emits a response:
+        //     roomId: string,
+        //     user: string
+        this.socket.on('stop_typing', function (data) {
+            console.log('stopped typing!', data);
+        })
+
+        // sendMessage emits a response:
+        //     user: string
+        //     roomId: string
+        //     message: string
         this.socket.on('add_message', function (data) {
-            console.log('add message', data);
+            console.log('message sent!', data);
         })
 
+        // sendReaction emits a response:
+        //     user: string
+        //     roomId: string
+        //     reaction: string
+        this.socket.on('add_reaction', function (data) {
+            console.log('reaction sent!', data);
+        })
+
+        // setUsername emits a response:
+        //     userId: string
+        //     newName: string
+        this.socket.on('set_user_name', function (data) {
+            console.log('username set!', data);
+        })
+
+        // setUsername emits a response:
+        //     counsellorId: string
+        //     counsellorName: string
+        //     roomId: string
+        //     roomName: string
+        //     roomType: number
+        //     userLimit: number
+        //     roomDescription: string
+        //     categories: string[]
+        //     numUsers: number
+        //     lastActive: Date
+        this.socket.on('find_counsellor', function (data) {
+            console.log('found a counsellor!', data);
+        })
+
+        // generic error listener
         this.socket.on('bubble_error', function (data) {
-            console.log('error', data);
+            console.log('error!', data);
         })
     }
 
-    createRoom(chat) {
-        this.socket.emit('create_room', chat);
+    // createRoom requires payload:
+    //     user: string,
+    //     roomName: string,
+    //     roomDescription: string,
+    //     userLimit: number,
+    //     categories: string[]
+    createRoom(newChat) {
+        this.socket.emit('create_room', newChat);
     }
 
-    listRooms(user) {
-        this.socket.emit('list_rooms', user);
+    // joinRoom requires payload:
+    //     roomId: string,
+    //     user: string
+    joinRoom(joinRequest) {
+        this.socket.emit('join_room', joinRequest);
+    }
+
+    // exitRoom requires payload:
+    //     roomId: string,
+    //     user: string
+    exitRoom(exitRequest) {
+        this.socket.emit('exit_room', exitRequest);
+    }
+
+    // listRooms requires payload:
+    //     user: string
+    listRooms(userIdentity) {
+        this.socket.emit('list_rooms', userIdentity);
+    }
+
+    // viewRoom requires payload:
+    //     roomId: string,
+    //     user: string
+    viewRoom(viewRequest) {
+        this.socket.emit('view_room', viewRequest);
+    }
+
+    // didBeginTyping requires payload:
+    //     roomId: string,
+    //     user: string
+    didBeginTyping(typeStatusBroadcast) {
+        this.socket.emit('typing', typeStatusBroadcast);
+    }
+
+    // didStopTyping requires payload:
+    //     roomId: string,
+    //     user: string
+    didStopTyping(typeStatusBroadcast) {
+        this.socket.emit('stop_typing', typeStatusBroadcast);
+    }
+
+    // reportUser requires payload:
+    //     user: string
+    //     userToReport: string
+    //     roomId: string
+    //     reason: string
+    reportUser(flagReport) {
+        this.socket.emit('report_user', flagReport);
+    }
+
+    // addMessage requires payload:
+    //     roomId: string
+    //     user: string
+    //     message: string
+    sendMessage(message) {
+        this.socket.emit('add_message', message);
+    }
+
+    // sendReaction requires payload:
+    //     user: string
+    //     roomId: string
+    //     reaction: string
+    sendReaction(reaction) {
+        this.socket.emit('add_reaction', reaction);
+    }
+
+    // setUsername requires payload:
+    //     userId: string
+    //     newName: string
+    setUsername(username) {
+        this.socket.emit('set_user_name', username);
+    }
+
+    // findCounsellor requires payload:
+    //     userId: string
+    findCounsellor(userId) {
+        this.socket.emit('find_counsellor', userId);
     }
 }
-
-
-
-
-
-
-// OLD
-
-// Manually join namespace. Ex: namespace is now partyRoom 
-// socket.joinNamespace('partyRoom')
-
-// Leave namespace, back to '/' 
-// socket.leaveNamespace()
-
-// Emit an event to server 
-// socket.emit('helloWorld', {some: 'data'});
-
-//Disconnect from server 
-// socket.disconnect();
-
-// Reconnect to a closed socket 
-// socket.reconnect();
-
-
-// this.socket = io('http://localhost:3000', {
-        // this.socket = io('localhost:3000', {
-        //     transports: ['websocket'] // you need to explicitly tell it to use websockets
-        // });
-
-        // this.socket.on('connect', () => {
-        //     console.log('connected!');
-        // });
-
-        // this.socket.on('list_rooms', function (data) {
-        //     console.log('list rooms', data);
-        //     // if (data instanceof Array) {
-        //     //     for (let chat of data) {
-        //     //         this.chats.push(new Chat(chat));
-        //     //     }
-        //     // }
-        // })
-
-        // this.socket.on('create_room', function (data) {
-        //     console.log('create room', data);
-        // })
-
-        // this.socket.on('add_message', function (data) {
-        //     console.log('add message', data);
-        // })
-
-        // this.socket.on('bubble_error', function (data) {
-        //     console.log('error', data);
-        // })
-    // }
-
-    // now you can use sockets with this.socket.io(...)
-    // or any other functionality within socket.io!
-
-
-    // addChat(chat) {
-    //     this.socket.emit('create_room', chat);
-    // }
-
-    // listRooms(user) {
-    //     this.socket.emit('list_rooms', user);
-    // }
-
-    // joinChat(roomId) {
-    //     this.socket.emit('join_room', {
-    //         roomId,
-    //     });
-    //     this.currentRoom = roomId;
-    // }
-
-    // updateChatById(roomId: string, values: Object = {}): Chat {
-    //     let chat = this.getChatById(roomId);
-    //     if (!chat) {
-    //         return null;
-    //     }
-    //     (<any>Object).assign(chat, values);
-    //     return chat;
-    //   }
-
-    //   getAllChats(): Chat[] {
-    //             this.socket.emit('list_rooms');
-    //         return this.chats;
-    //   }
-
-    //   getChatById(roomId: string): Chat {
-    //     return this.chats
-    //       .filter(chat => chat.roomId == roomId)
-    //       .pop();
-    //   }
-
-    //   createMessage(userId: string, message: string) {
-    //             this.socket.emit('add_message', {
-    //                 roomId: this.currentRoom,
-    //                 message,
-    //             });
-    //   }

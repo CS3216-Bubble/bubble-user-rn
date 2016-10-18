@@ -17,6 +17,7 @@ export default class ChatComponent extends Component {
     this.state = {messages: []};
     this.onSend = this.onSend.bind(this);
   }
+
   componentWillMount() {
     this.setState({
       messages: [
@@ -32,27 +33,6 @@ export default class ChatComponent extends Component {
         },
       ],
     });
-  }
-
-  startChat() {
-
-      var user = {
-          user: "123"
-      };
-
-      var chat = {
-          user: "123",
-          roomName: "Hello Panda",
-          roomDescription: "Goodbye Panda",
-          userLimit: 10,
-          categories: ["School", "Stress", "Work"]
-      };
-
-      var session = new ChatService();
-      session.socket.connect();
-      session.listRooms(user);
-      // session.createRoom(chat);
-      // session.listRooms(user);
   }
 
   onSend(messages = []) {
@@ -75,6 +55,29 @@ export default class ChatComponent extends Component {
     );
   }
 }
+
+// startChat() {
+
+//       var user = {
+//           user: "123"
+//       };
+
+//       var chat = {
+//           user: "123",
+//           roomName: "Hello Panda",
+//           roomDescription: "Goodbye Panda",
+//           userLimit: 10,
+//           categories: ["School", "Stress", "Work"]
+//       };
+
+//       var session = new ChatService();
+//       session.socket.connect();
+//       session.listRooms(user);
+//       // session.createRoom(chat);
+//       // session.listRooms(user);
+//   }
+
+
 
 // OLD
 
