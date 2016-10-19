@@ -9,8 +9,6 @@ import { Styles } from '../styles/Styles';
 
 import { Actions } from 'react-native-router-flux';
 
-import ChatService from '../services/ChatService';
-
 export default class ChatComponent extends Component {
   constructor(props) {
     super(props);

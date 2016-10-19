@@ -28,87 +28,48 @@ export default class MainView extends Component {
         }
     };
 
-//     render() {
-//         console.log("lakjflkaf");
-//         return (
-//             <TabBarIOS>
-//                 <Icon.TabBarItemIOS
-//                     title="Chats"
-//                     iconName="ios-chatboxes"
-//                     selected={this.state.selectedTab === 'chats'}
-//                     onPress={() => {
-//                         this.setState({
-//                             selectedTab: 'chats',
-//                         });
-//                     } }>
-//                     {this._renderContent()}
-//                 </Icon.TabBarItemIOS>
-//                 <Icon.TabBarItemIOS
-//                     title="Profile"
-//                     iconName="ios-person-outline"
-//                     selected={this.state.selectedTab === 'profile'}
-//                     onPress={() => {
-//                         this.setState({
-//                             selectedTab: 'profile',
-//                         });
-//                     } }>
-//                     {this._renderContent()}
-//                 </Icon.TabBarItemIOS>
-//                 <Icon.TabBarItemIOS
-//                     title="Settings"
-//                     iconName="ios-settings"
-//                     selected={this.state.selectedTab === 'settings'}
-//                     onPress={() => {
-//                         this.setState({
-//                             selectedTab: 'settings',
-//                         });
-//                     } }>
-//                     {this._renderContent()}
-//                 </Icon.TabBarItemIOS>
-//             </TabBarIOS>
-//         );
-//     }
-//   };
+    render() {
 
-  render() {
-    return (
-        <TabBarIOS>
-          <Icon.TabBarItemIOS
-            title="Chats"
-            iconName="ios-chatboxes"
-            selected={this.state.selectedTab === 'chats'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'chats',
-              });
-            }}>
-            {this._renderContent()}
-          </Icon.TabBarItemIOS>
-          <Icon.TabBarItemIOS
-            title="Profile"
-            iconName="ios-person-outline"
-            selected={this.state.selectedTab === 'profile'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'profile',
-              });
-            }}>
-            {this._renderContent()}
-          </Icon.TabBarItemIOS>
-          <Icon.TabBarItemIOS
-            title="Settings"
-            iconName="ios-settings"
-            selected={this.state.selectedTab === 'settings'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'settings',
-              });
-            }}>
-            {this._renderContent()}
-          </Icon.TabBarItemIOS>
-        </TabBarIOS>
-    );
-  }
+        return (
+
+            <TabBarIOS>
+                <Icon.TabBarItemIOS
+                    title="Chats"
+                    iconName="ios-chatboxes"
+                    selected={this.state.selectedTab === 'chats'}
+                    onPress={() => {
+                        this.setState({
+                            selectedTab: 'chats',
+                        });
+                    } }>
+                    {this._renderContent()}
+                </Icon.TabBarItemIOS>
+                <Icon.TabBarItemIOS
+                    title="Profile"
+                    iconName="ios-person-outline"
+                    selected={this.state.selectedTab === 'profile'}
+                    onPress={() => {
+                        this.setState({
+                            selectedTab: 'profile',
+                        });
+                    } }>
+                    {this._renderContent()}
+                </Icon.TabBarItemIOS>
+                <Icon.TabBarItemIOS
+                    title="Settings"
+                    iconName="ios-settings"
+                    selected={this.state.selectedTab === 'settings'}
+                    onPress={() => {
+                        this.setState({
+                            selectedTab: 'settings',
+                        });
+                    } }>
+                    {this._renderContent()}
+                </Icon.TabBarItemIOS>
+            </TabBarIOS>
+
+        );
+    }
 }
 
 var styles = StyleSheet.create({
@@ -121,3 +82,46 @@ var styles = StyleSheet.create({
         margin: 50,
     },
 });
+
+// OLD
+
+    //     render() {
+    //         return (
+    //             <TabBarIOS>
+    //                 <Icon.TabBarItemIOS
+    //                     title="Chats"
+    //                     iconName="ios-chatboxes"
+    //                     selected={this.state.selectedTab === 'chats'}
+    //                     onPress={() => {
+    //                         this.setState({
+    //                             selectedTab: 'chats',
+    //                         });
+    //                     } }>
+    //                     {this._renderContent()}
+    //                 </Icon.TabBarItemIOS>
+    //                 <Icon.TabBarItemIOS
+    //                     title="Profile"
+    //                     iconName="ios-person-outline"
+    //                     selected={this.state.selectedTab === 'profile'}
+    //                     onPress={() => {
+    //                         this.setState({
+    //                             selectedTab: 'profile',
+    //                         });
+    //                     } }>
+    //                     {this._renderContent()}
+    //                 </Icon.TabBarItemIOS>
+    //                 <Icon.TabBarItemIOS
+    //                     title="Settings"
+    //                     iconName="ios-settings"
+    //                     selected={this.state.selectedTab === 'settings'}
+    //                     onPress={() => {
+    //                         this.setState({
+    //                             selectedTab: 'settings',
+    //                         });
+    //                     } }>
+    //                     {this._renderContent()}
+    //                 </Icon.TabBarItemIOS>
+    //             </TabBarIOS>
+    //         );
+    //     }
+    //   };

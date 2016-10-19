@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-
+import React, { Component, PropTypes } from 'react';
 import { Image, Text, View, TouchableHighlight, ScrollView } from 'react-native';
-
 import {
     Card,
     CardItem,
@@ -9,14 +7,41 @@ import {
     Button
 } from 'native-base';
 
+import { ChatListItemComponent } from './ChatListItemComponent';
 import { Styles } from '../styles/Styles';
 
 import { Actions } from 'react-native-router-flux';
 
-export default class ChatListComponent extends Component {
+import { connect, listRooms } from '../actions/BubbleSocketActions';
+import { connect as connectRedux } from 'react-redux';
+
+export class ChatListComponent extends Component {
+
+    // static propTypes = {
+    //     roomList: PropTypes.array.isRequired,
+    // }
+
+    updateList = (data) => {
+        this.setState({ roomList: data });
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { roomList: [] };
+        this.updateList = this.updateList.bind(this);
+    }
+
+    componentDidMount() {
+
+        // > View Specific Listeners
+        this.props.socket.on('list_rooms', this.updateList);
+
+        this.props.socket.connect();
+        this.props.socket.emit("list_rooms", { user: "123" });
+    }
 
     render() {
-
+        console.log(this.state);
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
         var userId = "00007";
@@ -79,9 +104,12 @@ export default class ChatListComponent extends Component {
         }
 
         // [Stub] Chat List
-        var chatRooms = [chatRoom1, chatRoom2, chatRoom3, chatRoom4, chatRoom5];
-
+        // var chatRooms = [chatRoom1, chatRoom2, chatRoom3, chatRoom4, chatRoom5];
         // this.state.chatRooms = chatRooms;
+
+        // var chatRooms = this.props.roomList;
+
+        var chatRooms = this.state.roomList;
 
         var listChats = [];
         for (var chatCount = 0; chatCount < chatRooms.length; ++chatCount) {
@@ -92,51 +120,58 @@ export default class ChatListComponent extends Component {
                 var category = chat.categories[catCount];
 
                 listCategories.push(
-                    <Button key={category} transparent textStyle={{ color: '#87838B' }}>
+                    <Button key={category} transparent textStyle={{
+                        color: '#87838B', fontSize: 14,
+                        fontWeight: '500'
+                    }}>
                         {category}
                     </Button>
                 );
             }
 
             var chatCard = (
-              <Card key={chat.roomId} style={Styles.card}>
 
-                  <CardItem>
-                      <View style={{flex: 1, flexDirection: 'row'}}>
-                          <TouchableHighlight style={Styles.imageContainer}>
-                              <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
-                          </TouchableHighlight>
-                          <View style={{flex: 1, flexDirection: 'column'}}>
-                              <Text>
-                                  Snappy Koala
+                <Card key={chat.roomId} style={Styles.card}>
+
+                    <CardItem>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <TouchableHighlight style={Styles.imageContainer}>
+                                <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
+                            </TouchableHighlight>
+                            <View style={{ flex: 1, flexDirection: 'column' }}>
+                                <Text>
+                                    Snappy Koala
                               </Text>
-                              <Text note>
-                                  {chat.lastActive}
-                              </Text>
-                          </View>
-                      </View>
-                  </CardItem>
+                                <Text note>
+                                    {chat.lastActive}
+                                </Text>
+                            </View>
+                        </View>
+                    </CardItem>
 
-                  <CardItem cardBody button onPress={() => Actions.chatView({chat: chat})}>
-                      <Title>
-                          {chat.roomName}
-                      </Title>
-                      <Text>
-                          {chat.roomDescription}
-                      </Text>
-                      <View style={{flex: 1, flexDirection: 'row'}}>
-                          {listCategories}
-                      </View>
-                  </CardItem>
+                    <CardItem cardBody button onPress={() => Actions.chatView({ chat: chat })}>
+                        <Text style={Styles.title}>
+                            {chat.roomName}
+                        </Text>
+                        <Text style={Styles.description}>
+                            {chat.roomDescription}
+                        </Text>
+                        <View style={Styles.categories}>
+                            {listCategories}
+                        </View>
+                    </CardItem>
 
-                  <CardItem header>
-                      <Text>{chat.numberOfUsers} of {chat.userLimit} participants</Text>
-                  </CardItem>
+                    <CardItem header>
+                        <Text>{chat.numberOfUsers}of {chat.userLimit}users</Text>
+                    </CardItem>
 
-              </Card>
+                </Card>
+
             );
 
             listChats.push(chatCard);
+            // listChats.push(<ChatListItemComponent key={chat.roomId} listCategories={listCategories}
+            //     chat={chat} />);
         }
 
         return (
@@ -146,3 +181,13 @@ export default class ChatListComponent extends Component {
         );
     }
 }
+
+function getList(state) {
+    let socket = state.socketHandler.socket;
+
+    return {
+        socket: socket
+    }
+}
+
+export default connectRedux(getList)(ChatListComponent);

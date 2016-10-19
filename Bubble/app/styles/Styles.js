@@ -15,9 +15,29 @@ export var Styles = StyleSheet.create({
         margin: 10,
     },
     instructions: {
+        fontSize: 20,
         textAlign: 'center',
         color: '#333333',
         marginBottom: 5,
+    },
+    title: {
+        fontSize: 16,
+        textAlign: 'left',
+        fontWeight: 'bold',
+        margin: 0,
+        marginBottom: 10,
+    },
+    description: {
+        fontSize: 16,
+        textAlign: 'left',
+        fontWeight: '100',
+        color: '#333333',
+        marginBottom: 0,
+    },
+    categories: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     toolbar: {
         height: 56,

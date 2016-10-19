@@ -43,46 +43,49 @@ export default class MainView extends Component {
       case 0:
         headerButton = (
           <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff"/>
+            <Icon size={24} name="more-vert" color="#fff" />
           </Button>
         );
       case 1:
         headerButton = (
           <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff"/>
+            <Icon size={24} name="more-vert" color="#fff" />
           </Button>
         );
       case 2:
         headerButton = (
           <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff"/>
+            <Icon size={24} name="more-vert" color="#fff" />
           </Button>
         );
       default:
         headerButton = (
           <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff"/>
+            <Icon size={24} name="more-vert" color="#fff" />
           </Button>
         );
     }
 
     return (
-      <Container>
-        <Header iconRight>
-          <Title>Bubble</Title>
-          { headerButton }
-        </Header>
-        <View style={{flex: 1}}>
-          <Tabs theme={light} onChangeTab={this.onChangeTab}>
-            <ChatListComponent tabLabel='Chats' tabBgColor='#4883da' />
-            <ProfileComponent tabLabel='Profile' tabBgColor='#4883da' user={this.state.user} />
-            <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' />
-          </Tabs>
-        </View>
-      </Container>
+        <Container>
+          <Header iconRight>
+            <Title>Bubble</Title>
+            {headerButton}
+          </Header>
+          <View style={{ flex: 1 }}>
+            <Tabs theme={light} onChangeTab={this.onChangeTab}>
+              <ChatListComponent tabLabel='Chats' tabBgColor='#4883da' />
+              <ProfileComponent tabLabel='Profile' tabBgColor='#4883da' user={this.state.user} />
+              <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' />
+            </Tabs>
+          </View>
+        </Container>
     );
   }
 }
+
+
+
 
 // OLD
 // render() {
