@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Image, Text, View, TouchableHighlight, ScrollView } from 'react-native';
+import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
 import { ChatListItemComponent } from './ChatListItemComponent';
 import { Styles } from '../styles/Styles';
@@ -13,29 +13,33 @@ export class ChatListComponent extends Component {
     // }
 
     updateList = (data) => {
-        this.setState({ roomList: data });
+        this.setState({ roomList: data, refreshing: false });
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = { roomList: [] };
+        this.state = { roomList: [], refreshing: false };
         this.updateList = this.updateList.bind(this);
     }
 
-    componentDidMount() {
+    _onRefresh() {
+        this.setState({ refreshing: true });
+        this.props.socket.connect();
+        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+    }
 
+    componentDidMount() {
         // > View Specific Listeners
         this.props.socket.on('list_rooms', this.updateList);
-
         this.props.socket.connect();
-        this.props.socket.emit("list_rooms", { user: "123" });
+        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     render() {
         console.log(this.state);
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
-        var userId = "00007";
+        var userId = this.props.socket.id;
         const joinRoom = () => Actions.chatView({ roomId: roomId, user: userId });
 
         // [Stub] Payload for populating Chat List
@@ -122,26 +126,26 @@ export class ChatListComponent extends Component {
 
             const chatProps = { roomId: chatRooms[chatCount].roomId };
 
+            // <TouchableHighlight style={Styles.imageContainer}>
+            //     <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
+            // </TouchableHighlight>
+            // <Text>
+            //     Snappy Koala
+            // </Text>
+            // <CardItem>
+            //     <View style={{ flex: 1, flexDirection: 'row' }}>
+            //         <View style={{ flex: 1, flexDirection: 'column' }}>
+            //         </View>
+            //     </View>
+            // </CardItem>
+
+            var moment = require('moment');
+
+            console.log(moment(chat.lastActive));
             var chatCard = (
 
                 <Card key={chat.roomId} style={Styles.card}>
-
-                    <CardItem>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TouchableHighlight style={Styles.imageContainer}>
-                                <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
-                            </TouchableHighlight>
-                            <View style={{ flex: 1, flexDirection: 'column' }}>
-                                <Text>
-                                    Snappy Koala
-                              </Text>
-                                <Text note>
-                                    {chat.lastActive}
-                                </Text>
-                            </View>
-                        </View>
-                    </CardItem>
-
+                
                     <CardItem cardBody button onPress={() => Actions.chatView(chatProps)}>
                         <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
                             {chat.roomName}
@@ -152,10 +156,13 @@ export class ChatListComponent extends Component {
                         <View style={Styles.categories}>
                             {listCategories}
                         </View>
+                        <Text note style={{ textAlign: 'right' }} >
+                            {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
+                        </Text>
                     </CardItem>
 
                     <CardItem header>
-                        <Text>{chat.numberOfUsers}of {chat.userLimit}users</Text>
+                        <Text>{chat.numUsers} of {chat.userLimit} users</Text>
                     </CardItem>
 
                 </Card>
@@ -167,11 +174,29 @@ export class ChatListComponent extends Component {
             //     chat={chat} />);
         }
 
-        return (
-            <ScrollView style={{ flex: 1 }}>
-                {listChats}
-            </ScrollView>
-        );
+
+
+        if (chatRooms.length == 0) {
+            return (
+                <ScrollView contentContainerStyle={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1
+                }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
+                    <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
+                    <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
+                </ScrollView>
+            );
+
+        } else {
+            return (
+                <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}
+                    style={{ flex: 1 }}>
+                    {listChats}
+                </ScrollView>
+
+            );
+        }
     }
 }
 

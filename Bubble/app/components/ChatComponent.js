@@ -90,7 +90,7 @@ export class ChatComponent extends Component {
                 user={{
                     _id: this.props.user,
                 }}
-                bottomOffset={0}
+                bottomOffset={0.2}
                 />
         );
     }

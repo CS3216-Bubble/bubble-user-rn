@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, RefreshControl, ScrollView } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
@@ -16,8 +16,7 @@ export default class ChatListView extends Component {
 
     // constructor() {
     //     super();
-    //     this.state = { roomList: [] };
-    //     this.updateList = this.updateList.bind(this);
+    //     this.state = { refreshing: false };
     // }
 
     // componentDidMount() {
@@ -32,6 +31,15 @@ export default class ChatListView extends Component {
     //     // this.props.dispatch(listRooms({ user: "123" }));
     // }
 
+    // _onRefresh() {
+    //     console.log("REFRESHING");
+    //     setTimeout(() => {
+    //         this.setState({
+    //             refreshing: false,
+    //         });
+    //     }, 10000);
+    // }
+
     render() {
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
@@ -39,6 +47,7 @@ export default class ChatListView extends Component {
         const joinRoom = () => Actions.chatView({ roomId: roomId, user: userId, chat: { roomName: "Hello World" } });
 
         return (
+
             <Container>
                 <Header>
                     <Title>Chats</Title>
@@ -49,10 +58,11 @@ export default class ChatListView extends Component {
                         <Text>Join</Text>
                     </Button>
                 </Header>
-                <Content>
-                    <ChatListComponent/>
-                </Content>
+                <View style={{ flex: 1 }}>
+                    <ChatListComponent />
+                </View>
             </Container>
+
         );
     }
 }

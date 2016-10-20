@@ -31,6 +31,7 @@ export class ChatView extends Component {
         };
         this.updateChat = this.updateChat.bind(this);
         this.onSend = this.onSend.bind(this);
+        this.exitRoom = this.exitRoom.bind(this);
     }
 
     componentDidMount() {
@@ -51,6 +52,10 @@ export class ChatView extends Component {
         this.props.socket.emit("add_message", message);
     }
 
+    exitRoom() {
+        this.props.socket.emit("exit_room", { roomId: this.props.roomId, user: this.props.socket.id });
+    }
+
 
     render() {
         // Passed from ChatListComponent via Actions
@@ -58,7 +63,7 @@ export class ChatView extends Component {
         return (
             <Container>
                 <Header>
-                    <Button transparent onPress={Actions.pop}>
+                    <Button transparent onPress={() => { this.exitRoom(); Actions.pop(); } }>
                         <Icon size={30} name='ios-arrow-back' color="#0E7AFE" />
                     </Button>
                     <Title ellipsizeMode='middle' numberOfLines={1}>{this.state.chat.roomName}</Title>

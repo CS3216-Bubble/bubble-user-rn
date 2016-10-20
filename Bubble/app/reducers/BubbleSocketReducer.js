@@ -7,14 +7,16 @@ const io = require('socket.io-client/socket.io');
 var host = "";
 
 // iOS LOCALHOST
-if (Platform.OS === 'ios') {
-    host = 'http://localhost:3000';
-}
+// if (Platform.OS === 'ios') {
+//     host = 'http://localhost:3000';
+// }
 
-// ANDROID LOCALHOST
-else {
-    host = "http://10.0.2.2:3000";
-}
+// // ANDROID LOCALHOST
+// else {
+//     host = "http://10.0.2.2:3000";
+// }
+
+host = "http://ec2-52-77-222-46.ap-southeast-1.compute.amazonaws.com/";
 
 const initialState = {
     socket: socketBuilder()
