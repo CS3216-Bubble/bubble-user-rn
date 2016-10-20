@@ -8,7 +8,7 @@ import { connect as connectRedux } from 'react-redux';
 export class ChatView extends Component {
 
     updateChat = (data) => {
-        console.log("I RECEIVED CHAT! UH_OH!", data);
+        // console.log("I RECEIVED CHAT! UH_OH!", data);
         this.setState({ chat: data });
     }
 
