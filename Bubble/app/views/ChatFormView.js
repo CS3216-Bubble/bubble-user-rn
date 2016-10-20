@@ -10,13 +10,16 @@ export default class ChatFormView extends Component {
     super(props);
 
     this.onFormChange = this.onFormChange.bind(this);
+    this.createChat = this.createChat.bind(this);
   }
 
   state = {
+    categoryNames: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School'],
     form: {}
   }
 
   onFormChange(form) {
+    console.log(form);
     this.setState({form: form});
   }
 
@@ -24,6 +27,7 @@ export default class ChatFormView extends Component {
     // Validate form first
 
     // Then create chat
+    console.log(this.state.form);
 
     // Remove this ChatFormView from nav stack and replace with chat view
     // Enter chat view with chat id/object
@@ -43,7 +47,7 @@ export default class ChatFormView extends Component {
                   </Button>
               </Header>
               <Content>
-                  <ChatFormComponent onFormChange={this.onFormChange}/>
+                  <ChatFormComponent onFormChange={this.onFormChange} categoryNames={this.state.categoryNames}/>
               </Content>
           </Container>
       );

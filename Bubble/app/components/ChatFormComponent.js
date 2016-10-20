@@ -1,53 +1,80 @@
 import React, { Component, PropTypes } from 'react';
 import { ScrollView } from 'react-native';
-import { List, ListItem, Icon, Input, InputGroup, Text, Button } from 'native-base';
+import { List, ListItem, Icon, Input, InputGroup, Text, Button, CheckBox } from 'native-base';
 import Picker from 'react-native-picker';
 
 export default class ChatFormComponent extends Component {
 
   static propTypes = {
     onFormChange: PropTypes.func.isRequired,
+    categoryNames: PropTypes.array.isRequired,
+  }
+
+  state = {
+    categoryNames: this.props.categoryNames,
+    name: '',
+    description: '',
+    numUsers: '2',
+    categories: [],
+    isCheckboxSelected: [],
   }
 
   constructor(props) {
     super(props);
 
-    this.callPicker = this.callPicker.bind(this);
-    this.onFormChange = this.onFormChange.bind(this);
+    // Init checkbox state array
+    var isCheckboxSelected = new Array(this.state.categoryNames.length);
+    isCheckboxSelected.fill(false);
+    this.state.isCheckboxSelected = isCheckboxSelected;
   }
 
-  state = {
-    name: '',
-    description: '',
-    numUsers: '2',
-    categories: []
-  }
-
-  onNameChange(name) {
+  onNameChange = (name) => {
     this.setState({name: name});
-    onFormChange();
+    this.onFormChange();
   }
 
-  onDescriptionChange(description) {
+  onDescriptionChange = (description) => {
     this.setState({description: description});
-    onFormChange();
+    this.onFormChange();
   }
 
-  onNumUsersChange(numUsers) {
+  onNumUsersChange = (numUsers) => {
     this.setState({numUsers: numUsers});
     this.onFormChange();
   }
 
-  onCategoriesChange(categories) {
+  onCategoriesChange = (categories) => {
     this.setState({categories: categories});
-    onFormChange();
+    this.onFormChange();
   }
 
-  onFormChange() {
+  onFormChange = () => {
     this.props.onFormChange(this.state);
   }
 
-  callPicker() {
+  getSelectedCategories = (checkboxState) => {
+    var result = [];
+    for (var i = 0; i < checkboxState.length; i++) {
+      if (checkboxState[i]) {
+        result.push(this.state.categoryNames[i]);
+      }
+    }
+    return result;
+  }
+
+  onCheckboxSelected = (index) => {
+    var newState = this.state.isCheckboxSelected;
+    newState[index] = !newState[index];
+
+    var categories = this.getSelectedCategories(newState);
+
+    this.setState({isCheckboxSelected: newState});
+    this.setState({categories: categories});
+
+    this.onFormChange();
+  }
+
+  callPicker = () => {
     const MIN_USERS = 2;
     const MAX_USERS = 10;
 
@@ -55,8 +82,6 @@ export default class ChatFormComponent extends Component {
     for (var i = MIN_USERS; i < MAX_USERS; i++) {
         values.push(i);
     }
-
-    console.log(values);
 
     Picker.init({
         pickerData: values,
@@ -72,6 +97,14 @@ export default class ChatFormComponent extends Component {
   }
 
   render() {
+    const categories = this.state.categoryNames.map(function(name, index) {
+      return (
+        <ListItem key={index} button onPress={() => this.onCheckboxSelected(index)}>
+            <CheckBox checked={this.state.isCheckboxSelected[index]} />
+            <Text>{name}</Text>
+        </ListItem>
+      );
+    }, this);
 
     return (
       <ScrollView>
@@ -102,6 +135,11 @@ export default class ChatFormComponent extends Component {
             <Icon name='ios-person' />
             <Text>{this.state.numUsers}</Text>
           </ListItem>
+
+          <ListItem divider>
+            <Text>Categories</Text>
+          </ListItem>
+          { categories }
         </List>
       </ScrollView>
     );
