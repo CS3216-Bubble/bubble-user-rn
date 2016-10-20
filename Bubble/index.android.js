@@ -5,6 +5,8 @@ import { Scene, Router, Actions, Route, Schema, Animations } from 'react-native-
 // Views
 import MainView from './app/views/MainView';
 import ChatView from './app/views/ChatView';
+import ChatFormView from './app/views/ChatFormView';
+import ChatLoadingView from './app/views/ChatLoadingView';
 import ContactListView from './app/views/ContactListView';
 import CreateChatView from './app/views/CreateChatView';
 import CreateSOSChatView from './app/views/CreateSOSChatView';
@@ -30,6 +32,8 @@ export default class Bubble extends Component {
                     <Scene key="root" hideNavBar={true}>
                         <Scene key="main" component={MainView} title="Main" initial={true} />
                         <Scene key="chatView" component={ChatView} title="Chat" />
+                        <Scene key="chatFormView" component={ChatFormView} title="Create Chat" />
+                        <Scene key="chatLoadingView" component={ChatLoadingView} title="Chat Loading" />
                         <Scene key="contactListView" component={ContactListView} title="Useful Hotlines" />
                         <Scene key="createChatView" component={CreateChatView} title="Create New Chat" />
                         <Scene key="createSOSChatView" component={CreateSOSChatView} title="Talk to a Hero" />

@@ -146,18 +146,19 @@ export class ChatListComponent extends Component {
 
                 <Card key={chat.roomId} style={Styles.card}>
 
-                    <CardItem cardBody button onPress={() => {
-                        if (chat.numUsers < chat.userLimit) { Actions.chatView(chatProps); }
-                        else {
-                            Alert.alert(
-                                'Chat Full',
-                                'Dang. This chat is full right now. Check back later yeah? ',
-                                [
-                                    { text: 'Alright!', onPress: () => console.log('OK Pressed') },
-                                ]
-                            )
-                        }
-                    } }>
+                    // <CardItem cardBody button onPress={() => {
+                    //     if (chat.numUsers < chat.userLimit) { Actions.chatView(chatProps); }
+                    //     else {
+                    //         Alert.alert(
+                    //             'Chat Full',
+                    //             'Dang. This chat is full right now. Check back later yeah? ',
+                    //             [
+                    //                 { text: 'Alright!', onPress: () => console.log('OK Pressed') },
+                    //             ]
+                    //         )
+                    //     }
+                    // } }>
+                    <CardItem cardBody button onPress={() => Actions.chatView(chatProps)}>
                         <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
                             {chat.roomName}
                         </Text>

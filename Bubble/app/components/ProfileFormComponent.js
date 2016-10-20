@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { ScrollView } from 'react-native';
 import { List, ListItem, Icon, Input, InputGroup } from 'native-base';
 
-export default class ProfileComponent extends Component {
+export default class ProfileFormComponent extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
   }
