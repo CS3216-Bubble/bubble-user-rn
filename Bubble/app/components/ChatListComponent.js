@@ -145,7 +145,7 @@ export class ChatListComponent extends Component {
             var chatCard = (
 
                 <Card key={chat.roomId} style={Styles.card}>
-                
+
                     <CardItem cardBody button onPress={() => Actions.chatView(chatProps)}>
                         <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
                             {chat.roomName}

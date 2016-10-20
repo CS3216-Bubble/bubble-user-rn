@@ -111,7 +111,6 @@ export default class ChatFormComponent extends Component {
         <List>
           <ListItem>
             <InputGroup>
-              <Icon name='ios-person' />
               <Input
                 value={this.state.name}
                 onChangeText={this.onNameChange}
@@ -122,7 +121,6 @@ export default class ChatFormComponent extends Component {
 
           <ListItem>
             <InputGroup>
-              <Icon name='ios-person' />
               <Input
                 value={this.state.description}
                 onChangeText={this.onDescriptionChange}
