@@ -42,8 +42,8 @@ export default class MainView extends Component {
     switch (this.state.selectedTab) {
       case 0:
         headerButton = (
-          <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff" />
+          <Button transparent onPress={Actions.chatFormView}>
+            <Icon size={24} name="add" color="#fff" />
           </Button>
         );
       case 1:
@@ -60,8 +60,8 @@ export default class MainView extends Component {
         );
       default:
         headerButton = (
-          <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff" />
+          <Button transparent onPress={Actions.chatFormView}>
+            <Icon size={24} name="add" color="#fff" />
           </Button>
         );
     }
