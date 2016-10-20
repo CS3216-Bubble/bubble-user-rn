@@ -129,6 +129,8 @@ export class ChatListComponent extends Component {
                 );
             }
 
+            const chatProps = { roomId: chatRooms[chatCount].roomId };
+
             var chatCard = (
 
                 <Card key={chat.roomId} style={Styles.card}>
@@ -149,8 +151,8 @@ export class ChatListComponent extends Component {
                         </View>
                     </CardItem>
 
-                    <CardItem cardBody button onPress={() => Actions.chatView({ chat: chat })}>
-                        <Text style={Styles.title}>
+                    <CardItem cardBody button onPress={() => Actions.chatView(chatProps)}>
+                        <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
                             {chat.roomName}
                         </Text>
                         <Text style={Styles.description}>
