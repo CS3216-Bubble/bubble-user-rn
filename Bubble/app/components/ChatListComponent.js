@@ -1,18 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Image, Text, View, TouchableHighlight, ScrollView } from 'react-native';
-import {
-    Card,
-    CardItem,
-    Title,
-    Button
-} from 'native-base';
-
+import { Card, CardItem, Title, Button } from 'native-base';
 import { ChatListItemComponent } from './ChatListItemComponent';
 import { Styles } from '../styles/Styles';
-
 import { Actions } from 'react-native-router-flux';
-
-import { connect, listRooms } from '../actions/BubbleSocketActions';
 import { connect as connectRedux } from 'react-redux';
 
 export class ChatListComponent extends Component {

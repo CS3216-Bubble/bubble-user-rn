@@ -2,12 +2,7 @@ import { Component } from 'react';
 import React, { Platform } from 'react-native';
 
 window.navigator.userAgent = 'ReactNative';
-
 const io = require('socket.io-client/socket.io');
-
-// const host = 'http://localhost:3000';
-// const host = '127.0.0.1:3000';
-// const host = '172.25.96.182:3000';
 
 var host = "";
 
@@ -105,7 +100,16 @@ function socketBuilder() {
         console.log('disconnected!');
     });
 
-    // // createRoom emits a response:
+    // generic error listener
+    socket.on('bubble_error', function (data) {
+        console.log('error!', data);
+    })
+
+    return socket;
+}
+
+// // OLD STUFF
+// // createRoom emits a response:
     // //     roomId: string
     // socket.on('create_room', function (data) {
     //     console.log('created room!', data);
@@ -195,11 +199,3 @@ function socketBuilder() {
     // socket.on('find_counsellor', function (data) {
     //     console.log('found a counsellor!', data);
     // })
-
-    // generic error listener
-    socket.on('bubble_error', function (data) {
-        console.log('error!', data);
-    })
-
-    return socket;
-}

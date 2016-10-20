@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
-
 import { Actions } from 'react-native-router-flux';
-
 import ChatComponent from '../components/ChatComponent';
-
-import { connect, viewRoom, sendMessage } from '../actions/BubbleSocketActions';
 import { connect as connectRedux } from 'react-redux';
 
 export class ChatView extends Component {
@@ -44,17 +39,16 @@ export class ChatView extends Component {
         this.props.socket.on('view_room', this.updateChat);
 
         // UPDATE LISTENER TO BE PLACED IN COMPONENT
-        this.props.socket.on('add_message', this.updateChat);
+        // this.props.socket.on('add_message', this.updateChat);
 
         this.props.socket.connect();
-        this.props.socket.emit("join_room", { roomId: this.props.roomId, user: "123" });
-        this.props.socket.emit("view_room", { user: "123", roomId: this.props.roomId });
+        this.props.socket.emit("join_room", { roomId: this.props.roomId, user: this.props.socket.id });
+        this.props.socket.emit("view_room", { user: this.props.socket.id, roomId: this.props.roomId });
     }
 
     onSend(message) {
         console.log(this.props);
         this.props.socket.emit("add_message", message);
-        this.forceUpdate();
     }
 
 

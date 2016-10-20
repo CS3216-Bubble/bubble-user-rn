@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
-
 import { Text, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
-
 import { Button } from 'native-base';
-
 import { Styles } from '../styles/Styles';
-
 import { Actions } from 'react-native-router-flux';
+import { connect as connectRedux } from 'react-redux';
 
-export default class ChatComponent extends Component {
+export class ChatComponent extends Component {
     constructor(props, context) {
         super(props, context);
-        console.log("THIS PROPS: ", this.props);
         this.state = { messages: this.parseMessages(this.props.chat.messages) };
         this.onSend = this.onSend.bind(this);
+        this.updateMessage = this.updateMessage.bind(this);
     }
-
-    // http://flathash.com/YOUR-TEXT
 
     parseMessages(messages) {
         parsed = [];
@@ -40,9 +35,78 @@ export default class ChatComponent extends Component {
         return parsed;
     }
 
-    componentWillMount() {
-        this.setState = { messages: this.parseMessages(this.props.chat.messages) };
+    updateMessage(data) {
+        console.log(data);
+        var avatar = 'http://flathash.com/' + data.userId;
+        var messages = [
+            {
+                _id: new Date().toString + data.message,
+                text: data.message,
+                createdAt: new Date(),
+                user: {
+                    _id: data.userId,
+                    name: 'Anonymous',
+                    avatar: avatar,
+                },
+            },
+        ];
+
+        this.setState({
+            messages: GiftedChat.append(this.state.messages, messages),
+        });
     }
+
+    componentWillMount() {
+        this.setState({ messages: this.parseMessages(this.props.chat.messages) });
+    }
+
+    componentDidMount() {
+        // UPDATE LISTENER TO BE PLACED IN COMPONENT
+        this.props.socket.on('add_message', this.updateMessage);
+    }
+
+    onSend(messages = []) {
+        if (messages.length > 0) {
+            var message = messages[0];
+
+            var parsedMessage = {
+                roomId: this.props.roomId,
+                user: this.props.user,
+                message: message.text
+            };
+
+            this.props.sendFunc(parsedMessage);
+            this.setState({
+                messages: GiftedChat.append(this.state.messages, messages),
+            });
+        }
+    }
+
+    render() {
+        return (
+            <GiftedChat
+                messages={this.state.messages}
+                onSend={this.onSend}
+                user={{
+                    _id: this.props.user,
+                }}
+                bottomOffset={0}
+                />
+        );
+    }
+}
+
+function getMessage(state) {
+    let socket = state.socketHandler.socket;
+
+    return {
+        socket: socket
+    }
+}
+
+export default connectRedux(getMessage)(ChatComponent);
+
+// OLD STUFF
 
     // componentDidMount() {
     //     this.setState = { messages: this.parseMessages(this.props.chat.messages) };
@@ -76,70 +140,28 @@ export default class ChatComponent extends Component {
     //     ],
     // });
     // }
+    // startChat() {
 
-    onSend(messages = []) {
-        if (messages.length > 0) {
-            var message = messages[0];
+    //       var user = {
+    //           user: "123"
+    //       };
 
-            var parsedMessage = {
-                roomId: this.props.roomId,
-                user: this.props.user,
-                message: message.text
-            };
+    //       var chat = {
+    //           user: "123",
+    //           roomName: "Hello Panda",
+    //           roomDescription: "Goodbye Panda",
+    //           userLimit: 10,
+    //           categories: ["School", "Stress", "Work"]
+    //       };
 
-            this.props.sendFunc(parsedMessage);
-        }
-        // this.socket.emit('add_message', messages[0]);
-        // this.setState((previousState) => {
-        //     return {
-        //         messages: GiftedChat.append(previousState.messages, messages),
-        //     };
-        // });
-    }
-
-    render() {
-        return (
-            <GiftedChat
-                messages={this.state.messages}
-                onSend={this.onSend}
-                user={{
-                    _id: this.props.user,
-                }}
-                bottomOffset={0}
-                />
-        );
-    }
-}
-
-// startChat() {
-
-//       var user = {
-//           user: "123"
-//       };
-
-//       var chat = {
-//           user: "123",
-//           roomName: "Hello Panda",
-//           roomDescription: "Goodbye Panda",
-//           userLimit: 10,
-//           categories: ["School", "Stress", "Work"]
-//       };
-
-//       var session = new ChatService();
-//       session.socket.connect();
-//       session.listRooms(user);
-//       // session.createRoom(chat);
-//       // session.listRooms(user);
-//   }
-
-
-
-// OLD
-
-
-
-
-// var chatSession = new ChatService(this.props);
-// chatSession.listRooms(user);
-// chatSession.addChat(chat);
-// console.log(user);
+    //       var session = new ChatService();
+    //       session.socket.connect();
+    //       session.listRooms(user);
+    //       // session.createRoom(chat);
+    //       // session.listRooms(user);
+    //   }
+    // OLD
+    // var chatSession = new ChatService(this.props);
+    // chatSession.listRooms(user);
+    // chatSession.addChat(chat);
+    // console.log(user);
