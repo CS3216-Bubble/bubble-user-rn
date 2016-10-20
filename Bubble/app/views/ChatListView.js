@@ -54,8 +54,8 @@ export default class ChatListView extends Component {
                     <Button transparent>
                         <Text></Text>
                     </Button>
-                    <Button transparent onPress={joinRoom}>
-                        <Text>Join</Text>
+                    <Button transparent onPress={Actions.chatFormView}>
+                        <Text>Create</Text>
                     </Button>
                 </Header>
                 <View style={{ flex: 1 }}>
