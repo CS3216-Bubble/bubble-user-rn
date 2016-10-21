@@ -35,8 +35,12 @@ export class ChatListComponent extends Component {
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
+    componentWillDismount() {
+        this.updateList = ()=>{};
+    }
+
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
         var userId = this.props.socket.id;
@@ -154,7 +158,7 @@ export class ChatListComponent extends Component {
 
             var moment = require('moment');
 
-            console.log(moment(chat.lastActive));
+            // console.log(moment(chat.lastActive));
             var chatCard = (
 
                 <Card key={chat.roomId} style={Styles.card}>
@@ -190,11 +194,7 @@ export class ChatListComponent extends Component {
 
         if (chatRooms.length == 0) {
             return (
-                <ScrollView contentContainerStyle={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flex: 1
-                }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
+                <ScrollView contentContainerStyle={{flex:1, flexDirection:'column',justifyContent: 'center', alignItems: 'center', marginTop: -100}} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
                     <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
                     <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
                 </ScrollView>
@@ -202,8 +202,7 @@ export class ChatListComponent extends Component {
 
         } else {
             return (
-                <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}
-                    style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
                     {listChats}
                 </ScrollView>
 

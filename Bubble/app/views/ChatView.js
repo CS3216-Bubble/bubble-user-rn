@@ -47,6 +47,10 @@ export class ChatView extends Component {
         this.props.socket.emit("view_room", { user: this.props.socket.id, roomId: this.props.roomId });
     }
 
+    componentWillDismount() {
+        this.updateChat = () => { };
+    }
+
     onSend(message) {
         console.log(this.props);
         this.props.socket.emit("add_message", message);
@@ -71,9 +75,9 @@ export class ChatView extends Component {
                         <Icon size={30} name='ios-information-circle-outline' color="#0E7AFE" />
                     </Button>
                 </Header>
-                <Content>
+                <View style={{flex:1}}>
                     <ChatComponent key={this.state.chat.roomId} sendFunc={this.onSend} chat={this.state.chat} roomId={this.props.roomId} user={this.props.socket.id} style={{ flex: 1 }} />
-                </Content>
+                </View>
             </Container>
         );
     }

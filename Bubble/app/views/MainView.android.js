@@ -28,7 +28,7 @@ export default class MainView extends Component {
   }
 
   onChangeTab(tab) {
-    console.log(tab);
+    // console.log(tab);
     // Depending on tab, show different icons in header
   }
 

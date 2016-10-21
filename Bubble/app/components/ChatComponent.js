@@ -7,6 +7,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 
 export class ChatComponent extends Component {
+
     constructor(props, context) {
         super(props, context);
         this.state = { messages: this.parseMessages(this.props.chat.messages) };
@@ -36,7 +37,7 @@ export class ChatComponent extends Component {
     }
 
     updateMessage(data) {
-        console.log(data);
+        // console.log(data);
         var avatar = 'http://flathash.com/' + data.userId;
         var messages = [
             {
@@ -56,11 +57,13 @@ export class ChatComponent extends Component {
         });
     }
 
-    componentWillMount() {
-        this.setState({ messages: this.parseMessages(this.props.chat.messages) });
+    componentWillDismount() {
+        this.updateMessage = () => { };
+        this.onSend = () => { };
     }
 
     componentDidMount() {
+        // this.setState({ messages: this.parseMessages(this.props.chat.messages) });
         // UPDATE LISTENER TO BE PLACED IN COMPONENT
         this.props.socket.on('add_message', this.updateMessage);
     }
@@ -90,7 +93,7 @@ export class ChatComponent extends Component {
                 user={{
                     _id: this.props.user,
                 }}
-                bottomOffset={0.2}
+                isAnimated={true}
                 />
         );
     }

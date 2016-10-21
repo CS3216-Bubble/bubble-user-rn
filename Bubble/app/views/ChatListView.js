@@ -44,7 +44,7 @@ export default class ChatListView extends Component {
         // [Stub] Payload and Action to join room / enter a specific chat
         var roomId = "123";
         var userId = "00007";
-        const joinRoom = () => Actions.chatView({ roomId: roomId, user: userId, chat: { roomName: "Hello World" } });
+        // const joinRoom = () => Actions.chatView({ roomId: roomId, user: userId, chat: { roomName: "Hello World" } });
 
         return (
 
@@ -58,8 +58,8 @@ export default class ChatListView extends Component {
                         <Text>Create</Text>
                     </Button>
                 </Header>
-                <View style={{ flex: 1 }}>
-                    <ChatListComponent />
+                <View style={{flex:1}}>
+                <ChatListComponent/>
                 </View>
             </Container>
 

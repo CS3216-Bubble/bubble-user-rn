@@ -18,7 +18,7 @@ export default class ProfileView extends Component {
     }
 
     render() {
-        console.log(this.state.user);
+        // console.log(this.state.user);
         return (
             <Container>
 
