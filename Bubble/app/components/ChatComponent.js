@@ -78,7 +78,7 @@ export class ChatComponent extends Component {
                 message: message.text
             };
 
-            this.props.sendFunc(parsedMessage);
+            this.props.onSend(parsedMessage);
             this.setState({
                 messages: GiftedChat.append(this.state.messages, messages),
             });
@@ -108,63 +108,3 @@ function getMessage(state) {
 }
 
 export default connectRedux(getMessage)(ChatComponent);
-
-// OLD STUFF
-
-    // componentDidMount() {
-    //     this.setState = { messages: this.parseMessages(this.props.chat.messages) };
-    // }
-
-    // [{
-    //     id: 2,
-    //     userId: 'QX490hIXtxQkd25oAAAZ',
-    //     messageType: 'MESSAGE',
-    //     content: 'hallo',
-    //     createdAt: '2016-10-19T15:59:37.935Z',
-    //     updatedAt: '2016-10-19T15:59:37.935Z',
-    //     roomRoomId: '28f32dad-a71d-4d9c-aaff-dd65340f2ef9'
-    // }]
-
-    // componentWillMount() {
-    //     console.log(this.props.chat.messages)
-    //     this.setState = { messages: this.parseMessages(this.props.chat.messages) };
-    // this.setState({
-    //     messages: [
-    //         {
-    //             _id: 1,
-    //             text: 'Hello developer',
-    //             createdAt: new Date(Date.UTC(2016, 7, 30, 17, 20, 0)),
-    //             user: {
-    //                 _id: 2,
-    //                 name: 'React Native',
-    //                 avatar: 'https://facebook.github.io/react/img/logo_og.png',
-    //             },
-    //         },
-    //     ],
-    // });
-    // }
-    // startChat() {
-
-    //       var user = {
-    //           user: "123"
-    //       };
-
-    //       var chat = {
-    //           user: "123",
-    //           roomName: "Hello Panda",
-    //           roomDescription: "Goodbye Panda",
-    //           userLimit: 10,
-    //           categories: ["School", "Stress", "Work"]
-    //       };
-
-    //       var session = new ChatService();
-    //       session.socket.connect();
-    //       session.listRooms(user);
-    //       // session.createRoom(chat);
-    //       // session.listRooms(user);
-    //   }
-    // OLD
-    // var chatSession = new ChatService(this.props);
-    // chatSession.listRooms(user);
-    // chatSession.addChat(chat);
-    // console.log(user);

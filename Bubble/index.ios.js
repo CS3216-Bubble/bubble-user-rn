@@ -22,7 +22,7 @@ import Store from './app/stores/Store';
 // Styles
 import { Styles } from './app/styles/Styles';
 
-console.ignoredYellowBox = ['Warning: setState(...)'];
+// console.ignoredYellowBox = ['Warning: setState(...)'];
 
 export default class Bubble extends Component {
 

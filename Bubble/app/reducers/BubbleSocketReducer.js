@@ -102,6 +102,10 @@ function socketBuilder() {
         console.log('disconnected!');
     });
 
+    socket.on('connect_timeout', () => {
+        console.log('connection timed out!');
+    });
+
     // generic error listener
     socket.on('bubble_error', function (data) {
         console.log('error!', data);

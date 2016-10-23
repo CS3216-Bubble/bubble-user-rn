@@ -37,7 +37,10 @@ export var Styles = StyleSheet.create({
     categories: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
+        marginTop: -10,
+        paddingBottom: 15
+        // alignItems: 'stretch',
+        // justifyContent: 'flex-start',
     },
     toolbar: {
         height: 56,
@@ -68,7 +71,7 @@ export var Styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
     },
     placeholder: {
         justifyContent: 'center',

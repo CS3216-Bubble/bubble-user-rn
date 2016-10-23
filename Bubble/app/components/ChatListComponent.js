@@ -36,7 +36,7 @@ export class ChatListComponent extends Component {
     }
 
     componentWillDismount() {
-        this.updateList = ()=>{};
+        this.updateList = () => { };
     }
 
     render() {
@@ -119,9 +119,9 @@ export class ChatListComponent extends Component {
                 var category = chat.categories[catCount];
 
                 listCategories.push(
-                    <Button key={category} transparent textStyle={{
-                        color: '#87838B', fontSize: 14,
-                        fontWeight: '500'
+                    <Button key={category} transparent style={{justifyContent: 'center', alignItems: 'center'}} textStyle={{
+                        color: '#87838B', fontSize: 12,
+                        fontWeight: '400'
                     }}>
                         {category}
                     </Button>
@@ -162,25 +162,27 @@ export class ChatListComponent extends Component {
             var chatCard = (
 
                 <Card key={chat.roomId} style={Styles.card}>
-                    <CardItem cardBody button onPress={() => Actions.chatView(chatProps)}>
+                    <CardItem body button onPress={() => Actions.chatView(chatProps)}>
                         <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
                             {chat.roomName}
                         </Text>
                         <Text style={Styles.description}>
                             {chat.roomDescription}
                         </Text>
+                        <View style={{flex: 1, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Text note style={{ textAlign: 'right', fontSize: 10, fontWeight: '500' }} >
+                                {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
+                            </Text>
+                            <Text note style={{ textAlign: 'left', fontSize: 10, fontWeight: '500' }} >
+                                {chat.numUsers} of {chat.userLimit} users
+                            </Text>
+                        </View>
+                    </CardItem>
+                    {listCategories.length !=0 && 
                         <View style={Styles.categories}>
                             {listCategories}
                         </View>
-                        <Text note style={{ textAlign: 'right' }} >
-                            {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
-                        </Text>
-                    </CardItem>
-
-                    <CardItem header>
-                        <Text>{chat.numUsers} of {chat.userLimit} users</Text>
-                    </CardItem>
-
+                    }
                 </Card>
 
             );
@@ -194,7 +196,7 @@ export class ChatListComponent extends Component {
 
         if (chatRooms.length == 0) {
             return (
-                <ScrollView contentContainerStyle={{flex:1, flexDirection:'column',justifyContent: 'center', alignItems: 'center', marginTop: -100}} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
+                <ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
                     <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
                     <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
                 </ScrollView>
