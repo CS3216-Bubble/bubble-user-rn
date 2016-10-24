@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, PanResponder } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import ChatComponent from '../components/ChatComponent';
@@ -7,12 +7,13 @@ import { connect as connectRedux } from 'react-redux';
 
 export class ChatView extends Component {
 
+    // Initialise
     constructor(props, context) {
-        // Initialise
         super(props, context);
         this.state = {
             chat: null,
-            messages: []
+            messages: [],
+            queue: []
         };
 
         // Link functions
@@ -50,13 +51,43 @@ export class ChatView extends Component {
     /* onReceiveChat is called when the chat is being loaded or refreshed.
        This will cause the whole chatroom to be reloaded. */
     onReceiveChat(data) {
+        console.log(data);
         // Replaces the current chat state of the view
-        this.setState({ chat: data, messages: data.messages });
+        this.setState({ chat: data, messages: data.messages, queue: this.state.queue });
     }
 
     /* onReceiveMessage is called when a message broadcast is received.
        This happens when a message is successfully received on the user-end. */
+       // --> CONSIDER USING AsyncStorage FOR PERSISTING
     onReceiveMessage(data) {
+        // Acknowledgement
+        if (data.sentByMe) {
+            for (var i = 0; i < this.state.queue.length; ++i) {
+                if (data.content == this.state.queue[i].content) {
+                    // Update queue by removing acknowledged pending message
+                    
+                    // Find and replace message in display messages (by comparing objects)
+
+                    // Sort messages by date
+
+                    // Update state
+
+                    updated = true;
+                    break;
+                }
+            }
+        }
+        
+        // Not an acknowledgement
+        else {
+            // Append message into message list
+
+            // Update state
+
+        }
+
+        console.log(data);
+
         // Appends to the current chat state of the view
         // (append messages || resolve optimistic messages) and resort by time here ...
     }
@@ -64,8 +95,27 @@ export class ChatView extends Component {
     /* onSend is called when the user attempts to send a message.
        This triggers an optimistic update on the user chat, and waits for acknowledgement. */
     onSend(message) {
+        // Optimistically update messages and enqueue for acknowledgement
+        var tempMessages = this.state.messages.slice();
+        var tempQueue = this.state.queue.slice();
+        var tempMessage = { id: new Date().toISOString(),
+	       userId: message.user,
+	       messageType: 'OPTIMISTIC-MESSAGE',
+	       content: message.message,
+	       targetUser: null,
+	       createdAt: new Date().toISOString(),
+	       updatedAt: new Date().toISOString(),
+	       roomRoomId: message.roomId };
+
+        console.log("Enqueued for acknowledgement", tempMessage);
+
+        // Send message
         this.props.socket.emit("add_message", message);
-        // optimistically update messages here ...
+
+        tempMessages.unshift(tempMessage);
+        tempQueue.unshift(tempMessage);
+
+        this.setState({chat: this.state.chat, messages: tempMessages, queue: tempQueue});
     }
 
     /* onExit is called when the user attempts to return to the previous page.
@@ -74,7 +124,6 @@ export class ChatView extends Component {
     onExit() {
         // prompt exit confirmation -> warn about unsent messages and 
         this.props.socket.emit("exit_room", { roomId: this.props.roomId, user: this.props.socket.id });
-        this.componentWillDismount();
         Actions.pop();
     }
 
@@ -87,7 +136,7 @@ export class ChatView extends Component {
 
         // Set listeners
         this.props.socket.on('view_room', this.onReceiveChat);
-        this.props.socket.on('add_message', this.onReceiveChat);
+        this.props.socket.on('add_message', this.onReceiveMessage);
 
         // Checks for connection. If not connected, will attempt to connect.
         this.props.socket.connect();
@@ -101,10 +150,10 @@ export class ChatView extends Component {
         this.props.socket.emit("view_room", { user: this.props.socket.id, roomId: this.props.roomId });
     }
 
-    componentWillDismount() {
+    componentWillUnmount() {
         // Remove all listeners that depends on the mount state of the component
         this.props.socket.removeListener('view_room', this.onReceiveChat);
-        this.props.socket.removeListener('add_message', this.onReceiveChat);
+        this.props.socket.removeListener('add_message', this.onReceiveMessage);
         this.props.socket.removeListener('connect', this.onConnect);
         this.props.socket.removeListener('disconnect', this.onDisconnect);
         this.props.socket.removeListener('connect_timeout', this.onTimeout);
@@ -131,7 +180,7 @@ export class ChatView extends Component {
                             {this.state.chat.roomName}
                         </Title>
                         <Button transparent>
-                            <Icon size={30}
+                            <Icon size={32}
                                 name='ios-information-circle-outline'
                                 color="#0E7AFE" />
                         </Button>
@@ -139,7 +188,7 @@ export class ChatView extends Component {
                     <View style={{ flex: 1 }}>
                         <ChatComponent key={this.state.chat.roomId}
                             onSend={this.onSend}
-                            chat={this.state.chat}
+                            messages={this.state.messages}
                             roomId={this.props.roomId}
                             user={this.props.socket.id}
                             style={{ flex: 1 }} />

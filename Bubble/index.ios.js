@@ -25,9 +25,7 @@ import { Styles } from './app/styles/Styles';
 // console.ignoredYellowBox = ['Warning: setState(...)'];
 
 export default class Bubble extends Component {
-
     render() {
-
         return (
             <Provider store={Store}>
                 <Router>
