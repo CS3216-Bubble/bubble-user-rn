@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Text, View, RefreshControl, ScrollView, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
@@ -6,6 +6,9 @@ import { Actions } from 'react-native-router-flux';
 import ChatListComponent from '../components/ChatListComponent';
 
 export default class ChatListView extends Component {
+    static propTypes = {
+      title: PropTypes.string.isRequired,
+    }
 
     constructor(props, context) {
         super(props, context);
@@ -25,7 +28,7 @@ export default class ChatListView extends Component {
         return (
             <Container>
                 <Header>
-                    <Title>Chats</Title>
+                    <Title>{this.props.title}</Title>
                     <Button transparent>
                         <Text></Text>
                     </Button>

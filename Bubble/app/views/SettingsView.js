@@ -8,6 +8,13 @@ import { Actions } from 'react-native-router-flux';
 import SettingsComponent from '../components/SettingsComponent';
 
 export default class SettingsView extends Component {
+  state = {
+      user: {
+          name: 'User John',
+          imgSrc: 'https://www.dropbox.com/s/2fth5ceonfa3iww/group.png?raw=1',
+      }
+  }
+
     render() {
         return (
             <Container>
@@ -15,7 +22,7 @@ export default class SettingsView extends Component {
                     <Title>Settings</Title>
                 </Header>
                 <Content>
-                    <SettingsComponent />
+                    <SettingsComponent user={this.state.user}/>
                 </Content>
             </Container>
         );
