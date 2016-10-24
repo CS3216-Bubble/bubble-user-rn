@@ -21,8 +21,10 @@ export default class ProfileView extends Component {
         // console.log(this.state.user);
         return (
             <Container>
-
-                <Header iconRight>
+                <Header>
+                    <Button transparent>
+                        <Text></Text>
+                    </Button>
                     <Title>Profile</Title>
                     <Button transparent onPress={() => Actions.profileForm({ user: this.state.user })}>
                         <Icon size={30} name='ios-create-outline' color="#0E7AFE" />
