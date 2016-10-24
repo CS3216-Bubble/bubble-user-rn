@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager, TextInput } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import ChatComponent from '../components/ChatComponent';
+import { Styles } from '../styles/Styles';
 import { connect as connectRedux } from 'react-redux';
 var _ = require('lodash');
 
@@ -206,8 +207,43 @@ export class ChatView extends Component {
         }
 
         // When chat is indeed available, display chat component
-        else {
+        else if (Platform.OS === 'ios') {
             return (
+                <Container>
+                    <Header>
+                        <Button transparent onPress={this.onExit}>
+                            <Icon size={30}
+                                name='ios-arrow-back'
+                                color="#0E7AFE" />
+                        </Button>
+                        <Title ellipsizeMode='middle' numberOfLines={1}>
+                        <View style={{flex:1, flexDirection: 'column', justifyContent: 'center',alignItems: 'center', width: 200, height: 28}}>
+                            <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={this.state.chat.roomName} />
+                            {this.state.chat != null && <Text note style={Styles.subtitle}> {this.state.chat.roomType} CHAT </Text>}
+                            </View>
+                        </Title>
+                        <Button transparent>
+                            <Icon size={32}
+                                name='ios-information-circle-outline'
+                                color="#0E7AFE" />
+                        </Button>
+                    </Header>
+                    <View style={{ flex: 1 }}>
+                        <ChatComponent key={this.state.chat.roomId}
+                            onSend={this.onSend}
+                            onTriggerModal={this.onTriggerModal}
+                            messages={this.state.messages}
+                            roomId={this.props.roomId}
+                            user={this.props.socket.id}
+                            style={{ flex: 1 }}
+                            />
+                    </View>
+                </Container>
+            );
+        }
+
+        else {
+             return (
                 <Container>
                     <Header>
                         <Button transparent onPress={this.onExit}>

@@ -6,6 +6,9 @@ import { Styles } from '../styles/Styles';
 import { Actions } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 
+var adjectives = require('../utils/adjectives');
+var animals = require('../utils/animals');
+
 export default class ChatComponent extends Component {
 
     // Initialise
@@ -14,6 +17,8 @@ export default class ChatComponent extends Component {
         this.state = { messages: [] };
         this.onSend = this.onSend.bind(this);
         this.parseMessages = this.parseMessages.bind(this);
+        this.hashID = this.hashID.bind(this);
+        this.generateName = this.generateName.bind(this);
     }
 
     // Initial update
@@ -24,6 +29,30 @@ export default class ChatComponent extends Component {
     // Subsequent updates
     componentWillReceiveProps(props) {
         this.setState({ messages: this.parseMessages(props.messages) });
+    }
+
+    hashID(userId) {
+        var hash = 0;
+        if (userId.length == 0) return hash;
+        for (i = 0; i < userId.length; i++) {
+            char = userId.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return hash;
+    }
+
+    // Name generator
+    generateName(userId) {
+        var hashCode = this.hashID(userId);
+        var adj = adjectives.adjectives;
+        var ani = animals.animals;
+        // Get adjective
+        var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
+        // Get animal
+        var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
+        // Return result
+        return adjective + " " + animal;
     }
 
     // For converting API form to GiftedChat form
@@ -43,7 +72,7 @@ export default class ChatComponent extends Component {
                     received: false,
                     user: {
                         _id: messageOrg.userId,
-                        name: 'Anonymous',
+                        name: this.generateName(messageOrg.userId),
                         avatar: avatar,
                     },
                 };
@@ -71,7 +100,7 @@ export default class ChatComponent extends Component {
                 onSend={this.onSend}
                 user={{ _id: this.props.user }}
                 isAnimated={true}
-                onAvatarPress={(otherUserId)=>{this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId)}}
+                onAvatarPress={(otherUserId) => { this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId) } }
                 />
         );
     }

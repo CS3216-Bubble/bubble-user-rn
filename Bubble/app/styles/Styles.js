@@ -84,5 +84,25 @@ export var Styles = StyleSheet.create({
     placeholderImage: {
         height: 128,
         width: 128,
+    },
+    titleContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        height: 18,
+        width: 200,
+        fontSize: 16,
+        fontWeight: '500',
+        marginTop: 2
+    },
+    subtitle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        height: 10,
+        width: 200,
+        fontSize: 8,
+        fontWeight: '400',
+        paddingTop: 2
     }
 });
