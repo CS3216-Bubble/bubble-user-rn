@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ChatListView from './ChatListView';
-import ProfileView from './ProfileView';
 import SettingsView from './SettingsView';
 
 export default class MainView extends Component {
     state = {
+        iconSize: 25,
         refresh: false,
-        selectedTab: 'chats',
+        selectedTab: 'all',
     };
 
     _renderContent = () => {
         switch (this.state.selectedTab) {
-            case 'chats':
+            case 'all':
                 return (
-                    <ChatListView />
+                    <ChatListView title="All Chats"/>
                 );
-            case 'profile':
+            case 'open':
                 return (
-                    <ProfileView />
+                    <ChatListView title="Open Chats"/>
                 );
             case 'settings':
                 return (
@@ -38,30 +38,33 @@ export default class MainView extends Component {
 
             <TabBarIOS>
                 <Icon.TabBarItemIOS
-                    title="Chats"
-                    iconName="ios-chatboxes"
-                    selected={this.state.selectedTab === 'chats'}
+                    title="All"
+                    iconName="comments"
+                    iconSize={this.state.iconSize}
+                    selected={this.state.selectedTab === 'all'}
                     onPress={() => {
                         this.setState({
-                            selectedTab: 'chats',
+                            selectedTab: 'all',
                         });
                     } }>
                     {this._renderContent()}
                 </Icon.TabBarItemIOS>
                 <Icon.TabBarItemIOS
-                    title="Profile"
-                    iconName="ios-person-outline"
-                    selected={this.state.selectedTab === 'profile'}
+                    title="Open"
+                    iconName="commenting"
+                    iconSize={this.state.iconSize}
+                    selected={this.state.selectedTab === 'open'}
                     onPress={() => {
                         this.setState({
-                            selectedTab: 'profile',
+                            selectedTab: 'open',
                         });
                     } }>
                     {this._renderContent()}
                 </Icon.TabBarItemIOS>
                 <Icon.TabBarItemIOS
                     title="Settings"
-                    iconName="ios-settings"
+                    iconName="cog"
+                    iconSize={this.state.iconSize}
                     selected={this.state.selectedTab === 'settings'}
                     onPress={() => {
                         this.setState({
