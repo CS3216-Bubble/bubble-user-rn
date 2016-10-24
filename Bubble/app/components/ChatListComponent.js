@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert } from 'react-native';
+import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
 import { ChatListItemComponent } from './ChatListItemComponent';
 import { Styles } from '../styles/Styles';
@@ -9,6 +9,7 @@ import { connect as connectRedux } from 'react-redux';
 export class ChatListComponent extends Component {
 
     updateList = (data) => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({ roomList: data, refreshing: false });
     }
 
@@ -16,6 +17,10 @@ export class ChatListComponent extends Component {
         super(props, context);
         this.state = { roomList: [], refreshing: false };
         this.updateList = this.updateList.bind(this);
+
+         if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
     }
 
     _onRefresh() {
@@ -36,7 +41,7 @@ export class ChatListComponent extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
+        // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
         this._onRefresh();
     }
 

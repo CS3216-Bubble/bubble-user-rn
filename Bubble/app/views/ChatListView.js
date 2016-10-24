@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, RefreshControl, ScrollView, LayoutAnimation } from 'react-native';
+import { Text, View, RefreshControl, ScrollView, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
@@ -10,10 +10,13 @@ export default class ChatListView extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = { refresh: false };
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
     }
 
     componentWillReceiveProps(props) {
-        console.log("CHATLISTVIEW RECEIVES PROPS", props);
+        // console.log("CHATLISTVIEW RECEIVES PROPS", props);
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({refresh: !this.state.refresh});
     }

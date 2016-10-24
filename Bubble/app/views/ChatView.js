@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, PanResponder, LayoutAnimation } from 'react-native';
+import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import ChatComponent from '../components/ChatComponent';
@@ -16,6 +16,10 @@ export class ChatView extends Component {
             messages: [],
             queue: []
         };
+
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
 
         // Link functions
         this.onConnect = this.onConnect.bind(this);
@@ -107,7 +111,7 @@ export class ChatView extends Component {
             tempMessages.unshift(data);
             // Sort messages by date
             tempMessages.sort(function(a, b) {
-                return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+                return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
             });
             // Update state
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
@@ -159,7 +163,7 @@ export class ChatView extends Component {
         Actions.pop();
         setTimeout(() => {
             Actions.refresh({name: "Bubble"});
-        }, 200);
+        }, 400);
     }
 
     componentDidMount() {

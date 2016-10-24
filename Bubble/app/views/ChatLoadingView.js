@@ -22,7 +22,7 @@ class ChatLoadingView extends Component {
   }
 
   onRoomCreated = (response) => {
-    console.log(response);
+    // console.log(response);
     Actions.chatView({type: ActionConst.REPLACE, roomId: response.roomId});
   }
 

@@ -37,7 +37,7 @@ export default class MainView extends Component {
   }
 
   componentWillReceiveProps(props) {
-      console.log("MAINVIEW ANDROID RECEIVES PROPS", props);
+      // console.log("MAINVIEW ANDROID RECEIVES PROPS", props);
   }
 
   render() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TabBarIOS, Text, View, LayoutAnimation } from 'react-native';
+import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import ChatListView from './ChatListView';
@@ -8,6 +8,7 @@ import SettingsView from './SettingsView';
 
 export default class MainView extends Component {
     state = {
+        refresh: false,
         selectedTab: 'chats',
     };
 
@@ -29,11 +30,10 @@ export default class MainView extends Component {
     };
 
     componentWillReceiveProps(props) {
-        console.log("MAINVIEW IOS RECEIVES PROPS", props);
+        // console.log("MAINVIEW IOS RECEIVES PROPS", props);
     }
 
     render() {
-
         return (
 
             <TabBarIOS>
@@ -42,7 +42,6 @@ export default class MainView extends Component {
                     iconName="ios-chatboxes"
                     selected={this.state.selectedTab === 'chats'}
                     onPress={() => {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
                         this.setState({
                             selectedTab: 'chats',
                         });
@@ -54,7 +53,6 @@ export default class MainView extends Component {
                     iconName="ios-person-outline"
                     selected={this.state.selectedTab === 'profile'}
                     onPress={() => {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
                         this.setState({
                             selectedTab: 'profile',
                         });
@@ -66,7 +64,6 @@ export default class MainView extends Component {
                     iconName="ios-settings"
                     selected={this.state.selectedTab === 'settings'}
                     onPress={() => {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
                         this.setState({
                             selectedTab: 'settings',
                         });
