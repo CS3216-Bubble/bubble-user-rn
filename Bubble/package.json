@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
+    "lodash": "^4.16.4",
     "mobx": "^2.6.0",
     "mobx-react": "^3.5.8",
     "moment": "^2.15.1",

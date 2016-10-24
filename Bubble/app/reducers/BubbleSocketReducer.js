@@ -89,6 +89,8 @@ export default function BubbleSocketReducer(state = initialState, action) {
 
 function socketBuilder() {
 
+    console.log("INIT SOCKET");
+    
     // Need to require instead of import so we can set the user agent first
     socket = io(host, { transports: ['websocket'] });
 

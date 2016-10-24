@@ -32,7 +32,9 @@ android/my-keystore.keystore
 
 # node.js
 #
-node_modules/
+!node_modules/
+node_modules/*
+!node_modules/react-native-gifted-chat
 npm-debug.log
 
 # BUCK

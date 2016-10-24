@@ -8,10 +8,6 @@ import { connect as connectRedux } from 'react-redux';
 
 export class ChatListComponent extends Component {
 
-    // static propTypes = {
-    //     roomList: PropTypes.array.isRequired,
-    // }
-
     updateList = (data) => {
         this.setState({ roomList: data, refreshing: false });
     }
@@ -39,76 +35,19 @@ export class ChatListComponent extends Component {
         this.updateList = () => { };
     }
 
+    componentWillReceiveProps(props) {
+        console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
+        this._onRefresh();
+    }
+
     render() {
-        // console.log(this.state);
-        // [Stub] Payload and Action to join room / enter a specific chat
-        var roomId = "123";
         var userId = this.props.socket.id;
-        const joinRoom = () => Actions.chatView({ roomId: roomId, user: userId });
 
-        // [Stub] Payload for populating Chat List
-        var chatRoom1 = {
-            roomId: "01234",
-            roomName: "I love my life.",
-            roomType: 0,
-            userLimit: 42,
-            roomDescription: "Best ever! Love it",
-            categories: ["Family", "School", "Work"],
-            numberOfUsers: 7,
-            lastActive: new Date().setMonth(8)
-        }
+        var chatRooms = this.state.roomList.slice();
 
-        var chatRoom2 = {
-            roomId: "26423",
-            roomName: "I love my life.",
-            roomType: 0,
-            userLimit: 42,
-            roomDescription: "Best ever! Love it",
-            categories: ["Family", "School", "Work"],
-            numberOfUsers: 7,
-            lastActive: new Date().setMonth(8)
-        }
-
-        var chatRoom3 = {
-            roomId: "12315",
-            roomName: "I love my life.",
-            roomType: 0,
-            userLimit: 42,
-            roomDescription: "Best ever! Love it",
-            categories: ["Family", "School", "Work"],
-            numberOfUsers: 7,
-            lastActive: new Date().setMonth(8)
-        }
-
-        var chatRoom4 = {
-            roomId: "02657",
-            roomName: "I love my life.",
-            roomType: 0,
-            userLimit: 42,
-            roomDescription: "Best ever! Love it",
-            categories: ["Family", "School", "Work"],
-            numberOfUsers: 7,
-            lastActive: new Date().setMonth(8)
-        }
-
-        var chatRoom5 = {
-            roomId: "02799",
-            roomName: "I love my life.",
-            roomType: 0,
-            userLimit: 42,
-            roomDescription: "Best ever! Love it",
-            categories: ["Family", "School", "Work"],
-            numberOfUsers: 7,
-            lastActive: new Date().setMonth(8)
-        }
-
-        // [Stub] Chat List
-        // var chatRooms = [chatRoom1, chatRoom2, chatRoom3, chatRoom4, chatRoom5];
-        // this.state.chatRooms = chatRooms;
-
-        // var chatRooms = this.props.roomList;
-
-        var chatRooms = this.state.roomList;
+        chatRooms.sort(function(a, b) {
+                return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+            });
 
         var listChats = [];
         for (var chatCount = 0; chatCount < chatRooms.length; ++chatCount) {
@@ -117,7 +56,6 @@ export class ChatListComponent extends Component {
             var listCategories = [];
             for (var catCount = 0; catCount < chat.categories.length; ++catCount) {
                 var category = chat.categories[catCount];
-
                 listCategories.push(
                     <Button key={category} transparent style={{justifyContent: 'center', alignItems: 'center'}} textStyle={{
                         color: '#87838B', fontSize: 12,
@@ -127,40 +65,9 @@ export class ChatListComponent extends Component {
                     </Button>
                 );
             }
-
             const chatProps = { roomId: chatRooms[chatCount].roomId };
-
-            // <TouchableHighlight style={Styles.imageContainer}>
-            //     <Image style={Styles.image} source={{ uri: 'https://lh3.googleusercontent.com/-dWk17lP4LYM/AAAAAAAAAAI/AAAAAAAAAAA/k2_ZU1cJ8lM/photo.jpg' }} />
-            // </TouchableHighlight>
-            // <Text>
-            //     Snappy Koala
-            // </Text>
-            // <CardItem>
-            //     <View style={{ flex: 1, flexDirection: 'row' }}>
-            //         <View style={{ flex: 1, flexDirection: 'column' }}>
-            //         </View>
-            //     </View>
-            // </CardItem>
-
-            // <CardItem cardBody button onPress={() => {
-            //     if (chat.numUsers < chat.userLimit) { Actions.chatView(chatProps); }
-            //     else {
-            //         Alert.alert(
-            //             'Chat Full',
-            //             'Dang. This chat is full right now. Check back later yeah? ',
-            //             [
-            //                 { text: 'Alright!', onPress: () => console.log('OK Pressed') },
-            //             ]
-            //         )
-            //     }
-            // } }>
-
             var moment = require('moment');
-
-            // console.log(moment(chat.lastActive));
             var chatCard = (
-
                 <Card key={chat.roomId} style={Styles.card}>
                     <CardItem body button onPress={() => Actions.chatView(chatProps)}>
                         <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
@@ -188,8 +95,6 @@ export class ChatListComponent extends Component {
             );
 
             listChats.push(chatCard);
-            // listChats.push(<ChatListItemComponent key={chat.roomId} listCategories={listCategories}
-            //     chat={chat} />);
         }
 
 
