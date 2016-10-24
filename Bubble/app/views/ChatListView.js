@@ -44,7 +44,7 @@ export default class ChatListView extends Component {
                         <Text></Text>
                     </Button>
                     <Button transparent onPress={Actions.chatFormView}>
-                        <Text>Create</Text>
+                        <Icon size={30} name='ios-add' color="#0E7AFE"/>
                     </Button>
                 </Header>
                 <View style={{flex:1}}>
