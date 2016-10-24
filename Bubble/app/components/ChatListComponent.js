@@ -42,7 +42,8 @@ export class ChatListComponent extends Component {
 
     componentWillReceiveProps(props) {
         // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
-        this._onRefresh();
+        this.props.socket.connect();
+        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     render() {
