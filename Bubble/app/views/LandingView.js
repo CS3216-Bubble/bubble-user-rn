@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { Styles } from '../styles/Styles';
+import { Image, View, StyleSheet, Text } from 'react-native';
+import { Actions, ActionConst } from 'react-native-router-flux';
 
 export default class LandingView extends Component {
     render() {
+        setTimeout(() => {
+          Actions.main({type: ActionConst.REPLACE});
+        }, 2000);
         return (
-            <View style={Styles.container}>
-                <Text style={Styles.welcome}>
-                    Landing View
-        </Text>
-                <Text style={Styles.instructions}>
-                    To get started, edit this js.
-        </Text>
-                <Text style={Styles.instructions}>
-                    For Android: {'\n'}
-                    Double tap R on your keyboard to reload,{'\n'}
-                    Shake or press menu button for dev menu
-        </Text>
-                <Text style={Styles.instructions}>
-                    For iOS: {'\n'}
-                    Press Cmd + R on your keyboard to reload,{'\n'}
-                    Shake or press Cmd + R for dev menu
-        </Text>
+            <View style={styles.splashContainer}>
+              <Image style={styles.splashImage} source={require('./img/logo_white.png')} />
             </View>
         );
     }
 }
+
+var styles = StyleSheet.create({
+    splashContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#69D2E7'
+    },
+    splashImage: {
+      width: 180,
+      resizeMode: 'contain'
+    },
+    splashText: {
+      color: '#FFFFFF'
+    }
+});
