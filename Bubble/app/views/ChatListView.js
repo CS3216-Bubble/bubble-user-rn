@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, Platform, UIManager } from 'react-native';
-import { Container, Header, Content, Button, Icon, Title } from 'native-base';
+import { Container, Header, Content, Button, Icon, Title, InputGroup, Input } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
 import ChatListComponent from '../components/ChatListComponent';
@@ -8,13 +8,16 @@ import ChatListComponent from '../components/ChatListComponent';
 export default class ChatListView extends Component {
     static propTypes = {
       title: PropTypes.string.isRequired,
+      showOpenChatsOnly: PropTypes.bool.isRequired
     }
 
     constructor(props, context) {
         super(props, context);
         this.state = {
           refresh: false,
-          categoryNames: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School']
+          searchTerm: '',
+          categoryNames: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School'],
+          selectedCategory: ''
         };
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -38,20 +41,27 @@ export default class ChatListView extends Component {
 
         return (
             <Container>
-                <Header>
-                    <Button transparent onPress={Actions.searchView}>
-                        <Icon size={30} name='ios-search' color="#0E7AFE"/>
-                    </Button>
-                    <Title>{this.props.title}</Title>
-                    <Button transparent onPress={Actions.chatFormView}>
-                        <Icon size={30} name='ios-add' color="#0E7AFE"/>
-                    </Button>
+                <Header searchBar rounded>
+                  <InputGroup style={styles.searchBar}>
+                    <Icon name='ios-search' />
+                    <Input
+                      placeholder='Search'
+                      value={this.state.searchTerm}
+                      onChangeText={(text) => this.setState({searchTerm: text})} />
+                  </InputGroup>
+                  <Button transparent onPress={Actions.chatFormView}>
+                    <Icon size={30} name='ios-create-outline' color="#0E7AFE"/>
+                  </Button>
                 </Header>
                 <View style={{flex:1}}>
-                  <View style={styles.categoryButtonContainer}>
-                    { categoryButtons }
-                  </View>
-                  <ChatListComponent refresh={this.state.refresh}/>
+                  { this.props.isOpenChatsOnly ? null :
+                    <View style={styles.categoryButtonContainer}>{ categoryButtons }</View> }
+
+                  <ChatListComponent
+                    refresh={this.state.refresh}
+                    searchTerm={this.state.searchTerm}
+                    categoryFilter={this.state.selectedCategory}
+                    showOpenChatsOnly={this.props.showOpenChatsOnly} />
                 </View>
             </Container>
         );
@@ -64,8 +74,10 @@ var styles = StyleSheet.create({
       justifyContent: 'space-between',
       alignItems: 'flex-start',
       flexWrap: 'wrap',
-      height: 70,
-      padding: 10
+      height: 90,
+      padding: 10,
+      borderBottomColor: '#bbb',
+      borderBottomWidth: StyleSheet.hairlineWidth
     },
     categoryButton: {
       marginBottom: 10,

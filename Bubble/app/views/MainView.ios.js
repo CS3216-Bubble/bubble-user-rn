@@ -16,11 +16,11 @@ export default class MainView extends Component {
         switch (this.state.selectedTab) {
             case 'all':
                 return (
-                    <ChatListView title="All Chats"/>
+                    <ChatListView key="all" title="All Chats" showOpenChatsOnly={false}/>
                 );
             case 'open':
                 return (
-                    <ChatListView title="Open Chats"/>
+                    <ChatListView key="open" title="Open Chats" showOpenChatsOnly={true}/>
                 );
             case 'settings':
                 return (
