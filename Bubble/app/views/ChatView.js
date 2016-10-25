@@ -153,6 +153,13 @@ export class ChatView extends Component {
        These options are presented in the form of a modal. */
     onTriggerModal(userId, otherUserId, roomId) {
         console.log(userId, otherUserId, roomId);
+        Actions.modalView({error: "Network failed...", hide: false});
+        // Listen to emits 
+
+        // Pop a modal
+
+        // Based on user interaction, emit
+
     }
 
     /* onExit is called when the user attempts to return to the previous page.
