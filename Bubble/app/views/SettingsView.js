@@ -15,16 +15,16 @@ export default class SettingsView extends Component {
       }
   }
 
-    render() {
-        return (
-            <Container>
-                <Header>
-                    <Title>Settings</Title>
-                </Header>
-                <Content>
-                    <SettingsComponent user={this.state.user}/>
-                </Content>
-            </Container>
-        );
-    }
+  render() {
+      return (
+          <Container>
+              <Header>
+                  <Title>Settings</Title>
+              </Header>
+              <Content>
+                  <SettingsComponent user={this.state.user}/>
+              </Content>
+          </Container>
+      );
+  }
 }
