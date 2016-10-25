@@ -24,7 +24,6 @@ export class ChatListComponent extends Component {
         this.state = {
           roomList: [],
           refreshing: false,
-          searchTerm: props.searchTerm ? props.searchTerm : '',
           showOpenChatsOnly: props.showOpenChatsOnly ? props.showOpenChatsOnly : false,
           showCategoriesOnCard: props.showCategoriesOnCard ? props.showCategoriesOnCard : true,
         };
@@ -71,8 +70,8 @@ export class ChatListComponent extends Component {
         const chatsToShow = chatRooms.map(function(chat) {
 
           const chatContainsSearchTerm =
-              (chat.roomName.indexOf(this.state.searchTerm) > -1 ||
-               chat.roomDescription.indexOf(this.state.searchTerm) > -1);
+              (chat.roomName.indexOf(this.props.searchTerm) > -1 ||
+               chat.roomDescription.indexOf(this.props.searchTerm) > -1);
 
           if (chatContainsSearchTerm) {
               // Create chat card
