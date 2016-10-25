@@ -8,7 +8,7 @@ import ChatListComponent from '../components/ChatListComponent';
 export default class ChatListView extends Component {
     static propTypes = {
       title: PropTypes.string.isRequired,
-      showOpenChatsOnly: PropTypes.bool.isRequired
+      showOpenChatsOnly: PropTypes.bool.isRequired,
     }
 
     constructor(props, context) {
@@ -17,7 +17,7 @@ export default class ChatListView extends Component {
           refresh: false,
           searchTerm: '',
           categoryNames: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School'],
-          selectedCategory: ''
+          showCategoryFilter: true
         };
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -30,10 +30,18 @@ export default class ChatListView extends Component {
         this.setState({refresh: !this.state.refresh});
     }
 
+    onSearchBarTextChange = (text) => {
+      const showCategoryFilter = text == '';
+      this.setState({
+        searchTerm: text,
+        showCategoryFilter: showCategoryFilter
+      });
+    }
+
     render() {
         const categoryButtons = this.state.categoryNames.map(function(name, index) {
           return (
-            <Button info key={index}>
+            <Button info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
                 <Text>{name}</Text>
             </Button>
           );
@@ -47,20 +55,19 @@ export default class ChatListView extends Component {
                     <Input
                       placeholder='Search'
                       value={this.state.searchTerm}
-                      onChangeText={(text) => this.setState({searchTerm: text})} />
+                      onChangeText={this.onSearchBarTextChange} />
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
                     <Icon size={30} name='ios-create-outline' color="#0E7AFE"/>
                   </Button>
                 </Header>
                 <View style={{flex:1}}>
-                  { this.props.isOpenChatsOnly ? null :
-                    <View style={styles.categoryButtonContainer}>{ categoryButtons }</View> }
-
+                  { !this.props.isOpenChatsOnly && this.state.showCategoryFilter ?
+                    <View style={styles.categoryButtonContainer}>{ categoryButtons }</View> :
+                    null }
                   <ChatListComponent
                     refresh={this.state.refresh}
                     searchTerm={this.state.searchTerm}
-                    categoryFilter={this.state.selectedCategory}
                     showOpenChatsOnly={this.props.showOpenChatsOnly} />
                 </View>
             </Container>

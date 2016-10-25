@@ -7,11 +7,9 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 import moment from 'moment';
 
-export class ChatListComponent extends Component {
+export class CategoryDetailComponent extends Component {
     static propTypes = {
-      searchTerm: PropTypes.string,
-      showOpenChatsOnly: PropTypes.bool,
-      showCategoriesOnCard: PropTypes.bool,
+      selectedCategory: PropTypes.string,
     }
 
     updateList = (data) => {
@@ -24,9 +22,7 @@ export class ChatListComponent extends Component {
         this.state = {
           roomList: [],
           refreshing: false,
-          searchTerm: props.searchTerm ? props.searchTerm : '',
-          showOpenChatsOnly: props.showOpenChatsOnly ? props.showOpenChatsOnly : false,
-          showCategoriesOnCard: props.showCategoriesOnCard ? props.showCategoriesOnCard : true,
+          selectedCategory: props.selectedCategory ? props.selectedCategory : '',
         };
         this.updateList = this.updateList.bind(this);
 
@@ -58,6 +54,11 @@ export class ChatListComponent extends Component {
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
+    updateSelectedCategory = (category) => {
+       Actions.refresh({selectedCategory: category});
+       this.setState({selectedCategory: category});
+    }
+
     render() {
         var userId = this.props.socket.id;
 
@@ -69,19 +70,18 @@ export class ChatListComponent extends Component {
 
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function(chat) {
+          const chatContainsSelectedCategory =
+              (this.state.selectedCategory === '' ||
+              chat.categories.indexOf(this.state.selectedCategory) > -1);
 
-          const chatContainsSearchTerm =
-              (chat.roomName.indexOf(this.state.searchTerm) > -1 ||
-               chat.roomDescription.indexOf(this.state.searchTerm) > -1);
-
-          if (chatContainsSearchTerm) {
+          if (chatContainsSelectedCategory) {
               // Create chat card
               const categoriesToShow = chat.categories.map(function(category) {
                 return (
                   <Button
                     key={category}
                     transparent
-                    onPress={() => Actions.categoryDetailView({selectedCategory: category})}
+                    onPress={() => this.updateSelectedCategory(category)}
                     style={{justifyContent: 'center', alignItems: 'center'}}
                     textStyle={{
                       color: '#87838B', fontSize: 12,
@@ -110,7 +110,7 @@ export class ChatListComponent extends Component {
                             </Text>
                         </View>
                     </CardItem>
-                    { categoriesToShow.length > 0 && this.state.showCategoriesOnCard ?
+                    { categoriesToShow.length > 0 ?
                         <View style={Styles.categories}>
                             {categoriesToShow}
                         </View>
@@ -147,4 +147,4 @@ function getList(state) {
     }
 }
 
-export default connectRedux(getList)(ChatListComponent);
+export default connectRedux(getList)(CategoryDetailComponent);
