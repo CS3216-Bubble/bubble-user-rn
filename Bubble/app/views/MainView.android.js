@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Container, Content, Header, Title, Tabs, Button } from 'native-base';
+import ActionButton from 'react-native-action-button';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -23,61 +24,50 @@ export default class MainView extends Component {
     selectedTab: 0
   }
 
-  onChangeTab(tab) {
-    // console.log(tab);
-    // Depending on tab, show different icons in header
+  onChangeTab = (tab) => {
+    this.setState({selectedTab: tab.i});
   }
 
-  _renderTabAction() {
+  onSearchButtonPress = () => {
 
-  }
-
-  componentWillReceiveProps(props) {
-      // console.log("MAINVIEW ANDROID RECEIVES PROPS", props);
   }
 
   render() {
 
-    var headerButton;
-    switch (this.state.selectedTab) {
-      case 0:
-        headerButton = (
-          <Button transparent onPress={Actions.chatFormView}>
-            <Icon size={24} name="add" color="#fff" />
+    var header;
+    if (this.state.selectedTab === 0) {
+      header = (
+        <Header>
+          <Title>Bubble</Title>
+          <Button transparent> </Button>
+          <Button transparent onPress={this.onSearchButtonPress}>
+            <Icon size={24} name="search" color="#fff" />
           </Button>
-        );
-      case 1:
-        headerButton = (
-          <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff" />
-          </Button>
-        );
-      case 2:
-        headerButton = (
-          <Button transparent>
-            <Icon size={24} name="more-vert" color="#fff" />
-          </Button>
-        );
-      default:
-        headerButton = (
-          <Button transparent onPress={Actions.chatFormView}>
-            <Icon size={24} name="add" color="#fff" />
-          </Button>
-        );
+        </Header>
+      );
+    } else {
+      header = (
+        <Header>
+          <Title>Bubble</Title>
+          <Button transparent> </Button>
+        </Header>
+      );
     }
 
     return (
         <Container>
-          <Header iconRight>
-            <Title>Bubble</Title>
-            {headerButton}
-          </Header>
+          { header }
           <View style={{ flex: 1 }}>
             <Tabs theme={light} onChangeTab={this.onChangeTab}>
-              <ChatListComponent tabLabel='All' tabBgColor='#4883da' />
-              <SettingsComponent tabLabel='Open' tabBgColor='#4883da' user={this.state.user} />
+              <ChatListComponent tabLabel='All' tabBgColor='#4883da' showOpenChatsOnly={false}/>
+              <ChatListComponent tabLabel='Open' tabBgColor='#4883da' showOpenChatsOnly={true} />
               <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' user={this.state.user} />
             </Tabs>
+            { this.state.selectedTab === 0 ?
+              <ActionButton
+                buttonColor="rgba(231,76,60,1)"
+                onPress={Actions.chatFormView}
+              /> : null }
           </View>
         </Container>
     );
