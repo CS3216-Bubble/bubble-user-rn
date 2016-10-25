@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Container, Content, Header, Title, Tabs, Button } from 'native-base';
 import ActionButton from 'react-native-action-button';
+import CustomTheme from '../themes/bubble';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -11,9 +12,6 @@ import SettingsComponent from '../components/SettingsComponent';
 import { Styles } from '../styles/Styles';
 
 import { Actions } from 'react-native-router-flux';
-
-// Theme styling for native-base
-import light from '../../Themes/light';
 
 export default class MainView extends Component {
   state = {
@@ -55,13 +53,13 @@ export default class MainView extends Component {
     }
 
     return (
-        <Container>
+        <Container theme={CustomTheme}>
           { header }
           <View style={{ flex: 1 }}>
-            <Tabs theme={light} onChangeTab={this.onChangeTab}>
-              <ChatListComponent tabLabel='All' tabBgColor='#4883da' showOpenChatsOnly={false}/>
-              <ChatListComponent tabLabel='Open' tabBgColor='#4883da' showOpenChatsOnly={true} />
-              <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' user={this.state.user} />
+            <Tabs onChangeTab={this.onChangeTab}>
+              <ChatListComponent tabLabel='All' showOpenChatsOnly={false}/>
+              <ChatListComponent tabLabel='Open' showOpenChatsOnly={true} />
+              <SettingsComponent tabLabel='Settings' user={this.state.user} />
             </Tabs>
             { this.state.selectedTab === 0 ?
               <ActionButton
