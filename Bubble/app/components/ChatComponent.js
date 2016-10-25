@@ -8,6 +8,7 @@ import { connect as connectRedux } from 'react-redux';
 
 var adjectives = require('../utils/adjectives');
 var animals = require('../utils/animals');
+var numAvatars = 160;
 
 export default class ChatComponent extends Component {
 
@@ -19,6 +20,7 @@ export default class ChatComponent extends Component {
         this.parseMessages = this.parseMessages.bind(this);
         this.hashID = this.hashID.bind(this);
         this.generateName = this.generateName.bind(this);
+        this.generateAvatar = this.generateAvatar.bind(this);
     }
 
     // Initial update
@@ -55,6 +57,15 @@ export default class ChatComponent extends Component {
         return adjective + " " + animal;
     }
 
+    // Avatar generator
+    generateAvatar(userId) {
+        var hashCode = this.hashID(userId);
+        // Get animal
+        var avatarIndex = (((hashCode % numAvatars) + numAvatars) % numAvatars) + 1;
+        // Return result
+        return ("image!" + avatarIndex.toString());
+    }
+
     // For converting API form to GiftedChat form
     parseMessages(messages) {
         var parsed = [];
@@ -64,6 +75,8 @@ export default class ChatComponent extends Component {
             for (var i = 0; i < messages.length; ++i) {
                 var messageOrg = messages[i];
                 var avatar = 'http://flathash.com/' + messageOrg.userId;
+                // var avatar = 'http://api.adorable.io/avatar/' + messageOrg.userId;
+
                 var messageParsed = {
                     _id: messageOrg.id,
                     text: messageOrg.content,

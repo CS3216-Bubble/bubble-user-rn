@@ -7,21 +7,21 @@
     "test": "jest"
   },
   "dependencies": {
+    "asyncstorage-down": "^3.1.1",
     "babel-polyfill": "^6.16.0",
     "lodash": "^4.16.4",
+    "md5": "^2.2.1",
     "mobx": "^2.6.0",
     "mobx-react": "^3.5.8",
     "moment": "^2.15.1",
     "native-base": "^0.5.9",
-    "react": "15.3.2",
+    "path-browserify": "0.0.0",
+    "react": "^15.3.2",
     "react-native": "0.35.0",
-    "react-native-action-button": "^2.0.9",
-    "react-native-dropdown": "0.0.6",
     "react-native-gifted-chat": "0.0.10",
-    "react-native-multiple-choice": "0.0.8",
+    "react-native-level-fs": "^3.0.0",
     "react-native-picker": "^4.0.7",
     "react-native-router-flux": "^3.36.0",
-    "react-native-splash-screen": "^1.0.9",
     "react-native-vector-icons": "^2.1.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
@@ -39,5 +39,13 @@
     "jest": "16.0.1",
     "jest-react-native": "16.0.0",
     "react-test-renderer": "15.3.2"
+  },
+  "react-native": {
+    "fs": "react-native-level-fs",
+    "path": "path-browserify"
+  },
+  "browser": {
+    "fs": "react-native-level-fs",
+    "path": "path-browserify"
   }
 }

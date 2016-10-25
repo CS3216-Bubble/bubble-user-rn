@@ -75,8 +75,8 @@ export default class MainView extends Component {
           <View style={{ flex: 1 }}>
             <Tabs theme={light} onChangeTab={this.onChangeTab}>
               <ChatListComponent tabLabel='All' tabBgColor='#4883da' />
-              <ChatListComponent tabLabel='Open' tabBgColor='#4883da'  />
-              <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' user={this.state.user}/>
+              <SettingsComponent tabLabel='Open' tabBgColor='#4883da' user={this.state.user} />
+              <SettingsComponent tabLabel='Settings' tabBgColor='#4883da' user={this.state.user} />
             </Tabs>
           </View>
         </Container>
