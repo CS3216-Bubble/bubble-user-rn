@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, TouchableHighlight, Text } from 'react-native';
+import UserActionModalComponent from '../components/UserActionModalComponent';
+import { Actions } from 'react-native-router-flux';
 
-class ModalView extends Component {
+export default class ModalView extends Component {
 
     constructor(props) {
         super(props)
@@ -15,7 +17,8 @@ class ModalView extends Component {
     }
 
     dismissModal() {
-        this.setState({ hide: true })
+        // this.setState({ hide: true })
+        Actions.pop();
     }
 
     // show or hide Modal based on 'hide' prop
@@ -27,9 +30,7 @@ class ModalView extends Component {
             )
         } else {
             return (
-                <TouchableHighlight onPress={this.dismissModal}>
-                    <Text>{this.state.message}</Text>
-                </TouchableHighlight>
+                <UserActionModalComponent onDismiss={this.dismissModal} />
             )
         }
     }

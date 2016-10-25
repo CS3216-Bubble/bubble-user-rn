@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
-import { Scene, Router, Actions, Route, Schema, Animations } from 'react-native-router-flux';
+import { Scene, Router, Actions, Route, Schema, Animations, Modal } from 'react-native-router-flux';
 
 // Views
+import ModalView from './app/views/ModalView';
 import MainView from './app/views/MainView';
 import ChatView from './app/views/ChatView';
 import ChatFormView from './app/views/ChatFormView';
@@ -29,7 +30,7 @@ export default class Bubble extends Component {
             <Provider store={Store}>
                 <Router>
 
-                    <Scene key="modalView" component={ModalView} >
+                    <Scene key="modal" component={Modal} >
                         <Scene key="root" hideNavBar={true}>
                             <Scene key="main" component={MainView} title="Main" initial={true} />
                             <Scene key="chatView" component={ChatView} title="Chat" />
@@ -41,6 +42,7 @@ export default class Bubble extends Component {
                             <Scene key="landingView" component={LandingView} title="Welcome to Bubble" />
                             <Scene key="onboardingView" component={OnboardingView} title="Getting Started" />
                         </Scene>
+                        <Scene key="modalView" component={ModalView} />
                     </Scene>
                 </Router>
             </Provider>
