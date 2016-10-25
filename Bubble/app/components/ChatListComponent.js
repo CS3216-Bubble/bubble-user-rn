@@ -7,6 +7,10 @@ import { Actions } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 
 export class ChatListComponent extends Component {
+    static propTypes = {
+      searchTerm: PropTypes.string.isRequired,
+      categoryFilter: PropTypes.string.isRequired,
+    }
 
     updateList = (data) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
@@ -91,7 +95,7 @@ export class ChatListComponent extends Component {
                             </Text>
                         </View>
                     </CardItem>
-                    {listCategories.length !=0 && 
+                    {listCategories.length !=0 &&
                         <View style={Styles.categories}>
                             {listCategories}
                         </View>
