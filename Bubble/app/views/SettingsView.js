@@ -22,7 +22,7 @@ export default class SettingsView extends Component {
                   <Title>Settings</Title>
               </Header>
               <Content>
-                  <SettingsComponent user={this.state.user}/>
+                  <SettingsComponent user={this.state.user} style={{height: 300}}/>
               </Content>
           </Container>
       );

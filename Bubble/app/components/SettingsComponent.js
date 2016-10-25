@@ -15,22 +15,32 @@ export default class SettingsComponent extends Component {
 
   render() {
       return (
-        <ScrollView>
+        <View style={styles.fillContainer}>
           <ProfileComponent user={this.props.user} style={styles.profileContainer}/>
-          <View style={styles.customListItemRight}>
-            <Text style={styles.customListItemText}>Notifications</Text>
-            <Switch
-              onValueChange={(value) => this.setState({isNotificationsOn: value})}
-              value={this.state.isNotificationsOn} />
-          </View>
-        </ScrollView>
+          <ScrollView style={styles.settingsContainer}>
+            <View style={styles.customListItemRight}>
+              <Text style={styles.customListItemText}>Notifications</Text>
+              <Switch
+                onValueChange={(value) => this.setState({isNotificationsOn: value})}
+                value={this.state.isNotificationsOn} />
+            </View>
+          </ScrollView>
+        </View>
       );
   }
 }
 
 var styles = StyleSheet.create({
+    fillContainer: {
+      flex: 1,
+      height: 500
+    },
     profileContainer: {
-      height: 100
+      flex: 1,
+      height: 200
+    },
+    settingsContainer: {
+      flex: 2
     },
     customListItemRight: {
       flex: 1,
