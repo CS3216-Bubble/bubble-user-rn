@@ -29,15 +29,17 @@ export default class Bubble extends Component {
         return (
             <Provider store={Store}>
                 <Router>
-                    <Scene key="root" hideNavBar={true}>
-                        <Scene key="main" component={MainView} title="Main" initial={true} />
-                        <Scene key="chatView" component={ChatView} title="Chat" />
-                        <Scene key="chatFormView" component={ChatFormView} title="Create Chat" />
-                        <Scene key="chatLoadingView" component={ChatLoadingView} title="Chat Loading" />
-                        <Scene key="contactListView" component={ContactListView} title="Useful Hotlines" />
-                        <Scene key="profileForm" component={ProfileFormView} title="Edit Profile" />
-                        <Scene key="landingView" component={LandingView} title="Welcome to Bubble" />
-                        <Scene key="onboardingView" component={OnboardingView} title="Getting Started" />
+                    <Scene key="modal" component={ModalView} >
+                        <Scene key="root" hideNavBar={true}>
+                            <Scene key="main" component={MainView} title="Main" initial={true} />
+                            <Scene key="chatView" component={ChatView} title="Chat" />
+                            <Scene key="chatFormView" component={ChatFormView} title="Create Chat" />
+                            <Scene key="chatLoadingView" component={ChatLoadingView} title="Chat Loading" />
+                            <Scene key="contactListView" component={ContactListView} title="Useful Hotlines" />
+                            <Scene key="profileForm" component={ProfileFormView} title="Edit Profile" />
+                            <Scene key="landingView" component={LandingView} title="Welcome to Bubble" />
+                            <Scene key="onboardingView" component={OnboardingView} title="Getting Started" />
+                        </Scene>
                     </Scene>
                 </Router>
             </Provider>
