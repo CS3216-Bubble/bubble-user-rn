@@ -39,10 +39,10 @@ export default class ChatListView extends Component {
         return (
             <Container>
                 <Header>
-                    <Title>{this.props.title}</Title>
-                    <Button transparent>
-                        <Text></Text>
+                    <Button transparent onPress={Actions.searchView}>
+                        <Icon size={30} name='ios-search' color="#0E7AFE"/>
                     </Button>
+                    <Title>{this.props.title}</Title>
                     <Button transparent onPress={Actions.chatFormView}>
                         <Icon size={30} name='ios-add' color="#0E7AFE"/>
                     </Button>
