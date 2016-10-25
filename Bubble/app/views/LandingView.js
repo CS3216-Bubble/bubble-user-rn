@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Image, View, StyleSheet, Text } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
 
+const splashScreenDelay = 2000;
+
 export default class LandingView extends Component {
     render() {
         setTimeout(() => {
           Actions.main({type: ActionConst.REPLACE});
-        }, 2000);
+        }, splashScreenDelay);
         return (
             <View style={styles.splashContainer}>
               <Image style={styles.splashImage} source={require('./img/logo_white.png')} />

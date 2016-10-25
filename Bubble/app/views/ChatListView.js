@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, Pl
 import { Container, Header, Content, Button, Icon, Title, InputGroup, Input } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
+import Globals from '../globals';
 import ChatListComponent from '../components/ChatListComponent';
 
 export default class ChatListView extends Component {
@@ -16,7 +17,6 @@ export default class ChatListView extends Component {
         this.state = {
           refresh: false,
           searchTerm: '',
-          categoryNames: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School'],
           showCategoryFilter: true
         };
         if (Platform.OS === 'android') {
@@ -39,7 +39,7 @@ export default class ChatListView extends Component {
     }
 
     render() {
-        const categoryButtons = this.state.categoryNames.map(function(name, index) {
+        const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
             <Button info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
                 <Text>{name}</Text>
