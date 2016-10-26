@@ -32,14 +32,18 @@ const uiTheme = {
 export class MainView extends Component {
 
   hashID(userId) {
-    var hash = 0;
-    if (userId.length == 0) return hash;
-    for (i = 0; i < userId.length; i++) {
-      char = userId.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
+    if (userId) {
+        var hash = 0;
+        if (userId.length == 0) return hash;
+        for (i = 0; i < userId.length; i++) {
+          char = userId.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash;
+        }
+        return hash;
+    } else {
+      return 123123123;
     }
-    return hash;
   }
 
   // Name generator
