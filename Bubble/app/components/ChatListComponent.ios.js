@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
-import { ChatCardComponent } from './ChatCardComponent';
+import ChatCardComponent from './ChatCardComponent';
 import { Styles } from '../styles/Styles';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
