@@ -55,14 +55,19 @@ export class MainView extends Component {
     return adjective + " " + animal;
   }
 
-  state = {
-    user: {
-      name: this.generateName(this.props.socket.id),
-      imgSrc: 'http://flathash.com/' + this.props.socket.id,
-    },
-    selectedTab: 0,
-    searchTerm: ''
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {
+        name: this.generateName(this.props.socket.id),
+        imgSrc: 'http://flathash.com/' + this.props.socket.id,
+      },
+      selectedTab: 0,
+      searchTerm: ''
+    }
   }
+
+
 
   onChangeTab = (tab) => {
     this.setState({ selectedTab: tab.i });
