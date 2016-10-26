@@ -49,8 +49,8 @@ export class ChatListComponent extends Component {
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
-    componentWillDismount() {
-        this.updateList = () => { };
+    componentWillUnmount() {
+        this.props.socket.removeListener('list_rooms', this.updateList);
     }
 
     componentWillReceiveProps(props) {
@@ -78,7 +78,7 @@ export class ChatListComponent extends Component {
           if (chatContainsSearchTerm) {
               // Create chat card
               return (
-                <ChatCardComponent chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard}/>
+                <ChatCardComponent key={chat.id} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard}/>
               );
           }
         }, this);
