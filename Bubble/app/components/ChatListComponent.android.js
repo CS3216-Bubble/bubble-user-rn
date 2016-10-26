@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
-import { ChatListItemComponent } from './ChatListItemComponent';
+import ChatCardComponent from './ChatCardComponent';
 import { Styles } from '../styles/Styles';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
@@ -65,8 +65,8 @@ export class ChatListComponent extends Component {
         var chatRooms = this.state.roomList.slice();
 
         chatRooms.sort(function(a, b) {
-                return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
-            });
+            return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+        });
 
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function(chat) {
@@ -77,47 +77,8 @@ export class ChatListComponent extends Component {
 
           if (chatContainsSearchTerm) {
               // Create chat card
-              const categoriesToShow = chat.categories.map(function(category) {
-                return (
-                  <Button
-                    key={category}
-                    transparent
-                    onPress={() => Actions.categoryDetailView({selectedCategory: category})}
-                    style={{justifyContent: 'center', alignItems: 'center'}}
-                    textStyle={{
-                      color: '#87838B', fontSize: 12,
-                      fontWeight: '400'
-                    }}>
-                      {category}
-                  </Button>
-                );
-              }, this);
-
               return (
-                <Card key={chat.roomId} style={Styles.card}>
-                    <CardItem body button onPress={() => Actions.chatView(chatProps)}>
-                        <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
-                            {chat.roomName}
-                        </Text>
-                        <Text style={Styles.description}>
-                            {chat.roomDescription}
-                        </Text>
-                        <View style={{flex: 1, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text note style={{ textAlign: 'right', fontSize: 10, fontWeight: '500' }} >
-                                {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
-                            </Text>
-                            <Text note style={{ textAlign: 'left', fontSize: 10, fontWeight: '500' }} >
-                                {chat.numUsers} of {chat.userLimit} users
-                            </Text>
-                        </View>
-                    </CardItem>
-                    { categoriesToShow.length > 0 && this.state.showCategoriesOnCard ?
-                        <View style={Styles.categories}>
-                            {categoriesToShow}
-                        </View>
-                        : null
-                    }
-                </Card>
+                <ChatCardComponent chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard}/>
               );
           }
         }, this);
@@ -136,8 +97,6 @@ export class ChatListComponent extends Component {
         const categoryFilter = (
           <View style={styles.categoryButtonContainer}>{ categoryButtons }</View>
         );
-
-        console.log();
 
         if (chatsToShow.length == 0) {
             return (
