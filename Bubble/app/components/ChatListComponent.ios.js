@@ -15,7 +15,7 @@ export class ChatListComponent extends Component {
     }
 
     updateList = (data) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({ roomList: data, refreshing: false });
     }
 
@@ -120,11 +120,12 @@ export class ChatListComponent extends Component {
           }
         }, this);
 
+        // <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
+        // <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
         if (chatsToShow.length == 0) {
             return (
                 <ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                    <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
-                    <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
+
                 </ScrollView>
             );
         } else {

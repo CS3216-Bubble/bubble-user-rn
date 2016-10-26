@@ -44,8 +44,8 @@ export class CategoryDetailComponent extends Component {
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
-    componentWillDismount() {
-        this.updateList = () => { };
+    componentWillUnmount() {
+        this.props.socket.removeListener('list_rooms', this.updateList);
     }
 
     componentWillReceiveProps(props) {
@@ -124,8 +124,7 @@ export class CategoryDetailComponent extends Component {
         if (chatsToShow.length == 0) {
             return (
                 <ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                    <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
-                    <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
+
                 </ScrollView>
             );
         } else {
