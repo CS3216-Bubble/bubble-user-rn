@@ -26,12 +26,13 @@ export default class ChatListView extends Component {
 
     componentWillReceiveProps(props) {
         // console.log("CHATLISTVIEW RECEIVES PROPS", props);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({refresh: !this.state.refresh});
     }
 
     onSearchBarTextChange = (text) => {
       const showCategoryFilter = text == '';
+      // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
       this.setState({
         searchTerm: text,
         showCategoryFilter: showCategoryFilter
@@ -41,8 +42,8 @@ export default class ChatListView extends Component {
     render() {
         const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
-            <Button info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
-                <Text>{name}</Text>
+            <Button rounded info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
+                <Text style={{fontSize: 10, color: 'white', fontWeight: "600"}} >{name}</Text>
             </Button>
           );
         }, this);
@@ -81,7 +82,6 @@ var styles = StyleSheet.create({
       justifyContent: 'space-between',
       alignItems: 'flex-start',
       flexWrap: 'wrap',
-      height: 90,
       padding: 10,
       borderBottomColor: '#bbb',
       borderBottomWidth: StyleSheet.hairlineWidth

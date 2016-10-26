@@ -17,7 +17,7 @@ export class ChatListComponent extends Component {
     }
 
     updateList = (data) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({ roomList: data, refreshing: false });
     }
 
@@ -78,18 +78,15 @@ export class ChatListComponent extends Component {
           if (chatContainsSearchTerm) {
               // Create chat card
               return (
-                <ChatCardComponent key={chat.id} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard}/>
+                <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard}/>
               );
           }
         }, this);
 
         const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
-            <Button info
-              key={index}
-              onPress={() => Actions.categoryDetailView({selectedCategory: name})}
-              style={styles.categoryButton}>
-                <Text>{name}</Text>
+             <Button rounded info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
+                <Text style={{fontSize: 10, color: 'white', fontWeight: "600"}} >{name}</Text>
             </Button>
           );
         }, this);
@@ -100,10 +97,7 @@ export class ChatListComponent extends Component {
 
         if (chatsToShow.length == 0) {
             return (
-                <ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                    <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
-                    <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
-                </ScrollView>
+                null
             );
         } else {
             return (
@@ -122,7 +116,6 @@ var styles = StyleSheet.create({
       justifyContent: 'space-between',
       alignItems: 'flex-start',
       flexWrap: 'wrap',
-      height: 90,
       padding: 10,
       borderBottomColor: '#bbb',
       borderBottomWidth: StyleSheet.hairlineWidth

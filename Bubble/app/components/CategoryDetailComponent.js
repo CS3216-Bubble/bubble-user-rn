@@ -125,9 +125,7 @@ export class CategoryDetailComponent extends Component {
 
         if (chatsToShow.length == 0) {
             return (
-                <ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-
-                </ScrollView>
+                null
             );
         } else {
             return (

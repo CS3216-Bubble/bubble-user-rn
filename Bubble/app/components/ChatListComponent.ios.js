@@ -76,7 +76,7 @@ export class ChatListComponent extends Component {
           if (chatContainsSearchTerm) {
               // Create chat card
               return (
-                <ChatCardComponent key={chat.id} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard}/>
+                <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard}/>
               );
           }
         }, this);
@@ -85,9 +85,7 @@ export class ChatListComponent extends Component {
         // <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
         if (chatsToShow.length == 0) {
             return (
-                <ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-
-                </ScrollView>
+                null
             );
         } else {
             return (
