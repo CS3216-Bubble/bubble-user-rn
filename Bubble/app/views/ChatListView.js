@@ -51,12 +51,13 @@ export default class ChatListView extends Component {
         return (
             <Container>
                 <Header searchBar rounded>
-                  <InputGroup style={styles.searchBar}>
+                  <InputGroup>
                     <Icon name='ios-search' />
                     <Input
                       placeholder='Search'
                       value={this.state.searchTerm}
-                      onChangeText={this.onSearchBarTextChange} />
+                      onChangeText={this.onSearchBarTextChange}
+                      style={{paddingBottom: 10}}/>
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
                     <Icon size={30} name='ios-create-outline' color="#0E7AFE"/>
