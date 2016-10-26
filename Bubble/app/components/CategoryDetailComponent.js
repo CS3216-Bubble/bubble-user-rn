@@ -92,6 +92,8 @@ export class CategoryDetailComponent extends Component {
                 );
               }, this);
 
+              const chatProps = { roomId: chat.roomId };
+
               return (
                 <Card key={chat.roomId} style={Styles.card}>
                     <CardItem body button onPress={() => Actions.chatView(chatProps)}>
