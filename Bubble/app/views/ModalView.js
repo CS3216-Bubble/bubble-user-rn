@@ -30,7 +30,7 @@ export default class ModalView extends Component {
             )
         } else {
             return (
-                <UserActionModalComponent onDismiss={this.dismissModal} />
+                <UserActionModalComponent onDismiss={this.dismissModal} visible={true} />
             )
         }
     }

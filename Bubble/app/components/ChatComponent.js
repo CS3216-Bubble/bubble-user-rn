@@ -81,8 +81,10 @@ export default class ChatComponent extends Component {
                     _id: messageOrg.id,
                     text: messageOrg.content,
                     createdAt: messageOrg.createdAt,
+                    type: messageOrg.messageType,
                     sent: messageOrg.messageType != "OPTIMISTIC-MESSAGE",
                     received: false,
+                    target: messageOrg.targetUser,
                     user: {
                         _id: messageOrg.userId,
                         name: this.generateName(messageOrg.userId),
@@ -113,7 +115,7 @@ export default class ChatComponent extends Component {
                 onSend={this.onSend}
                 user={{ _id: this.props.user }}
                 isAnimated={true}
-                onAvatarPress={(otherUserId) => { this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId) } }
+                onAvatarPress={(otherUserId, otherUserName) => { this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId, otherUserName) } }
                 />
         );
     }
