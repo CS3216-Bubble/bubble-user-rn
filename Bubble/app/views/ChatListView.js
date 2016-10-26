@@ -26,12 +26,13 @@ export default class ChatListView extends Component {
 
     componentWillReceiveProps(props) {
         // console.log("CHATLISTVIEW RECEIVES PROPS", props);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({refresh: !this.state.refresh});
     }
 
     onSearchBarTextChange = (text) => {
       const showCategoryFilter = text == '';
+      // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
       this.setState({
         searchTerm: text,
         showCategoryFilter: showCategoryFilter
@@ -41,8 +42,8 @@ export default class ChatListView extends Component {
     render() {
         const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
-            <Button info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
-                <Text>{name}</Text>
+            <Button rounded info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
+                <Text style={{fontSize: 10, color: 'white', fontWeight: "600"}} >{name}</Text>
             </Button>
           );
         }, this);
@@ -50,12 +51,19 @@ export default class ChatListView extends Component {
         return (
             <Container>
                 <Header searchBar rounded>
-                  <InputGroup style={styles.searchBar}>
+                  <InputGroup>
                     <Icon name='ios-search' />
-                    <Input
+                    {Platform.OS == 'ios' && <Input
                       placeholder='Search'
                       value={this.state.searchTerm}
-                      onChangeText={this.onSearchBarTextChange} />
+                      onChangeText={this.onSearchBarTextChange}
+                      style={{paddingBottom: 10}}/>}
+                    {Platform.OS == 'android' && <Input
+                      placeholder='Search'
+                      value={this.state.searchTerm}
+                      onChangeText={this.onSearchBarTextChange}
+                      />} 
+                    
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
                     <Icon size={30} name='ios-create-outline' color="#0E7AFE"/>
@@ -81,7 +89,6 @@ var styles = StyleSheet.create({
       justifyContent: 'space-between',
       alignItems: 'flex-start',
       flexWrap: 'wrap',
-      height: 90,
       padding: 10,
       borderBottomColor: '#bbb',
       borderBottomWidth: StyleSheet.hairlineWidth

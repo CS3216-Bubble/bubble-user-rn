@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect as connectRedux } from 'react-redux';
 
 import ChatListView from './ChatListView';
 import SettingsView from './SettingsView';
@@ -16,11 +17,11 @@ export default class MainView extends Component {
         switch (this.state.selectedTab) {
             case 'all':
                 return (
-                    <ChatListView key="all" title="All Chats" showOpenChatsOnly={false}/>
+                    <ChatListView key="all" title="All Chats" showOpenChatsOnly={false} />
                 );
             case 'open':
                 return (
-                    <ChatListView key="open" title="Open Chats" showOpenChatsOnly={true}/>
+                    <ChatListView key="open" title="Open Chats" showOpenChatsOnly={true} />
                 );
             case 'settings':
                 return (
