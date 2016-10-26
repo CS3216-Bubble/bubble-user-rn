@@ -88,7 +88,7 @@ export class MainView extends Component {
           searchable={{
             autoFocus: true,
             placeholder: 'Search',
-            onChangeText: this.onSearchBarTextChange
+            onChangeText: this.onSearchBarTextChange,
           }}
           />
       );
