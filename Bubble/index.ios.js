@@ -8,6 +8,7 @@ import MainView from './app/views/MainView';
 import ChatView from './app/views/ChatView';
 import ChatFormView from './app/views/ChatFormView';
 import ChatLoadingView from './app/views/ChatLoadingView';
+import CategoryDetailView from './app/views/CategoryDetailView';
 import ContactListView from './app/views/ContactListView';
 import ProfileFormView from './app/views/ProfileFormView';
 import LandingView from './app/views/LandingView';
@@ -31,13 +32,14 @@ export default class Bubble extends Component {
 
                     <Scene key="modal" component={Modal} >
                         <Scene key="root" hideNavBar={true}>
-                            <Scene key="main" component={MainView} title="Main" initial={true} />
+                            <Scene key="landingView" component={LandingView} title="Welcome to Bubble" initial={true}/>
+                            <Scene key="main" component={MainView} title="Main" />
                             <Scene key="chatView" component={ChatView} title="Chat" />
                             <Scene key="chatFormView" component={ChatFormView} title="Create Chat" />
                             <Scene key="chatLoadingView" component={ChatLoadingView} title="Chat Loading" />
+                            <Scene key="categoryDetailView" component={CategoryDetailView} title="Category Detail" />
                             <Scene key="contactListView" component={ContactListView} title="Useful Hotlines" />
                             <Scene key="profileForm" component={ProfileFormView} title="Edit Profile" />
-                            <Scene key="landingView" component={LandingView} title="Welcome to Bubble" />
                             <Scene key="onboardingView" component={OnboardingView} title="Getting Started" />
                         </Scene>
                         <Scene key="modalView" component={ModalView} />

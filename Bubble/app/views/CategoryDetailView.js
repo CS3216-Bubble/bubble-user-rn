@@ -1,25 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
-import ChatListComponent from '../components/ChatListComponent';
+import CategoryDetailComponent from '../components/CategoryDetailComponent';
 
 export default class CategoryDetailView extends Component {
   static propTypes = {
-    categoryName: PropTypes.string.isRequired,
+    selectedCategory: PropTypes.string.isRequired,
   }
 
   render() {
       return (
           <Container>
-            <Button transparent onPress={Actions.pop}>
-                <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/>
-            </Button>
             <Header>
-              <Title>{this.props.categoryName}</Title>
+              <Button transparent onPress={Actions.pop}>
+                  <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/>
+              </Button>
+              <Title>{this.props.selectedCategory}</Title>
             </Header>
             <Content>
-              <ChatListComponent />
+              <CategoryDetailComponent
+                selectedCategory={this.props.selectedCategory}
+                showOpenChatsOnly={this.props.showOpenChatsOnly} />
             </Content>
           </Container>
       );

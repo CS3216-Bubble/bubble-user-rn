@@ -3,13 +3,15 @@ import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Aler
 import { Card, CardItem, Title, Button } from 'native-base';
 import { ChatListItemComponent } from './ChatListItemComponent';
 import { Styles } from '../styles/Styles';
-import { Actions } from 'react-native-router-flux';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
+import moment from 'moment';
 
 export class ChatListComponent extends Component {
     static propTypes = {
-      searchTerm: PropTypes.string.isRequired,
-      categoryFilter: PropTypes.string.isRequired,
+      searchTerm: PropTypes.string,
+      showOpenChatsOnly: PropTypes.bool,
+      showCategoriesOnCard: PropTypes.bool,
     }
 
     updateList = (data) => {
@@ -19,7 +21,12 @@ export class ChatListComponent extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = { roomList: [], refreshing: false };
+        this.state = {
+          roomList: [],
+          refreshing: false,
+          showOpenChatsOnly: props.showOpenChatsOnly ? props.showOpenChatsOnly : false,
+          showCategoriesOnCard: props.showCategoriesOnCard ? props.showCategoriesOnCard : true,
+        };
         this.updateList = this.updateList.bind(this);
 
          if (Platform.OS === 'android') {
@@ -59,25 +66,32 @@ export class ChatListComponent extends Component {
                 return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
             });
 
-        var listChats = [];
-        for (var chatCount = 0; chatCount < chatRooms.length; ++chatCount) {
-            var chat = chatRooms[chatCount];
+        // Create list of chats to show
+        const chatsToShow = chatRooms.map(function(chat) {
 
-            var listCategories = [];
-            for (var catCount = 0; catCount < chat.categories.length; ++catCount) {
-                var category = chat.categories[catCount];
-                listCategories.push(
-                    <Button key={category} transparent style={{justifyContent: 'center', alignItems: 'center'}} textStyle={{
-                        color: '#87838B', fontSize: 12,
-                        fontWeight: '400'
+          const chatContainsSearchTerm =
+              (chat.roomName.indexOf(this.props.searchTerm) > -1 ||
+               chat.roomDescription.indexOf(this.props.searchTerm) > -1);
+
+          if (chatContainsSearchTerm) {
+              // Create chat card
+              const categoriesToShow = chat.categories.map(function(category) {
+                return (
+                  <Button
+                    key={category}
+                    transparent
+                    onPress={() => Actions.categoryDetailView({selectedCategory: category})}
+                    style={{justifyContent: 'center', alignItems: 'center'}}
+                    textStyle={{
+                      color: '#87838B', fontSize: 12,
+                      fontWeight: '400'
                     }}>
-                        {category}
-                    </Button>
+                      {category}
+                  </Button>
                 );
-            }
-            const chatProps = { roomId: chatRooms[chatCount].roomId };
-            var moment = require('moment');
-            var chatCard = (
+              }, this);
+
+              return (
                 <Card key={chat.roomId} style={Styles.card}>
                     <CardItem body button onPress={() => Actions.chatView(chatProps)}>
                         <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
@@ -95,32 +109,28 @@ export class ChatListComponent extends Component {
                             </Text>
                         </View>
                     </CardItem>
-                    {listCategories.length !=0 &&
+                    { categoriesToShow.length > 0 && this.state.showCategoriesOnCard ?
                         <View style={Styles.categories}>
-                            {listCategories}
+                            {categoriesToShow}
                         </View>
+                        : null
                     }
                 </Card>
+              );
+          }
+        }, this);
 
-            );
-
-            listChats.push(chatCard);
-        }
-
-
-
-        if (chatRooms.length == 0) {
+        if (chatsToShow.length == 0) {
             return (
                 <ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
                     <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
                     <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
                 </ScrollView>
             );
-
         } else {
             return (
                 <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                    {listChats}
+                    { chatsToShow }
                 </ScrollView>
 
             );
