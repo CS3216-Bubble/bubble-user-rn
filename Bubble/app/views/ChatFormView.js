@@ -1,9 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions, ActionConst } from 'react-native-router-flux';
 
+import CustomTheme from '../themes/bubble';
+
 import ChatFormComponent from '../components/ChatFormComponent';
+
+import Globals from '../globals';
 
 export default class ChatFormView extends Component {
   static propTypes = {
@@ -13,13 +17,14 @@ export default class ChatFormView extends Component {
   constructor(props) {
     super(props);
 
+    if (!this.props.isBackButtonVisible) {
+      this.state = {isBackButtonVisible: false, form: {}};
+    } else {
+      this.state = {isBackButtonVisible: this.props.isBackButtonVisible, form: {}};
+    }
+
     this.onFormChange = this.onFormChange.bind(this);
     this.createChat = this.createChat.bind(this);
-  }
-
-  state = {
-    categoryNames: ['Rant', 'Funny', 'Nostalgia', 'Relationship', 'Advice', 'School'],
-    form: {}
   }
 
   onFormChange(form) {
@@ -35,19 +40,21 @@ export default class ChatFormView extends Component {
   }
 
   render() {
+      const fontStyle = Platform.ios ? {color:'#0E7AFE'} : {color:'#FFFFFF'};
+
       return (
-          <Container>
+          <Container theme={CustomTheme}>
               <Header>
                   <Title>Create Chat</Title>
                   <Button transparent onPress={Actions.pop}>
-                      { this.props.isBackButtonVisible ?<Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : null }
+                      { this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : <Text></Text> }
                   </Button>
                   <Button transparent onPress={this.createChat}>
-                      <Text style={{color:'#0E7AFE'}}>Create</Text>
+                      <Text style={fontStyle}>Create</Text>
                   </Button>
               </Header>
               <Content>
-                  <ChatFormComponent onFormChange={this.onFormChange} categoryNames={this.state.categoryNames}/>
+                  <ChatFormComponent onFormChange={this.onFormChange} categoryNames={Globals.CATEGORIES}/>
               </Content>
           </Container>
       );

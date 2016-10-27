@@ -71,8 +71,6 @@ export class MainView extends Component {
     }
   }
 
-
-
   onChangeTab = (tab) => {
     this.setState({ selectedTab: tab.i });
   }
@@ -80,6 +78,10 @@ export class MainView extends Component {
   onSearchBarTextChange = (text) => {
     // console.log(text);
     this.setState({ searchTerm: text });
+  }
+
+  onCreateChatPressed = () => {
+    Actions.chatFormView({isBackButtonVisible: true});
   }
 
   render() {
@@ -110,15 +112,15 @@ export class MainView extends Component {
           {header}
           <View style={{ flex: 1 }}>
             <Tabs theme={CustomTheme} onChangeTab={this.onChangeTab}>
-              <ChatListComponent tabLabel='All' showOpenChatsOnly={false} searchTerm={this.state.searchTerm} />
-              <ChatListComponent tabLabel='Open' showOpenChatsOnly={true} />
+              <ChatListComponent tabLabel='All' showOpenChatsOnly={false} searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed}/>
+              <ChatListComponent tabLabel='Open' showOpenChatsOnly={true} onCreateChatPressed={this.onCreateChatPressed} />
               <SettingsComponent tabLabel='Settings' user={this.state.user} />
             </Tabs>
           </View>
           {this.state.selectedTab === 0 ?
             <ActionButton
               buttonColor="rgba(231,76,60,1)"
-              onPress={Actions.chatFormView}
+              onPress={() => Actions.chatFormView({isBackButtonVisible: true})}
               /> : null}
         </View>
       </ThemeProvider>

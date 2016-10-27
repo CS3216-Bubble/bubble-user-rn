@@ -1,16 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
-import ChatCardComponent from './ChatCardComponent';
+
 import { Styles } from '../styles/Styles';
+
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 import moment from 'moment';
+
+import ChatCardComponent from './ChatCardComponent';
+import ChatPlaceholderComponent from './ChatPlaceholderComponent';
 
 import Globals from '../globals';
 
 export class ChatListComponent extends Component {
     static propTypes = {
+        onCreateChatPressed: PropTypes.func.isRequired,
         searchTerm: PropTypes.string,
         showOpenChatsOnly: PropTypes.bool,
         showCategoriesOnCard: PropTypes.bool,
@@ -31,9 +36,8 @@ export class ChatListComponent extends Component {
         };
         this.updateList = this.updateList.bind(this);
 
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
+        UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+
     }
 
     _onRefresh() {
@@ -101,7 +105,9 @@ export class ChatListComponent extends Component {
               refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh.bind(this)} />}>
-                {chatsToShow.length != 0 ? <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/> : chatsToShow}
+                {chatsToShow.length != 0 ?
+                  <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
+                  : chatsToShow}
             </ScrollView>
         );
     }

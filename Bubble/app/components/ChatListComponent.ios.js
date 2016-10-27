@@ -92,7 +92,7 @@ export class ChatListComponent extends Component {
               refreshControl={<RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh.bind(this)} />}>
-                {chatsToShow.length == 0 ? 
+                {chatsToShow.length != 0 ? 
                   <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
                   : chatsToShow}
             </ScrollView>

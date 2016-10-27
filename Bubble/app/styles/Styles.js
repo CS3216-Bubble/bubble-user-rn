@@ -73,13 +73,21 @@ export var Styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
     },
+    placeholderContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 100
+    },
     placeholder: {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
         fontSize: 24,
         fontWeight: '100',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        height: 30,
     },
     placeholderImage: {
         height: 128,
