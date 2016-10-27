@@ -6,6 +6,8 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 import moment from 'moment';
 
+import ChatCardComponent from './ChatCardComponent';
+
 export class CategoryListComponent extends Component {
     static propTypes = {
       selectedCategory: PropTypes.string,
@@ -84,20 +86,24 @@ export class CategoryListComponent extends Component {
           if (chatContainsSelectedCategory) {
               // Create chat card
               return (
-                  <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+                  <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={true} />
               );
           }
         }, this);
 
-        <ScrollView
-          style={{ flex: 1 }}
-          refreshControl={<RefreshControl
-          refreshing={this.state.refreshing}
-          onRefresh={this._onRefresh.bind(this)} />}>
-            {chatsToShow.length == 0 ?
-              <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
-              : chatsToShow}
-        </ScrollView>
+        return (
+          <ScrollView
+            style={{ flex: 1 }}
+            refreshControl={<RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)} />}>
+              {chatsToShow.length == 0 ?
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text>No chats found for {this.props.selectedCategory}.</Text>
+                </View>
+                : chatsToShow}
+          </ScrollView>
+        );
     }
 }
 
