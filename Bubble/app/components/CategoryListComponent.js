@@ -64,8 +64,16 @@ export class CategoryListComponent extends Component {
         var chatRooms = this.state.roomList.slice();
 
         chatRooms.sort(function(a, b) {
-                return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
-            });
+          // Sticky chat first
+          if (a.roomType == 'hot' && b.roomType != 'hot') {
+            return 1;
+          } else if ((b.roomType == 'hot' && a.roomType != 'hot')) {
+            return -1;
+          } else {
+            // Chat types are the same, sort by time
+            return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+          }
+        });
 
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function(chat) {
@@ -75,64 +83,21 @@ export class CategoryListComponent extends Component {
 
           if (chatContainsSelectedCategory) {
               // Create chat card
-              const categoriesToShow = chat.categories.map(function(category) {
-                return (
-                  <Button
-                    key={category}
-                    transparent
-                    onPress={() => this.updateSelectedCategory(category)}
-                    style={{justifyContent: 'center', alignItems: 'center'}}
-                    textStyle={{
-                      color: '#87838B', fontSize: 12,
-                      fontWeight: '400'
-                    }}>
-                      {category}
-                  </Button>
-                );
-              }, this);
-
-              const chatProps = { roomId: chat.roomId };
-
               return (
-                <Card key={chat.roomId} style={Styles.card}>
-                    <CardItem body button onPress={() => Actions.chatView(chatProps)}>
-                        <Text style={Styles.title} ellipsizeMode='middle' numberOfLines={1}>
-                            {chat.roomName}
-                        </Text>
-                        <Text style={Styles.description}>
-                            {chat.roomDescription}
-                        </Text>
-                        <View style={{flex: 1, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text note style={{ textAlign: 'right', fontSize: 10, fontWeight: '500' }} >
-                                {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
-                            </Text>
-                            <Text note style={{ textAlign: 'left', fontSize: 10, fontWeight: '500' }} >
-                                {chat.numUsers} of {chat.userLimit} users
-                            </Text>
-                        </View>
-                    </CardItem>
-                    { categoriesToShow.length > 0 ?
-                        <View style={Styles.categories}>
-                            {categoriesToShow}
-                        </View>
-                        : null
-                    }
-                </Card>
+                  <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
               );
           }
         }, this);
 
-        if (chatsToShow.length == 0) {
-            return (
-                null
-            );
-        } else {
-            return (
-                <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                    { chatsToShow }
-                </ScrollView>
-            );
-        }
+        <ScrollView
+          style={{ flex: 1 }}
+          refreshControl={<RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh.bind(this)} />}>
+            {chatsToShow.length == 0 ?
+              <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
+              : chatsToShow}
+        </ScrollView>
     }
 }
 

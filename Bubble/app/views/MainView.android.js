@@ -76,12 +76,16 @@ export class MainView extends Component {
   }
 
   onSearchBarTextChange = (text) => {
-    // console.log(text);
+    console.log(text);
     this.setState({ searchTerm: text });
   }
 
   onCreateChatPressed = () => {
     Actions.chatFormView({isBackButtonVisible: true});
+  }
+
+  clearSearchBar = () => {
+    this.setState({ searchTerm: '' });
   }
 
   render() {
@@ -95,6 +99,7 @@ export class MainView extends Component {
             autoFocus: true,
             placeholder: 'Search',
             onChangeText: this.onSearchBarTextChange,
+            onSearchClosed: this.clearSearchBar,
           }}
           />
       );
@@ -113,7 +118,7 @@ export class MainView extends Component {
           <View style={{ flex: 1 }}>
             <Tabs theme={CustomTheme} onChangeTab={this.onChangeTab}>
               <ChatListComponent tabLabel='All' showOpenChatsOnly={false} searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed}/>
-              <ChatListComponent tabLabel='Open' showOpenChatsOnly={true} onCreateChatPressed={this.onCreateChatPressed} />
+              <ChatListComponent tabLabel='Open' showOpenChatsOnly={true} searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed} />
               <SettingsComponent tabLabel='Settings' user={this.state.user} />
             </Tabs>
           </View>

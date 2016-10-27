@@ -68,15 +68,23 @@ export class ChatListComponent extends Component {
         var chatRooms = this.state.roomList.slice();
 
         chatRooms.sort(function (a, b) {
+          // Sticky chat first
+          if (a.roomType == 'hot' && b.roomType != 'hot') {
+            return 1;
+          } else if ((b.roomType == 'hot' && a.roomType != 'hot')) {
+            return -1;
+          } else {
+            // Chat types are the same, sort by time
             return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+          }
         });
 
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function (chat) {
 
             const chatContainsSearchTerm =
-                (chat.roomName.indexOf(this.props.searchTerm) > -1 ||
-                    chat.roomDescription.indexOf(this.props.searchTerm) > -1);
+                (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
+                 chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
             if (chatContainsSearchTerm) {
                 // Create chat card
@@ -86,17 +94,32 @@ export class ChatListComponent extends Component {
             }
         }, this);
 
-        return (
-            <ScrollView
-              style={{ flex: 1 }}
-              refreshControl={<RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh.bind(this)} />}>
-                {chatsToShow.length == 0 ? 
-                  <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
-                  : chatsToShow}
-            </ScrollView>
-        );
+        // If no search results found
+        if (chatsToShow.length == 0 && this.props.searchTerm != '') {
+            return (
+              <ScrollView
+                style={{ flex: 1 }}
+                refreshControl={<RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)} />}>
+                  <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                      <Text>No results found for {this.props.searchTerm}.</Text>
+                  </View>
+              </ScrollView>
+            );
+        } else {
+            return (
+                <ScrollView
+                  style={{ flex: 1 }}
+                  refreshControl={<RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)} />}>
+                    {chatsToShow.length == 0 ?
+                      <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
+                      : chatsToShow}
+                </ScrollView>
+            );
+        }
     }
 }
 

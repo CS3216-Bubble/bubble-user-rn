@@ -37,6 +37,10 @@ export default class ChatListView extends Component {
       });
     }
 
+    clearSearchBar = () => {
+      this.setState({searchTerm: ''});
+    }
+
     render() {
         const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
@@ -56,6 +60,7 @@ export default class ChatListView extends Component {
                       value={this.state.searchTerm}
                       onChangeText={this.onSearchBarTextChange}
                       style={{paddingBottom: 10}}/>
+                    <Icon name='ios-close' onPress={this.clearSearchBar}/>
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
                     <Text style={{color:'#0E7AFE'}}>Search</Text>
