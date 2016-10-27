@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, UIManager } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, InputGroup, Input } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
@@ -19,9 +19,6 @@ export default class ChatListView extends Component {
           searchTerm: '',
           showCategoryFilter: true
         };
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
     }
 
     componentWillReceiveProps(props) {
@@ -53,20 +50,14 @@ export default class ChatListView extends Component {
                 <Header searchBar rounded>
                   <InputGroup>
                     <Icon name='ios-search' />
-                    {Platform.OS == 'ios' && <Input
+                    <Input
                       placeholder='Search'
                       value={this.state.searchTerm}
                       onChangeText={this.onSearchBarTextChange}
-                      style={{paddingBottom: 10}}/>}
-                    {Platform.OS == 'android' && <Input
-                      placeholder='Search'
-                      value={this.state.searchTerm}
-                      onChangeText={this.onSearchBarTextChange}
-                      />} 
-                    
+                      style={{paddingBottom: 10}}/>
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
-                    <Icon size={30} name='ios-create-outline' color="#0E7AFE"/>
+                    <Text style={{color:'#0E7AFE'}}>Search</Text>
                   </Button>
                 </Header>
                 <View style={{flex:1}}>
