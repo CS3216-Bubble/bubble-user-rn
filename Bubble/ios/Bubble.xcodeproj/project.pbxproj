@@ -29,6 +29,7 @@
 		1BCC8CE84976484FBECAF656 /* Comic Sans MS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 78D91F4F3CBD417E8DA71509 /* Comic Sans MS.ttf */; };
 		1BD73F26EA334CE0BABD78D3 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 638E8FC8281A4F918490FB34 /* FontAwesome.ttf */; };
 		31319ADBD3874BAEA47B5B6E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAFE8BBD4FCF46A1A26FACE4 /* Foundation.ttf */; };
+		32037B151DC240C50058E137 /* libRCTKeyboardToolbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32037B141DC240A00058E137 /* libRCTKeyboardToolbar.a */; };
 		488FACEB23964795A1F0FE5D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37B18EDA60A5454BB94864E9 /* MaterialIcons.ttf */; };
 		4F69B5CCA6E74E36BE7D2D36 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB1976F5344D48F4B5D24C55 /* Zocial.ttf */; };
 		55F8559F6E2F408CA8E3322D /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07470D247CF44E4580CA8F42 /* Andale Mono.ttf */; };
@@ -112,6 +113,13 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		32037B131DC240A00058E137 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 32037B0F1DC240A00058E137 /* RCTTextInputUtils.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EADF3C831BEE147600DCD186;
+			remoteInfo = RCTKeyboardToolbar;
+		};
 		4662831D1DB9477C00A4AB2C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 69EA544642E342C99263B00B /* RCTBEEPickerManager.xcodeproj */;
@@ -173,6 +181,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Bubble/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Bubble/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		32037B0F1DC240A00058E137 /* RCTTextInputUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTTextInputUtils.xcodeproj; path = "../node_modules/react-native-textinput-utils/RCTTextInputUtils.xcodeproj"; sourceTree = "<group>"; };
 		37B18EDA60A5454BB94864E9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		41453B7B9AD04A1F9E402A4B /* Arial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Arial.ttf; path = "../node_modules/native-base/Fonts/Arial.ttf"; sourceTree = "<group>"; };
 		608BC08E9D7346F1BA59ED71 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -217,6 +226,7 @@
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
+				32037B151DC240C50058E137 /* libRCTKeyboardToolbar.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
@@ -326,6 +336,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		32037B101DC240A00058E137 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				32037B141DC240A00058E137 /* libRCTKeyboardToolbar.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		466283191DB9477A00A4AB2C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -411,6 +429,7 @@
 		B2425F9E222C43FA81AF311F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				32037B0F1DC240A00058E137 /* RCTTextInputUtils.xcodeproj */,
 				8EA280A87B8F40D8AB5E3BFA /* Entypo.ttf */,
 				86D5FC1D24E847F0B83A5FA9 /* EvilIcons.ttf */,
 				638E8FC8281A4F918490FB34 /* FontAwesome.ttf */,
@@ -538,6 +557,10 @@
 					ProjectRef = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
 				},
 				{
+					ProductGroup = 32037B101DC240A00058E137 /* Products */;
+					ProjectRef = 32037B0F1DC240A00058E137 /* RCTTextInputUtils.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302E01ABCB9EE00DB3ED1 /* Products */;
 					ProjectRef = 00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */;
 				},
@@ -621,6 +644,13 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		32037B141DC240A00058E137 /* libRCTKeyboardToolbar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTKeyboardToolbar.a;
+			remoteRef = 32037B131DC240A00058E137 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4662831E1DB9477C00A4AB2C /* libRCTBEEPickerManager.a */ = {

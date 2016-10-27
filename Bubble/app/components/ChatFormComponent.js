@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { ScrollView } from 'react-native';
-import { List, ListItem, Icon, Input, InputGroup, Text, Button, CheckBox } from 'native-base';
-import Picker from 'react-native-picker';
+import { ScrollView, View } from 'react-native';
+import { List, ListItem, Icon, Input, InputGroup, Text, Button } from 'native-base';
+import MultipleChoice from 'react-native-multiple-choice';
+
+import Globals from '../globals';
 
 export default class ChatFormComponent extends Component {
 
@@ -16,16 +18,10 @@ export default class ChatFormComponent extends Component {
     description: '',
     numUsers: '2',
     categories: [],
-    isCheckboxSelected: [],
   }
 
   constructor(props) {
     super(props);
-
-    // Init checkbox state array
-    var isCheckboxSelected = new Array(this.state.categoryNames.length);
-    isCheckboxSelected.fill(false);
-    this.state.isCheckboxSelected = isCheckboxSelected;
   }
 
   onNameChange = (name) => {
@@ -38,12 +34,36 @@ export default class ChatFormComponent extends Component {
     this.onFormChange();
   }
 
-  onNumUsersChange = (numUsers) => {
-    this.setState({numUsers: numUsers});
+  onNumUsersChange = (number) => {
+    console.log(number);
+    // Remove non-numeric characters
+    number = number.replace(/\D/g,'');
+
+    var int = parseInt(number);
+
+    // Enforce user limit
+    if (int > Globals.MAX_USERS) {
+      number = '' + Globals.MAX_USERS;
+    } else if (int < Globals.MIN_USERS || number == '') {
+      number = '' + Globals.MIN_USERS;
+    }
+
+    this.setState({numUsers: number});
     this.onFormChange();
   }
 
-  onCategoriesChange = (categories) => {
+  onSelectCategory = (category) => {
+    var categories = this.state.categories;
+    var index = categories.indexOf(category);
+
+    if (index > -1) { // Category has been selected
+      // Remove the category
+      categories.splice(index, 1);
+    } else {
+      // Add the category
+      categories.push(category);
+    }
+
     this.setState({categories: categories});
     this.onFormChange();
   }
@@ -52,60 +72,7 @@ export default class ChatFormComponent extends Component {
     this.props.onFormChange(this.state);
   }
 
-  getSelectedCategories = (checkboxState) => {
-    var result = [];
-    for (var i = 0; i < checkboxState.length; i++) {
-      if (checkboxState[i]) {
-        result.push(this.state.categoryNames[i]);
-      }
-    }
-    return result;
-  }
-
-  onCheckboxSelected = (index) => {
-    var newState = this.state.isCheckboxSelected;
-    newState[index] = !newState[index];
-
-    var categories = this.getSelectedCategories(newState);
-
-    this.setState({isCheckboxSelected: newState});
-    this.setState({categories: categories});
-
-    this.onFormChange();
-  }
-
-  callPicker = () => {
-    const MIN_USERS = 2;
-    const MAX_USERS = 10;
-
-    let values = [];
-    for (var i = MIN_USERS; i < MAX_USERS; i++) {
-        values.push(i);
-    }
-
-    Picker.init({
-        pickerData: values,
-        selectedValue: [MIN_USERS],
-        pickerConfirmBtnText: 'Confirm',
-        pickerCancelBtnText: 'Cancel',
-        pickerTitleText: 'Select number of users',
-        onPickerConfirm: (data) => {
-          this.onNumUsersChange(data.pop());
-        }
-    });
-    Picker.show();
-  }
-
   render() {
-    const categories = this.state.categoryNames.map(function(name, index) {
-      return (
-        <ListItem key={index} button onPress={() => this.onCheckboxSelected(index)}>
-            <CheckBox checked={this.state.isCheckboxSelected[index]} />
-            <Text>{name}</Text>
-        </ListItem>
-      );
-    }, this);
-
     return (
       <ScrollView>
         <List>
@@ -129,16 +96,28 @@ export default class ChatFormComponent extends Component {
             </InputGroup>
           </ListItem>
 
-          <ListItem iconLeft button onPress={this.callPicker}>
-            <Icon name='ios-person' />
-            <Text>{this.state.numUsers}</Text>
+          <ListItem iconLeft>
+            <InputGroup>
+              <Icon name='ios-person' />
+              <Input
+                keyboardType='numeric'
+                value={this.state.numUsers}
+                onChangeText={this.onNumUsersChange}
+                placeholder='No. of Users'
+              />
+            </InputGroup>
           </ListItem>
 
-          <ListItem divider>
+          <ListItem itemDivider>
             <Text>Categories</Text>
           </ListItem>
-          { categories }
         </List>
+        <View style={{paddingLeft: 20}}>
+          <MultipleChoice
+            options={Globals.CATEGORIES}
+            onSelection={this.onSelectCategory}
+            />
+        </View>
       </ScrollView>
     );
   }

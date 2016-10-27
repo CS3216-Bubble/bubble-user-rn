@@ -173,5 +173,20 @@ export var Styles = StyleSheet.create({
         fontSize: 8,
         fontWeight: '400',
         paddingTop: 2
+    },
+    formContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
+    },
+    formRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    formRowColumn: {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
     }
 });

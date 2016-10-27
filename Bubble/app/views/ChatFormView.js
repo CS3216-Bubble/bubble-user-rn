@@ -40,7 +40,7 @@ export default class ChatFormView extends Component {
   }
 
   render() {
-      const fontStyle = Platform.ios ? {color:'#0E7AFE'} : {color:'#FFFFFF'};
+      const fontStyle = Platform.OS === 'ios' ? {color:'#0E7AFE'} : {color:'#FFFFFF'};
 
       return (
           <Container theme={CustomTheme}>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, View, StyleSheet, Text } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
 
-const splashScreenDelay = 2000;
+const splashScreenDelay = 0;
 
 export default class LandingView extends Component {
     render() {
