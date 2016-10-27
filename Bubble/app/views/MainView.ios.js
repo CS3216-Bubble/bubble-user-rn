@@ -23,6 +23,14 @@ export default class MainView extends Component {
                 return (
                     <ChatListView key="open" title="Open Chats" showOpenChatsOnly={true} />
                 );
+            case 'create':
+                return (
+                    <ChatFormView key="open" title="Create Chat" />
+                );
+            case 'info':
+                return (
+                    <InformationView key="open" title="Useful Info" />
+                );
             case 'settings':
                 return (
                     <SettingsView />
@@ -51,13 +59,37 @@ export default class MainView extends Component {
                     {this._renderContent()}
                 </Icon.TabBarItemIOS>
                 <Icon.TabBarItemIOS
-                    title="Open"
+                    title="My Chats"
                     iconName="commenting"
                     iconSize={this.state.iconSize}
                     selected={this.state.selectedTab === 'open'}
                     onPress={() => {
                         this.setState({
                             selectedTab: 'open',
+                        });
+                    } }>
+                    {this._renderContent()}
+                </Icon.TabBarItemIOS>
+                <Icon.TabBarItemIOS
+                    title="Create"
+                    iconName="plus"
+                    iconSize={this.state.iconSize}
+                    selected={this.state.selectedTab === 'create'}
+                    onPress={() => {
+                        this.setState({
+                            selectedTab: 'create',
+                        });
+                    } }>
+                    {this._renderContent()}
+                </Icon.TabBarItemIOS>
+                <Icon.TabBarItemIOS
+                    title="Info"
+                    iconName="info-circle"
+                    iconSize={this.state.iconSize}
+                    selected={this.state.selectedTab === 'info'}
+                    onPress={() => {
+                        this.setState({
+                            selectedTab: 'info',
                         });
                     } }>
                     {this._renderContent()}

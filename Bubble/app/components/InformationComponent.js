@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, ScrollView, View, Text } from 'react-native';
-
-import ProfileComponent from './ProfileComponent';
+import { List, ListItem } from 'native-base';
 
 export default class SettingsComponent extends Component {
   static propTypes = {
@@ -14,17 +13,13 @@ export default class SettingsComponent extends Component {
 
   render() {
       return (
-        <View style={styles.fillContainer}>
-          <ProfileComponent user={this.props.user} style={styles.profileContainer}/>
-          <ScrollView style={styles.settingsContainer}>
-            <View style={styles.customListItemRight}>
-              <Text style={styles.customListItemText}>Notifications</Text>
-              <Switch
-                onValueChange={(value) => this.setState({isNotificationsOn: value})}
-                value={this.state.isNotificationsOn} />
-            </View>
-          </ScrollView>
-        </View>
+        <ScrollView style={styles.fillContainer}>
+          <List>
+            <ListItem>
+              <Text></Text>
+            </ListItem>
+          </List>
+        </ScrollView>
       );
   }
 }
