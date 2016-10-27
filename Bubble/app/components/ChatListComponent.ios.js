@@ -69,10 +69,10 @@ export class ChatListComponent extends Component {
 
         chatRooms.sort(function (a, b) {
           // Sticky chat first
-          if (a.roomType == 'hot' && b.roomType != 'hot') {
-            return 1;
-          } else if ((b.roomType == 'hot' && a.roomType != 'hot')) {
+          if (a.roomType == 'HOT' && b.roomType != 'HOT') {
             return -1;
+          } else if ((b.roomType == 'HOT' && a.roomType != 'HOT')) {
+            return 1;
           } else {
             // Chat types are the same, sort by time
             return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();

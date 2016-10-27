@@ -83,7 +83,7 @@ export default class ChatCardComponent extends Component {
                           <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
                               {chat.roomName}
                           </Text>
-                          { chat.roomType == 'hot' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
+                          { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
                       </View>
                       <Text style={Styles.cardDescription}>
                           {chat.roomDescription}
