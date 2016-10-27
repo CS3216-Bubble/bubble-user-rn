@@ -67,11 +67,72 @@ export var Styles = StyleSheet.create({
         borderRadius: 18,
         justifyContent: 'space-between'
     },
-    card: {
+    cardContainer: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        borderBottomColor: '#bbb',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        padding: 10,
+    },
+    cardThumbnail: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 60,
+        height: 60,
+        backgroundColor: '#A7DBD8',
+        borderRadius: 30,
+        padding: 20,
+        margin: 5
+    },
+    cardMainRow: {
+        flexDirection: 'row',
+        height: 70,
+    },
+    cardMainRowText: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        paddingLeft: 5,
+        paddingRight: 5,
+    },
+    cardTitle: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    cardTitleText: {
+        flex: 1,
+        fontSize: 20,
+        fontWeight: '500',
+    },
+    cardSubRow: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 20,
-        marginRight: 20,
+    },
+    cardSubRowTextLeft: {
+        flex: 1,
+        fontSize: 12,
+        textAlign: 'left'
+    },
+    cardSubRowRight: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    cardSubRowTextRight: {
+        fontSize: 12,
+        marginRight: 10,
+    },
+    cardFooterRow: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     placeholderContainer: {
       flex: 1,
