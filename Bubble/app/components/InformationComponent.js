@@ -2,10 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, ScrollView, View, Text } from 'react-native';
 import { List, ListItem } from 'native-base';
 
-export default class SettingsComponent extends Component {
-  static propTypes = {
-    user: PropTypes.object.isRequired,
-  }
+export default class InformationComponent extends Component {
 
   state = {
     isNotificationsOn: true

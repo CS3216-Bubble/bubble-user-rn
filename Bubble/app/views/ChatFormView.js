@@ -35,12 +35,11 @@ export default class ChatFormView extends Component {
           <Container>
               <Header>
                   <Title>Create Chat</Title>
-                  <Button transparent onPress={Actions.pop}>
-                      <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/>
-                      <Text>Chats</Text>
+                  <Button transparent>
+                      <Text></Text>
                   </Button>
                   <Button transparent onPress={this.createChat}>
-                      <Text>Create</Text>
+                      <Text style={{color:'#0E7AFE'}}>Create</Text>
                   </Button>
               </Header>
               <Content>

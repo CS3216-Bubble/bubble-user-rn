@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect as connectRedux } from 'react-redux';
 
 import ChatListView from './ChatListView';
+import ChatFormView from './ChatFormView';
+import InformationView from './InformationView';
 import SettingsView from './SettingsView';
 
 export default class MainView extends Component {

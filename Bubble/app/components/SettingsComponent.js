@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, View, Switch, Text } from 'react-native';
 
 import ProfileComponent from './ProfileComponent';
 

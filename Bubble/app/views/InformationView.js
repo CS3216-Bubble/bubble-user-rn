@@ -8,7 +8,7 @@ import { Actions } from 'react-native-router-flux';
 import InformationComponent from '../components/InformationComponent';
 import { connect as connectRedux } from 'react-redux';
 
-export default class InformationView extends Component {
+export class InformationView extends Component {
 
     render() {
         return (
