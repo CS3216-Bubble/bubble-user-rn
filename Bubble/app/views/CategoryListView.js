@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
-import CategoryDetailComponent from '../components/CategoryDetailComponent';
+import CategoryListComponent from '../components/CategoryListComponent';
 
-export default class CategoryDetailView extends Component {
+export default class CategoryListView extends Component {
   static propTypes = {
     selectedCategory: PropTypes.string.isRequired,
   }
@@ -19,7 +19,7 @@ export default class CategoryDetailView extends Component {
               <Title>{this.props.selectedCategory}</Title>
             </Header>
             <Content>
-              <CategoryDetailComponent
+              <CategoryListComponent
                 selectedCategory={this.props.selectedCategory}
                 showOpenChatsOnly={this.props.showOpenChatsOnly} />
             </Content>

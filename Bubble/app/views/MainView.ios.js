@@ -15,23 +15,45 @@ export default class MainView extends Component {
         selectedTab: 'all',
     };
 
+    onCreateChatPressed = () => {
+      console.log('pressed');
+      this.setState({selectedTab: 'create'});
+    }
+
     _renderContent = () => {
         switch (this.state.selectedTab) {
             case 'all':
                 return (
-                    <ChatListView key="all" title="All Chats" showOpenChatsOnly={false} />
+                    <ChatListView
+                      key="all"
+                      title="All Chats"
+                      showOpenChatsOnly={false}
+                      onCreateChatPressed={this.onCreateChatPressed}
+                    />
                 );
             case 'open':
                 return (
-                    <ChatListView key="open" title="Open Chats" showOpenChatsOnly={true} />
+                    <ChatListView
+                      key="open"
+                      title="Open Chats"
+                      showOpenChatsOnly={true}
+                      onCreateChatPressed={this.onCreateChatPressed}
+                    />
                 );
             case 'create':
                 return (
-                    <ChatFormView key="open" title="Create Chat" />
+                    <ChatFormView
+                      key="open"
+                      title="Create Chat"
+                      isBackButtonVisible={false}
+                    />
                 );
             case 'info':
                 return (
-                    <InformationView key="open" title="Useful Info" />
+                    <InformationView
+                      key="open"
+                      title="Useful Info"
+                    />
                 );
             case 'settings':
                 return (

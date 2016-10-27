@@ -85,7 +85,7 @@ export class ChatListComponent extends Component {
 
         const categoryButtons = Globals.CATEGORIES.map(function (name, index) {
             return (
-                <Button rounded info key={index} onPress={() => Actions.categoryDetailView({ selectedCategory: name })}>
+                <Button rounded info key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
                     <Text style={{ fontSize: 10, color: 'white', fontWeight: "600" }} >{name}</Text>
                 </Button>
             );
@@ -95,19 +95,15 @@ export class ChatListComponent extends Component {
             <View style={styles.categoryButtonContainer}>{categoryButtons}</View>
         );
 
-        if (chatsToShow.length == 0) {
-            return (<ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
-                <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
-            </ScrollView>);
-        } else {
-            return (
-                <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                    {this.props.searchTerm === '' ? categoryFilter : null}
-                    {chatsToShow}
-                </ScrollView>
-            );
-        }
+        return (
+            <ScrollView
+              style={{ flex: 1 }}
+              refreshControl={<RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)} />}>
+                {chatsToShow.length != 0 ? <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/> : chatsToShow}
+            </ScrollView>
+        );
     }
 }
 

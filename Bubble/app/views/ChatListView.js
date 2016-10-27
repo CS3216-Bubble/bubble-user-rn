@@ -10,6 +10,7 @@ export default class ChatListView extends Component {
     static propTypes = {
       title: PropTypes.string.isRequired,
       showOpenChatsOnly: PropTypes.bool.isRequired,
+      onCreateChatPressed: PropTypes.func.isRequired,
     }
 
     constructor(props, context) {
@@ -39,7 +40,7 @@ export default class ChatListView extends Component {
     render() {
         const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
-            <Button rounded info key={index} onPress={() => Actions.categoryDetailView({selectedCategory: name})}>
+            <Button rounded info key={index} onPress={() => Actions.categoryListView({selectedCategory: name})}>
                 <Text style={{fontSize: 10, color: 'white', fontWeight: "600"}} >{name}</Text>
             </Button>
           );
@@ -67,7 +68,8 @@ export default class ChatListView extends Component {
                   <ChatListComponent
                     refresh={this.state.refresh}
                     searchTerm={this.state.searchTerm}
-                    showOpenChatsOnly={this.props.showOpenChatsOnly} />
+                    showOpenChatsOnly={this.props.showOpenChatsOnly}
+                    onCreateChatPressed={this.props.onCreateChatPressed} />
                 </View>
             </Container>
         );

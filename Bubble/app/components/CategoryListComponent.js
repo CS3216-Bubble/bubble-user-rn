@@ -6,7 +6,7 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 import moment from 'moment';
 
-export class CategoryDetailComponent extends Component {
+export class CategoryListComponent extends Component {
     static propTypes = {
       selectedCategory: PropTypes.string,
     }
@@ -131,7 +131,6 @@ export class CategoryDetailComponent extends Component {
                 <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
                     { chatsToShow }
                 </ScrollView>
-
             );
         }
     }
@@ -145,4 +144,4 @@ function getList(state) {
     }
 }
 
-export default connectRedux(getList)(CategoryDetailComponent);
+export default connectRedux(getList)(CategoryListComponent);

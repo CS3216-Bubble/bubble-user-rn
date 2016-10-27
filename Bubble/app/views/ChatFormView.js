@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Text, View } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 import { Actions, ActionConst } from 'react-native-router-flux';
@@ -6,6 +6,10 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import ChatFormComponent from '../components/ChatFormComponent';
 
 export default class ChatFormView extends Component {
+  static propTypes = {
+    isBackButtonVisible: PropTypes.bool,
+  }
+
   constructor(props) {
     super(props);
 
@@ -35,8 +39,8 @@ export default class ChatFormView extends Component {
           <Container>
               <Header>
                   <Title>Create Chat</Title>
-                  <Button transparent>
-                      <Text></Text>
+                  <Button transparent onPress={Actions.pop}>
+                      { this.props.isBackButtonVisible ?<Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : null }
                   </Button>
                   <Button transparent onPress={this.createChat}>
                       <Text style={{color:'#0E7AFE'}}>Create</Text>

@@ -1,14 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
-import ChatCardComponent from './ChatCardComponent';
+
 import { Styles } from '../styles/Styles';
+
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 import moment from 'moment';
 
+import ChatCardComponent from './ChatCardComponent';
+import ChatPlaceholderComponent from './ChatPlaceholderComponent';
+
 export class ChatListComponent extends Component {
     static propTypes = {
+        onCreateChatPressed: PropTypes.func.isRequired,
         searchTerm: PropTypes.string,
         showOpenChatsOnly: PropTypes.bool,
         showCategoriesOnCard: PropTypes.bool,
@@ -81,21 +86,17 @@ export class ChatListComponent extends Component {
             }
         }, this);
 
-        // <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
-        // <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
-        if (chatsToShow.length == 0) {
-            return (<ScrollView contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: -100 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
-                <Text style={Styles.placeholder}> No ongoing chats yet.{'\n'}Create one now! </Text>
-            </ScrollView>);
-        } else {
-            return (
-                <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} />}>
-                    {chatsToShow}
-                </ScrollView>
-
-            );
-        }
+        return (
+            <ScrollView
+              style={{ flex: 1 }}
+              refreshControl={<RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)} />}>
+                {chatsToShow.length == 0 ? 
+                  <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
+                  : chatsToShow}
+            </ScrollView>
+        );
     }
 }
 

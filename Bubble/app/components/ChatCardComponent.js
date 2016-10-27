@@ -26,7 +26,7 @@ export default class ChatCardComponent extends Component {
             <Button
               key={category}
               transparent
-              onPress={() => Actions.categoryDetailView({selectedCategory: category})}
+              onPress={() => Actions.categoryListView({selectedCategory: category})}
               style={{justifyContent: 'center', alignItems: 'center'}}
               textStyle={{
                 color: '#87838B', fontSize: 12,
