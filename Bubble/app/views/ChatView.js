@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager, TextInput } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, Footer } from 'native-base';
+
 import { Actions } from 'react-native-router-flux';
+
+import CustomTheme from '../themes/bubble';
+
 import ChatComponent from '../components/ChatComponent';
 import UserActionModalComponent from '../components/UserActionModalComponent';
+
 import { Styles } from '../styles/Styles';
+
 import { connect as connectRedux } from 'react-redux';
+
 import dismissKeyboard from 'dismissKeyboard'
 
 var _ = require('lodash');
@@ -310,7 +317,7 @@ export class ChatView extends Component {
 
         else {
             return (
-                <Container>
+                <Container theme={CustomTheme}>
                     <Header>
                         <Button transparent onPress={this.onExit}>
                             <Icon size={30}

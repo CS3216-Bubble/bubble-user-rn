@@ -31,8 +31,9 @@ export default class ChatCardComponent extends Component {
               transparent
               onPress={(event) => {event.stopPropagation(); Actions.categoryListView({selectedCategory: category});}}
               textStyle={{
-                color: '#87838B', fontSize: 12,
-                fontWeight: '400'
+                color: Globals.CATEGORY_COLOURS[category],
+                fontSize: 12,
+                fontWeight: '500'
               }}>
                 {category}
             </Button>
@@ -41,35 +42,39 @@ export default class ChatCardComponent extends Component {
 
         var categoryName;
         if (chat.categories.length > 0) {
-          categoryName = chat.categories[0].toLowerCase();
+          categoryName = chat.categories[0];
         } else {
-          categoryName = 'default';
+          categoryName = 'Default';
         }
 
         // Image paths cannot be dynamic, so return the correct thumbnail
-        var thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/default.png')} /></View>);
+        var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} />);
         switch (categoryName) {
-          case 'advice':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/advice.png')} /></View>);
+          case 'Advice':
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} />);
             break;
-          case 'funny':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/funny.png')} /></View>);
+          case 'Funny':
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/funny.png')} />);
             break;
-          case 'nostalgia':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/nostalgia.png')} /></View>);
+          case 'Nostalgia':
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/nostalgia.png')} />);
             break;
-          case 'rant':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square square size={thumbnailSize} source={require('./img/rant.png')} /></View>);
+          case 'Rant':
+            thumbnail = (<Thumbnail square square size={thumbnailSize} source={require('../img/rant.png')} />);
             break;
-          case 'relationship':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/relationship.png')} /></View>);
+          case 'Relationship':
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/relationship.png')} />);
             break;
-          case 'school':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/school.png')} /></View>);
+          case 'School':
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/school.png')} />);
             break;
           default:
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/default.png')} /></View>);
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} />);
             break;
+        }
+
+        const thumbnailBackgroundStyle = {
+          backgroundColor: Globals.CATEGORY_BG_COLOURS[categoryName]
         }
 
         return (
@@ -77,7 +82,9 @@ export default class ChatCardComponent extends Component {
             <View key={chat.roomId} style={Styles.cardContainer}>
                   <View style={Styles.cardMainRow}>
                       <View>
-                        { thumbnail }
+                        <View style={[Styles.cardThumbnail, thumbnailBackgroundStyle]}>
+                          { thumbnail }
+                        </View>
                       </View>
                       <View style={Styles.cardMainRowText}>
                           <View style={Styles.cardTitle}>

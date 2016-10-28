@@ -89,7 +89,7 @@ export class ChatListComponent extends Component {
             if (chatContainsSearchTerm) {
                 // Create chat card
                 return (
-                        <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+                    <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
 
                 );
             }
@@ -102,7 +102,8 @@ export class ChatListComponent extends Component {
                 style={{ flex: 1 }}
                 refreshControl={<RefreshControl
                 refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh.bind(this)} />}>
+                onRefresh={this._onRefresh.bind(this)} />}
+                style={{backgroundColor: 'red'}}>
                   <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                       <Text>No results found for {this.props.searchTerm}.</Text>
                   </View>
@@ -114,7 +115,9 @@ export class ChatListComponent extends Component {
                   style={{ flex: 1 }}
                   refreshControl={<RefreshControl
                   refreshing={this.state.refreshing}
-                  onRefresh={this._onRefresh.bind(this)} />}>
+                  onRefresh={this._onRefresh.bind(this)}
+                  style={{marginTop: -15}}/>}
+                  >
                     {chatsToShow.length == 0 ?
                       <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
                       : chatsToShow}

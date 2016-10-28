@@ -11,7 +11,7 @@ export default class LandingView extends Component {
         }, splashScreenDelay);
         return (
             <View style={styles.splashContainer}>
-              <Image style={styles.splashImage} source={require('./img/logo_white.png')} />
+              <Image style={styles.splashImage} source={require('../img/logo_white.png')} />
             </View>
         );
     }
