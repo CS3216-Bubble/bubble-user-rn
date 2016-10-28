@@ -204,6 +204,8 @@ export const DISCONNECT = 'DISCONNECT'
 export const LISTEN_TO_CONNECT = 'LISTEN_TO_CONNECT'
 export const LISTEN_TO_DISCONNECT = 'LISTEN_TO_DISCONNECT'
 export const LISTEN_TO_TIMEOUT = 'LISTEN_TO_TIMEOUT'
+export const LISTEN_TO_RECONNECTING = 'LISTEN_TO_RECONNECTING'
+export const LISTEN_TO_RECONNECT_FAILED = 'LISTEN_TO_RECONNECT_FAILED'
 export const LISTEN_TO_ERROR = 'LISTEN_FOR_ERROR'
 export const CREATE_ROOM = 'CREATE_ROOM'
 export const LISTEN_TO_CREATE_ROOM = 'LISTEN_FOR_CREATE_ROOM'
@@ -230,6 +232,9 @@ export const FIND_COUNSELLOR = 'FIND_COUNSELLOR'
 export const LISTEN_TO_FIND_COUNSELLOR = 'LISTEN_TO_FIND_COUNSELLOR'
 export const CLAIM_ID = 'CLAIM_ID'
 export const LISTEN_TO_CLAIM_ID = 'LISTEN_TO_CLAIM_ID'
+export const MY_ROOMS = 'MY_ROOMS'
+export const LISTEN_TO_MY_ROOMS = 'LISTEN_TO_MY_ROOMS'
+export const REMOVE_LISTENERS = 'REMOVE_LISTENERS'
 
 // Action Creators
 export function connect() {
@@ -242,23 +247,33 @@ export function disconnect() {
         type: DISCONNECT
     }
 }
-export function listenToConnect(callbackSuccess, callbackFailure) {
+export function listenToConnect(callback) {
     return {
         type: CONNECT,
-        callbackSuccess: callbackSuccess,
-        callbackFailure: callbackFailure
+        callback: callback
     }
 }
-export function listenToDisconnect(callbackSuccess, callbackFailure) {
+export function listenToDisconnect(callback) {
     return {
         type: DISCONNECT,
-        callbackSuccess: callbackSuccess,
-        callbackFailure: callbackFailure
+        callback: callback
     }
 }
 export function listenToTimeout(callback) {
     return {
         type: LISTEN_TO_TIMEOUT,
+        callback: callback
+    }
+}
+export function listenToReconnecting(callback) {
+    return {
+        type: LISTEN_TO_RECONNECTING,
+        callback: callback
+    }
+}
+export function listenToReconnectFailed(callback) {
+    return {
+        type: LISTEN_TO_RECONNECT_FAILED,
         callback: callback
     }
 }
@@ -633,6 +648,30 @@ export function claimID(oldSocketId) {
 export function listenToClaimID(callback) {
     return {
         type: LISTEN_TO_CLAIM_ID,
+        callback: callback
+    }
+}
+
+// myRooms requires no payload
+export function myRooms() {
+    return {
+        type: MY_ROOMS
+    }
+}
+
+// listenToMyRooms provides to emitter:
+//     roomIds: string[]
+export function listenToMyRooms(callback) {
+    return {
+        type: LISTEN_TO_MY_ROOMS,
+        callback: callback
+    }
+}
+
+// removeListeners helps to remove socket listeners that binds to component callbacks
+export function removeListeners(callback) {
+    return {
+        type: REMOVE_LISTENERS,
         callback: callback
     }
 }
