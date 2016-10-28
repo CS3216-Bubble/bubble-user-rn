@@ -31,8 +31,9 @@ export default class ChatCardComponent extends Component {
               transparent
               onPress={(event) => {event.stopPropagation(); Actions.categoryListView({selectedCategory: category});}}
               textStyle={{
-                color: '#87838B', fontSize: 12,
-                fontWeight: '400'
+                color: Globals.CATEGORY_COLOURS[category],
+                fontSize: 12,
+                fontWeight: '500'
               }}>
                 {category}
             </Button>
