@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform } from 'react-native';
+import { StyleSheet, Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform, TouchableWithoutFeedback } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
 
 import { Styles } from '../styles/Styles';
@@ -97,7 +97,11 @@ export class ChatListComponent extends Component {
                if (chatContainsSearchTerm) { // && filterForOpenChats) {
                 // Create chat card
                 return (
-                    <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+                                        <TouchableWithoutFeedback key={chat.roomId} onPress={()=>Actions.chatView({roomId: chat.roomId, userId: this.props.socket.id, chat: chat})}>
+                    <View>
+                        <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+                        </View>
+                    </TouchableWithoutFeedback>
                 );
             }
         }, this);
