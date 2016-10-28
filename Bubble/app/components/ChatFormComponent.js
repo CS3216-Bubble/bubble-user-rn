@@ -72,17 +72,23 @@ export default class ChatFormComponent extends Component {
     this.props.onFormChange(this.state);
   }
 
+  isNameValid = () => {
+    return this.state.name != '';
+  }
+
   render() {
     return (
       <ScrollView>
         <List>
           <ListItem>
-            <InputGroup>
+            <InputGroup iconRight={!this.isNameValid()} error={!this.isNameValid()}>
               <Input
                 value={this.state.name}
                 onChangeText={this.onNameChange}
                 placeholder='Name'
               />
+              { this.isNameValid() ? null :
+                <Icon name='ios-close-circle' style={{color:'red'}}/>}
             </InputGroup>
           </ListItem>
 

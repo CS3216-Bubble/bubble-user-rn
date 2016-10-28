@@ -18,9 +18,9 @@ export default class ChatFormView extends Component {
     super(props);
 
     if (!this.props.isBackButtonVisible) {
-      this.state = {isBackButtonVisible: false, form: {}};
+      this.state = {isBackButtonVisible: false, form: {}, isFormValid: false};
     } else {
-      this.state = {isBackButtonVisible: this.props.isBackButtonVisible, form: {}};
+      this.state = {isBackButtonVisible: this.props.isBackButtonVisible, form: {}, isFormValid: false};
     }
 
     this.onFormChange = this.onFormChange.bind(this);
@@ -28,10 +28,14 @@ export default class ChatFormView extends Component {
   }
 
   onFormChange(form) {
-    this.setState({form: form});
+    this.setState({form: form, isFormValid: this.isFormValid(form)});
   }
 
-  createChat() {
+  isFormValid = (form) => {
+    return form.name != '' && form.numUsers != '';
+  }
+
+  createChat = () => {
     // Validate form first
 
     // Remove this ChatFormView from nav stack and replace with chat view
@@ -40,7 +44,9 @@ export default class ChatFormView extends Component {
   }
 
   render() {
-      const fontStyle = Platform.OS === 'ios' ? {color:'#0E7AFE'} : {color:'#FFFFFF'};
+      const fontStyle = this.state.isFormValid ?
+                    (Platform.OS === 'ios' ? {color:'#0E7AFE'} : {color:'#FFFFFF'})
+                    : {color: '#999999'};
 
       return (
           <Container theme={CustomTheme}>
@@ -49,7 +55,7 @@ export default class ChatFormView extends Component {
                   <Button transparent onPress={Actions.pop}>
                       { this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : <Text></Text> }
                   </Button>
-                  <Button transparent onPress={this.createChat}>
+                  <Button disabled={!this.state.isFormValid} transparent onPress={this.createChat}>
                       <Text style={fontStyle}>Create</Text>
                   </Button>
               </Header>
