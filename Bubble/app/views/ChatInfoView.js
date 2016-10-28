@@ -5,6 +5,8 @@ import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 
 import { Actions } from 'react-native-router-flux';
 
+import CustomTheme from '../themes/bubble';
+
 import ChatInfoComponent from '../components/ChatInfoComponent';
 
 export default class ChatInfoView extends Component {
@@ -14,10 +16,9 @@ export default class ChatInfoView extends Component {
 
     render() {
         const buttonColor = Platform.OS === 'ios' ? '#0E7AFE' : '#FFFFFF';
-        
-        return (
-            <Container>
 
+        return (
+            <Container theme={CustomTheme}>
                 <Header>
                     <Button transparent onPress={Actions.pop}>
                         <Icon size={30} name='ios-arrow-back' color={buttonColor}/>
