@@ -89,7 +89,7 @@ var styles = StyleSheet.create({
       flexWrap: 'wrap',
       padding: 10,
       borderBottomColor: '#bbb',
-      borderBottomWidth: StyleSheet.hairlineWidth
+      borderBottomWidth: StyleSheet.hairlineWidth,
     },
     categoryButton: {
       marginBottom: 10,
