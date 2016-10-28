@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform } from 'react-native';
+import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform, TouchableWithoutFeedback } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
 
 import { Styles } from '../styles/Styles';
@@ -89,7 +89,8 @@ export class ChatListComponent extends Component {
             if (chatContainsSearchTerm) {
                 // Create chat card
                 return (
-                    <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+                        <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+
                 );
             }
         }, this);

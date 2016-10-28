@@ -29,7 +29,7 @@ export default class ChatCardComponent extends Component {
               small
               key={category}
               transparent
-              onPress={() => Actions.categoryListView({selectedCategory: category})}
+              onPress={(event) => {event.stopPropagation(); Actions.categoryListView({selectedCategory: category});}}
               textStyle={{
                 color: '#87838B', fontSize: 12,
                 fontWeight: '400'
@@ -47,71 +47,69 @@ export default class ChatCardComponent extends Component {
         }
 
         // Image paths cannot be dynamic, so return the correct thumbnail
-        var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} />);
+        var thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/default.png')} /></View>);
         switch (categoryName) {
           case 'advice':
-            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} />);
+            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/advice.png')} /></View>);
             break;
           case 'funny':
-            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/funny.png')} />);
+            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/funny.png')} /></View>);
             break;
           case 'nostalgia':
-            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/nostalgia.png')} />);
+            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/nostalgia.png')} /></View>);
             break;
           case 'rant':
-            thumbnail = (<Thumbnail square square size={thumbnailSize} source={require('../img/rant.png')} />);
+            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square square size={thumbnailSize} source={require('./img/rant.png')} /></View>);
             break;
           case 'relationship':
-            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/relationship.png')} />);
+            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/relationship.png')} /></View>);
             break;
           case 'school':
-            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/school.png')} />);
+            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/school.png')} /></View>);
             break;
           default:
-            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} />);
+            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/default.png')} /></View>);
             break;
         }
 
         return (
-          <View key={chat.roomId} style={Styles.cardContainer}>
-              <TouchableHighlight onPress={() => Actions.chatView(chatProps)} underlayColor="#69D2E7">
-                <View style={Styles.cardMainRow}>
-                    <View>
-                      <View style={Styles.cardThumbnail}>
+          <TouchableHighlight key={chat.roomId} onPress={() => {Actions.chatView(chatProps);}} underlayColor="#69D2E7">
+            <View key={chat.roomId} style={Styles.cardContainer}>
+                  <View style={Styles.cardMainRow}>
+                      <View>
                         { thumbnail }
                       </View>
-                    </View>
-                    <View style={Styles.cardMainRowText}>
-                        <View style={Styles.cardTitle}>
-                            <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
-                                {chat.roomName}
-                            </Text>
-                            { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
-                        </View>
-                        <Text style={Styles.cardDescription}>
-                            {chat.roomDescription}
-                        </Text>
-                        <View style={Styles.cardSubRow}>
-                            <Text note style={Styles.cardSubRowTextLeft} >
-                                {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
-                            </Text>
-                            <View style={Styles.cardSubRowRight}>
-                              <Text note style={Styles.cardSubRowTextRight}>
-                                  {chat.numUsers} / {chat.userLimit}
+                      <View style={Styles.cardMainRowText}>
+                          <View style={Styles.cardTitle}>
+                              <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
+                                  {chat.roomName}
                               </Text>
-                              <Icon name='user' style={{fontSize: 16, color: '#BCBCBC'}}/>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-              </TouchableHighlight>
-              { categoriesToShow.length > 0 ?
-                  <View style={Styles.cardFooterRow}>
-                      {categoriesToShow}
+                              { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
+                          </View>
+                          <Text style={Styles.cardDescription}>
+                              {chat.roomDescription}
+                          </Text>
+                          <View style={Styles.cardSubRow}>
+                              <Text note style={Styles.cardSubRowTextLeft} >
+                                  {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
+                              </Text>
+                              <View style={Styles.cardSubRowRight}>
+                                <Text note style={Styles.cardSubRowTextRight}>
+                                    {chat.numUsers} / {chat.userLimit}
+                                </Text>
+                                <Icon name='user' style={{fontSize: 16, color: '#BCBCBC'}}/>
+                              </View>
+                          </View>
+                      </View>
                   </View>
-                  : null
-              }
-          </View>
+                { categoriesToShow.length > 0 ?
+                    <View style={Styles.cardFooterRow}>
+                        {categoriesToShow}
+                    </View>
+                    : null
+                }
+            </View>
+          </TouchableHighlight>
         );
     }
 }

@@ -17,7 +17,7 @@ import OnboardingView from './app/views/OnboardingView';
 
 import { Provider } from 'react-redux';
 import { connect as connectRedux } from 'react-redux';
-import { connect, listRooms } from './app/actions/BubbleSocketActions';
+import { connect, listRooms } from './app/actions/Actions';
 import Store from './app/stores/Store';
 
 // Styles
