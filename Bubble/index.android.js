@@ -25,9 +25,11 @@ import { Styles } from './app/styles/Styles';
 
 // console.ignoredYellowBox = ['Warning: setState(...)'];
 
+import PushController from './app/PushController';
 export default class Bubble extends Component {
     render() {
         return (
+          <PushController>
             <Provider store={Store}>
                 <Router>
 
@@ -48,6 +50,7 @@ export default class Bubble extends Component {
                     </Scene>
                 </Router>
             </Provider>
+          </PushController>
 
         );
     }
