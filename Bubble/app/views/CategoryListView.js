@@ -37,6 +37,9 @@ export default class CategoryListView extends Component {
       case 'school':
         image = (<Image source={require('../img/school_bg.png')} />);
         break;
+      default:
+        image = (<Image source={require('../img/default_bg.png')} />);
+        break;
     }
 
     var thumbnail = (<Thumbnail style={styles.thumbnail} square size={thumbnailSize} source={require('../img/default.png')} />);

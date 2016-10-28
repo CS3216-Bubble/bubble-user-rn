@@ -42,30 +42,30 @@ export default class ChatCardComponent extends Component {
 
         var categoryName;
         if (chat.categories.length > 0) {
-          categoryName = chat.categories[0].toLowerCase();
+          categoryName = chat.categories[0];
         } else {
-          categoryName = 'default';
+          categoryName = 'Default';
         }
 
         // Image paths cannot be dynamic, so return the correct thumbnail
         var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} />);
         switch (categoryName) {
-          case 'advice':
+          case 'Advice':
             thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} />);
             break;
-          case 'funny':
+          case 'Funny':
             thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/funny.png')} />);
             break;
-          case 'nostalgia':
+          case 'Nostalgia':
             thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/nostalgia.png')} />);
             break;
-          case 'rant':
+          case 'Rant':
             thumbnail = (<Thumbnail square square size={thumbnailSize} source={require('../img/rant.png')} />);
             break;
-          case 'relationship':
+          case 'Relationship':
             thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/relationship.png')} />);
             break;
-          case 'school':
+          case 'School':
             thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/school.png')} />);
             break;
           default:
@@ -73,12 +73,16 @@ export default class ChatCardComponent extends Component {
             break;
         }
 
+        const thumbnailBackgroundStyle = {
+          backgroundColor: Globals.CATEGORY_BG_COLOURS[categoryName]
+        }
+
         return (
           <TouchableHighlight key={chat.roomId} onPress={() => {Actions.chatView(chatProps);}} underlayColor="#69D2E7">
             <View key={chat.roomId} style={Styles.cardContainer}>
                   <View style={Styles.cardMainRow}>
                       <View>
-                        <View style={Styles.cardThumbnail}>
+                        <View style={[Styles.cardThumbnail, thumbnailBackgroundStyle]}>
                           { thumbnail }
                         </View>
                       </View>
