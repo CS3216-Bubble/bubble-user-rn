@@ -215,10 +215,10 @@ export class ChatView extends Component {
     }
 
     /* onExit is called when the user attempts to return to the previous page.
-       This will prompt the dialog|alert that warns about exiting rooms and rooms expiring, 
+       This will prompt the dialog|alert that warns about exiting rooms and rooms expiring,
        unless the option for the dialog is turned off otherwise. */
     onExit() {
-        // prompt exit confirmation -> warn about unsent messages and 
+        // prompt exit confirmation -> warn about unsent messages and
         this.props.socket.emit("exit_room", { roomId: this.props.roomId, user: this.props.socket.id });
         Actions.pop();
         setTimeout(() => {
@@ -241,7 +241,7 @@ export class ChatView extends Component {
         // Checks for connection. If not connected, will attempt to connect.
         this.props.socket.connect();
 
-        // Attempts to obtain permission to join the chat 
+        // Attempts to obtain permission to join the chat
         // (Should this be done in the previous activity?)
         this.props.socket.emit("join_room", { roomId: this.props.roomId, user: this.props.socket.id });
 
@@ -283,7 +283,7 @@ export class ChatView extends Component {
                                 {this.state.chat != null && <Text note style={Styles.subtitle}> {this.state.chat.roomType.charAt(0).toUpperCase() + this.state.chat.roomType.toLowerCase().slice(1)} Chat </Text>}
                             </View>
                         </Title>
-                        <Button transparent>
+                        <Button transparent onPress={() => Actions.chatInfoView({chat: this.state.chat})}>
                             <Icon size={32}
                                 name='ios-information-circle-outline'
                                 color="#0E7AFE" />
@@ -320,7 +320,7 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             {this.state.chat.roomName}
                         </Title>
-                        <Button transparent>
+                        <Button transparent onPress={() => Actions.chatInfoView({chat: this.state.chat})}>
                             <Icon size={32}
                                 name='ios-information-circle-outline'
                                 color="#0E7AFE" />

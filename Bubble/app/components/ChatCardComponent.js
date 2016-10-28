@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, TouchableHighlight } from 'react-native';
 import { Button, Thumbnail } from 'native-base';
 import { Styles } from '../styles/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -29,7 +29,7 @@ export default class ChatCardComponent extends Component {
               small
               key={category}
               transparent
-              onPress={() => Actions.categoryListView({selectedCategory: category})}
+              onPress={(event) => {event.stopPropagation(); Actions.categoryListView({selectedCategory: category});}}
               textStyle={{
                 color: '#87838B', fontSize: 12,
                 fontWeight: '400'
@@ -73,41 +73,43 @@ export default class ChatCardComponent extends Component {
         }
 
         return (
-          <View key={chat.roomId} style={Styles.cardContainer}>
-              <View style={Styles.cardMainRow} onPress={() => Actions.chatView(chatProps)}>
-                  <View>
-                    { thumbnail }
-                  </View>
-                  <View style={Styles.cardMainRowText}>
-                      <View style={Styles.cardTitle}>
-                          <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
-                              {chat.roomName}
-                          </Text>
-                          { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
+          <TouchableHighlight key={chat.roomId} onPress={() => {Actions.chatView(chatProps);}} underlayColor="#69D2E7">
+            <View key={chat.roomId} style={Styles.cardContainer}>
+                  <View style={Styles.cardMainRow}>
+                      <View>
+                        { thumbnail }
                       </View>
-                      <Text style={Styles.cardDescription}>
-                          {chat.roomDescription}
-                      </Text>
-                      <View style={Styles.cardSubRow}>
-                          <Text note style={Styles.cardSubRowTextLeft} >
-                              {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
+                      <View style={Styles.cardMainRowText}>
+                          <View style={Styles.cardTitle}>
+                              <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
+                                  {chat.roomName}
+                              </Text>
+                              { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
+                          </View>
+                          <Text style={Styles.cardDescription}>
+                              {chat.roomDescription}
                           </Text>
-                          <View style={Styles.cardSubRowRight}>
-                            <Text note style={Styles.cardSubRowTextRight}>
-                                {chat.numUsers} / {chat.userLimit}
-                            </Text>
-                            <Icon name='user' style={{fontSize: 16, color: '#BCBCBC'}}/>
+                          <View style={Styles.cardSubRow}>
+                              <Text note style={Styles.cardSubRowTextLeft} >
+                                  {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
+                              </Text>
+                              <View style={Styles.cardSubRowRight}>
+                                <Text note style={Styles.cardSubRowTextRight}>
+                                    {chat.numUsers} / {chat.userLimit}
+                                </Text>
+                                <Icon name='user' style={{fontSize: 16, color: '#BCBCBC'}}/>
+                              </View>
                           </View>
                       </View>
                   </View>
-              </View>
-              { categoriesToShow.length > 0 ?
-                  <View style={Styles.cardFooterRow}>
-                      {categoriesToShow}
-                  </View>
-                  : null
-              }
-          </View>
+                { categoriesToShow.length > 0 ?
+                    <View style={Styles.cardFooterRow}>
+                        {categoriesToShow}
+                    </View>
+                    : null
+                }
+            </View>
+          </TouchableHighlight>
         );
     }
 }
