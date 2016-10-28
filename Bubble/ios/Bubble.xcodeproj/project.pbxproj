@@ -30,6 +30,13 @@
 		1BD73F26EA334CE0BABD78D3 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 638E8FC8281A4F918490FB34 /* FontAwesome.ttf */; };
 		31319ADBD3874BAEA47B5B6E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAFE8BBD4FCF46A1A26FACE4 /* Foundation.ttf */; };
 		32037B151DC240C50058E137 /* libRCTKeyboardToolbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32037B141DC240A00058E137 /* libRCTKeyboardToolbar.a */; };
+		3235CB051DC2F557008E6A28 /* Dosis-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3235CAFE1DC2F557008E6A28 /* Dosis-Bold.otf */; };
+		3235CB061DC2F557008E6A28 /* Dosis-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3235CAFF1DC2F557008E6A28 /* Dosis-ExtraBold.otf */; };
+		3235CB071DC2F557008E6A28 /* Dosis-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3235CB001DC2F557008E6A28 /* Dosis-ExtraLight.otf */; };
+		3235CB081DC2F557008E6A28 /* Dosis-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3235CB011DC2F557008E6A28 /* Dosis-Light.otf */; };
+		3235CB091DC2F557008E6A28 /* Dosis-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3235CB021DC2F557008E6A28 /* Dosis-Medium.otf */; };
+		3235CB0A1DC2F557008E6A28 /* Dosis-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3235CB031DC2F557008E6A28 /* Dosis-Regular.otf */; };
+		3235CB0B1DC2F557008E6A28 /* Dosis-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3235CB041DC2F557008E6A28 /* Dosis-SemiBold.otf */; };
 		488FACEB23964795A1F0FE5D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37B18EDA60A5454BB94864E9 /* MaterialIcons.ttf */; };
 		4F69B5CCA6E74E36BE7D2D36 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB1976F5344D48F4B5D24C55 /* Zocial.ttf */; };
 		55F8559F6E2F408CA8E3322D /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07470D247CF44E4580CA8F42 /* Andale Mono.ttf */; };
@@ -182,6 +189,13 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Bubble/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		32037B0F1DC240A00058E137 /* RCTTextInputUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTTextInputUtils.xcodeproj; path = "../node_modules/react-native-textinput-utils/RCTTextInputUtils.xcodeproj"; sourceTree = "<group>"; };
+		3235CAFE1DC2F557008E6A28 /* Dosis-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-Bold.otf"; sourceTree = "<group>"; };
+		3235CAFF1DC2F557008E6A28 /* Dosis-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-ExtraBold.otf"; sourceTree = "<group>"; };
+		3235CB001DC2F557008E6A28 /* Dosis-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-ExtraLight.otf"; sourceTree = "<group>"; };
+		3235CB011DC2F557008E6A28 /* Dosis-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-Light.otf"; sourceTree = "<group>"; };
+		3235CB021DC2F557008E6A28 /* Dosis-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-Medium.otf"; sourceTree = "<group>"; };
+		3235CB031DC2F557008E6A28 /* Dosis-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-Regular.otf"; sourceTree = "<group>"; };
+		3235CB041DC2F557008E6A28 /* Dosis-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-SemiBold.otf"; sourceTree = "<group>"; };
 		37B18EDA60A5454BB94864E9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		41453B7B9AD04A1F9E402A4B /* Arial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Arial.ttf; path = "../node_modules/native-base/Fonts/Arial.ttf"; sourceTree = "<group>"; };
 		608BC08E9D7346F1BA59ED71 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -431,6 +445,13 @@
 			children = (
 				32037B0F1DC240A00058E137 /* RCTTextInputUtils.xcodeproj */,
 				8EA280A87B8F40D8AB5E3BFA /* Entypo.ttf */,
+				3235CAFE1DC2F557008E6A28 /* Dosis-Bold.otf */,
+				3235CAFF1DC2F557008E6A28 /* Dosis-ExtraBold.otf */,
+				3235CB001DC2F557008E6A28 /* Dosis-ExtraLight.otf */,
+				3235CB011DC2F557008E6A28 /* Dosis-Light.otf */,
+				3235CB021DC2F557008E6A28 /* Dosis-Medium.otf */,
+				3235CB031DC2F557008E6A28 /* Dosis-Regular.otf */,
+				3235CB041DC2F557008E6A28 /* Dosis-SemiBold.otf */,
 				86D5FC1D24E847F0B83A5FA9 /* EvilIcons.ttf */,
 				638E8FC8281A4F918490FB34 /* FontAwesome.ttf */,
 				AAFE8BBD4FCF46A1A26FACE4 /* Foundation.ttf */,
@@ -703,14 +724,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3235CB051DC2F557008E6A28 /* Dosis-Bold.otf in Resources */,
+				3235CB0B1DC2F557008E6A28 /* Dosis-SemiBold.otf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				5F8F2B7C41874FA092FF1BAD /* Entypo.ttf in Resources */,
 				CA0BDED460124FE2BFB35062 /* EvilIcons.ttf in Resources */,
+				3235CB0A1DC2F557008E6A28 /* Dosis-Regular.otf in Resources */,
 				1BD73F26EA334CE0BABD78D3 /* FontAwesome.ttf in Resources */,
 				31319ADBD3874BAEA47B5B6E /* Foundation.ttf in Resources */,
 				DFA085BF54C44317BE6EA5E4 /* Ionicons.ttf in Resources */,
 				488FACEB23964795A1F0FE5D /* MaterialIcons.ttf in Resources */,
 				BFD50777C0994EF29509295E /* Octicons.ttf in Resources */,
+				3235CB071DC2F557008E6A28 /* Dosis-ExtraLight.otf in Resources */,
 				4F69B5CCA6E74E36BE7D2D36 /* Zocial.ttf in Resources */,
 				55F8559F6E2F408CA8E3322D /* Andale Mono.ttf in Resources */,
 				17808B58CEAE415CB5D269CC /* Arial Black.ttf in Resources */,
@@ -721,8 +746,11 @@
 				EA626E5EC717413D8B8C0B03 /* Microsoft Sans Serif.ttf in Resources */,
 				E2F0AAB0B8C848528FB0B83A /* Roboto_medium.ttf in Resources */,
 				D743127D521442FFBE8F4103 /* Roboto.ttf in Resources */,
+				3235CB081DC2F557008E6A28 /* Dosis-Light.otf in Resources */,
+				3235CB091DC2F557008E6A28 /* Dosis-Medium.otf in Resources */,
 				69BE422ABEAE4DFEBA857FB2 /* SF-UI-Text-Regular.otf in Resources */,
 				8EF2A41C464245A882B05849 /* Skia.ttf in Resources */,
+				3235CB061DC2F557008E6A28 /* Dosis-ExtraBold.otf in Resources */,
 				D4BD3927B4D84369857F22B9 /* Times New Roman.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
