@@ -90,19 +90,19 @@ export class ChatListComponent extends Component {
               (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
                chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
-               if (chatContainsSearchTerm) { 
+               if (chatContainsSearchTerm) {
                 // Create chat card
                 return (
 
                         <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
-              
+
                 );
             }
         }, this);
 
         const categoryButtons = Globals.CATEGORIES.map(function (name, index) {
             return (
-                <Button rounded info key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
+                <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} rounded info key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
                     <Text style={{ fontSize: 10, color: 'white', fontWeight: "600" }} >{name}</Text>
                 </Button>
             );
