@@ -201,6 +201,9 @@ export function cacheUserId(userId) {
 // Action Types
 export const CONNECT = 'CONNECT'
 export const DISCONNECT = 'DISCONNECT'
+export const LISTEN_TO_CONNECT = 'LISTEN_TO_CONNECT'
+export const LISTEN_TO_DISCONNECT = 'LISTEN_TO_DISCONNECT'
+export const LISTEN_TO_TIMEOUT = 'LISTEN_TO_TIMEOUT'
 export const LISTEN_TO_ERROR = 'LISTEN_FOR_ERROR'
 export const CREATE_ROOM = 'CREATE_ROOM'
 export const LISTEN_TO_CREATE_ROOM = 'LISTEN_FOR_CREATE_ROOM'
@@ -229,16 +232,34 @@ export const CLAIM_ID = 'CLAIM_ID'
 export const LISTEN_TO_CLAIM_ID = 'LISTEN_TO_CLAIM_ID'
 
 // Action Creators
-
 export function connect() {
     return {
         type: CONNECT
     }
 }
-
 export function disconnect() {
     return {
         type: DISCONNECT
+    }
+}
+export function listenToConnect(callbackSuccess, callbackFailure) {
+    return {
+        type: CONNECT,
+        callbackSuccess: callbackSuccess,
+        callbackFailure: callbackFailure
+    }
+}
+export function listenToDisconnect(callbackSuccess, callbackFailure) {
+    return {
+        type: DISCONNECT,
+        callbackSuccess: callbackSuccess,
+        callbackFailure: callbackFailure
+    }
+}
+export function listenToTimeout(callback) {
+    return {
+        type: LISTEN_TO_TIMEOUT,
+        callback: callback
     }
 }
 
