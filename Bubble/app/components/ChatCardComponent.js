@@ -47,28 +47,28 @@ export default class ChatCardComponent extends Component {
         }
 
         // Image paths cannot be dynamic, so return the correct thumbnail
-        var thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/default.png')} /></View>);
+        var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} />);
         switch (categoryName) {
           case 'advice':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/advice.png')} /></View>);
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} />);
             break;
           case 'funny':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/funny.png')} /></View>);
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/funny.png')} />);
             break;
           case 'nostalgia':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/nostalgia.png')} /></View>);
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/nostalgia.png')} />);
             break;
           case 'rant':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square square size={thumbnailSize} source={require('./img/rant.png')} /></View>);
+            thumbnail = (<Thumbnail square square size={thumbnailSize} source={require('../img/rant.png')} />);
             break;
           case 'relationship':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/relationship.png')} /></View>);
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/relationship.png')} />);
             break;
           case 'school':
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/school.png')} /></View>);
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/school.png')} />);
             break;
           default:
-            thumbnail = (<View style={Styles.cardThumbnail}><Thumbnail square size={thumbnailSize} source={require('./img/default.png')} /></View>);
+            thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} />);
             break;
         }
 
@@ -77,7 +77,9 @@ export default class ChatCardComponent extends Component {
             <View key={chat.roomId} style={Styles.cardContainer}>
                   <View style={Styles.cardMainRow}>
                       <View>
-                        { thumbnail }
+                        <View style={Styles.cardThumbnail}>
+                          { thumbnail }
+                        </View>
                       </View>
                       <View style={Styles.cardMainRowText}>
                           <View style={Styles.cardTitle}>
