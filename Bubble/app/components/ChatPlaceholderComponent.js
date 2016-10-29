@@ -12,7 +12,7 @@ export default class ChatPlaceholderComponent extends Component {
   render() {
       return (
           <View style={Styles.placeholderContainer}>
-              <Image style={Styles.placeholderImage} source={{ uri: 'http://www.icura.dk/images/icons/grey/chat.png' }} />
+              <Image style={Styles.placeholderImage} source={require('../img/chat.png')} />
               <Text style={Styles.placeholder}> No ongoing chats yet.</Text>
               <Button block info
                 style={{margin: 15}}

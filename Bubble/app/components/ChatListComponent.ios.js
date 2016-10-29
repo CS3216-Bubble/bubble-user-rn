@@ -97,6 +97,12 @@ export class ChatListComponent extends Component {
             }
         }, this);
 
+        const disconnected = (
+          <View style={{backgroundColor: '#e74c3c', padding: 10, height: 40}}>
+            <Text style={{textAlign: 'center', color: '#FFFFFF'}}>Disconnected</Text>
+          </View>
+        );
+
         // If no search results found
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
             return (
@@ -106,6 +112,7 @@ export class ChatListComponent extends Component {
                         refreshing={this.state.refreshing}
                         onRefresh={this._onRefresh.bind(this)} />}
                     style={{ backgroundColor: 'red' }}>
+                    { userId ? null : disconnected }
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Text>No results found for {this.props.searchTerm}.</Text>
                     </View>
@@ -120,6 +127,7 @@ export class ChatListComponent extends Component {
                         onRefresh={this._onRefresh.bind(this)}
                         style={{ marginTop: -19 }} />}
                     >
+                    { userId ? null : disconnected }
                     {chatsToShow.length == 0 ?
                         <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
                         : chatsToShow}

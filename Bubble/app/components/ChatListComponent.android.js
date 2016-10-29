@@ -117,6 +117,12 @@ export class ChatListComponent extends Component {
             <View style={styles.categoryButtonContainer}>{categoryButtons}</View>
         );
 
+        const disconnected = (
+          <View style={{backgroundColor: '#e74c3c', padding: 10, height: 40}}>
+            <Text style={{textAlign: 'center', color: '#FFFFFF'}}>Disconnected</Text>
+          </View>
+        );
+
         // If no search results found
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
             return (
@@ -125,6 +131,7 @@ export class ChatListComponent extends Component {
                 refreshControl={<RefreshControl
                 refreshing={this.state.refreshing}
                 onRefresh={this._onRefresh.bind(this)} />}>
+                  { userId ? null : disconnected }
                   <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                       <Text>No results found for {this.props.searchTerm}.</Text>
                   </View>
@@ -139,7 +146,7 @@ export class ChatListComponent extends Component {
                   refreshControl={<RefreshControl
                   refreshing={this.state.refreshing}
                   onRefresh={this._onRefresh.bind(this)} />}>
-
+                    { userId ? null : disconnected }
                     {chatsToShow.length == 0 ?
                       <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
                       : chatsToShow}
