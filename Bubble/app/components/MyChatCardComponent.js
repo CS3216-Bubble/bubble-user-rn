@@ -78,7 +78,7 @@ export default class MyChatCardComponent extends Component {
         }
 
         return (
-          <TouchableHighlight key={chat.roomId} onPress={() => {Actions.chatView(chatProps);}} underlayColor="#69D2E7">
+          <TouchableHighlight key={chat.roomId} onPress={() => {Actions.chatView(chatProps);}} underlayColor="#E5FEFF">
             <View key={chat.roomId} style={Styles.cardContainer}>
                   <View style={Styles.cardMainRow}>
                       <View>

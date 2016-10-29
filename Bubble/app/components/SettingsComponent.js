@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, ScrollView, View, Switch, Text } from 'react-native';
+import { StyleSheet, ScrollView, View, Switch } from 'react-native';
+import { Picker, Text, Button } from 'native-base';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 import ProfileComponent from './ProfileComponent';
 
@@ -9,7 +11,12 @@ export default class SettingsComponent extends Component {
   }
 
   state = {
-    isNotificationsOn: true
+    isNotificationsOn: true,
+    selectedGender: 'other'
+  }
+
+  onValueChange = (value) => {
+    this.setState({selectedGender: value});
   }
 
   render() {
@@ -22,6 +29,19 @@ export default class SettingsComponent extends Component {
               <Switch
                 onValueChange={(value) => this.setState({isNotificationsOn: value})}
                 value={this.state.isNotificationsOn} />
+            </View>
+            <View style={styles.customListItemRight}>
+              <Text style={styles.customListItemText}>Gender</Text>
+              <Picker
+                style={styles.picker}
+                iosHeader="Select gender"
+                mode="dropdown"
+                selectedValue={this.state.selectedGender}
+                onValueChange={this.onValueChange}>
+                <Picker.Item label="Male" value="male" />
+                <Picker.Item label="Female" value="female" />
+                <Picker.Item label="Other" value="other" />
+             </Picker>
             </View>
           </ScrollView>
         </View>
@@ -46,12 +66,18 @@ var styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      height: 40,
+      height: 50,
       padding: 10,
       borderBottomColor: '#bbb',
       borderBottomWidth: StyleSheet.hairlineWidth
     },
     customListItemText: {
       fontSize: 16
-    }
+    },
+    picker: {
+      position: 'absolute',
+      right: 5,
+      bottom: -20,
+      padding: 0
+    },
 });
