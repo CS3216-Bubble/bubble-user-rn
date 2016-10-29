@@ -71,7 +71,7 @@ function socketInit() {
     socket = io(host, {
         transports: ['websocket'], reconnection: true,
         reconnectionDelay: 1000,
-        reconnectionDelayMax: 6000,
+        reconnectionDelayMax: 5000,
         timeout: 20000
     });
     return socket;
@@ -290,11 +290,7 @@ export default function Reducer(state = initialState, action) {
 
         // Sockets
         case CONNECT:
-
             if (state.connection !== "CONNECTED") {
-                state.on("reconnecting", function ({
-
-                }))
                 state.socket.emit("connect");
                 return Object.assign({}, state, {
                     connection: "CONNECTING"

@@ -53,7 +53,7 @@ export default class ChatFormView extends Component {
               <Header>
                   <Title>Create Chat</Title>
                   <Button transparent onPress={Actions.pop}>
-                      { this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : <Text></Text> }
+                      { this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : <Text>Back</Text> }
                   </Button>
                   <Button disabled={!this.state.isFormValid} transparent onPress={this.createChat}>
                       <Text style={fontStyle}>Create</Text>
