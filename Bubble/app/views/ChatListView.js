@@ -45,7 +45,7 @@ export default class ChatListView extends Component {
     render() {
         const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
-            <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} rounded info key={index} onPress={() => Actions.categoryListView({selectedCategory: name})}>
+            <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} key={index} onPress={() => Actions.categoryListView({selectedCategory: name})}>
                 <Text style={{fontSize: 10, color: 'white', fontWeight: "600"}} >{name}</Text>
             </Button>
           );
@@ -65,7 +65,7 @@ export default class ChatListView extends Component {
                     {this.state.searchTerm.length > 0 && <Icon name='ios-close' style={{backgroundColor: "transparent", paddingTop: 2}}onPress={this.clearSearchBar}/> }
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
-                    <Icon name='ios-create' />
+                    <Icon name='ios-create-outline' />
                   </Button>
                 </Header>
                 <View style={{flex:1}}>
