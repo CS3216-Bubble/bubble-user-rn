@@ -23,10 +23,14 @@ class PushController extends Component {
 }
 
 
-function mapStateToProps(state) {
-  return {
-    socket: state.socketHandler.socket,
-  }
-}
+/*** Using reducer socket ***/
 
-export default connect(mapStateToProps)(PushController);
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket
+  }
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(PushController);

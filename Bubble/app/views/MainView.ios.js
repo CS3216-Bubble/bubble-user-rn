@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect as connectRedux } from 'react-redux';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 import ChatListView from './ChatListView';
 import MyChatListView from './MyChatListView';
 import ChatFormView from './ChatFormView';
@@ -17,7 +16,7 @@ export default class MainView extends Component {
     };
 
     onCreateChatPressed = () => {
-      this.setState({selectedTab: 'create'});
+        this.setState({ selectedTab: 'create' });
     }
 
     _renderContent = () => {
@@ -41,17 +40,17 @@ export default class MainView extends Component {
             case 'create':
                 return (
                     <ChatFormView
-                      key="open"
-                      title="Create Chat"
-                      isBackButtonVisible={false}
-                    />
+                        key="open"
+                        title="Create Chat"
+                        isBackButtonVisible={false}
+                        />
                 );
             case 'info':
                 return (
                     <InformationView
-                      key="open"
-                      title="Useful Info"
-                    />
+                        key="open"
+                        title="Useful Info"
+                        />
                 );
             case 'settings':
                 return (
@@ -59,10 +58,6 @@ export default class MainView extends Component {
                 );
         }
     };
-
-    componentWillReceiveProps(props) {
-        // console.log("MAINVIEW IOS RECEIVES PROPS", props);
-    }
 
     render() {
         return (

@@ -179,6 +179,7 @@ export function setSearchFilter(searchTerm) {
 // Action Types
 export const CACHE_NICKNAME = 'CACHE_NICKNAME'
 export const CACHE_USER_ID = 'CACHE_USER_ID'
+export const REHYDRATION_COMPLETE = 'REHYDRATION_COMPLETE'
 
 // Action Creators
 export function cacheNickname(userId, nickname) {
@@ -192,6 +193,11 @@ export function cacheUserId(userId) {
     return {
         type: CACHE_USER_ID,
         userId: userId,
+    }
+}
+export function rehydrationComplete() {
+    return {
+        type:REHYDRATION_COMPLETE
     }
 }
 

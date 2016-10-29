@@ -58,9 +58,12 @@ export class SettingsView extends Component {
     }
 }
 
-function accessSocket(state) {
-    let socket = state.socketHandler.socket;
-    return { socket: socket };
-}
-
-export default connectRedux(accessSocket)(SettingsView);
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket
+  }
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(SettingsView);

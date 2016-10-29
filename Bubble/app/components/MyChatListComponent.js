@@ -124,12 +124,15 @@ export class MyChatListComponent extends Component {
     }
 }
 
-function getList(state) {
-    let socket = state.socketHandler.socket;
+/*** Using reducer socket ***/
 
-    return {
-        socket: socket
-    }
-}
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket
+  }
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(MyChatListComponent);
 
-export default connectRedux(getList)(MyChatListComponent);

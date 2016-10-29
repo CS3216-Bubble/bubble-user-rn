@@ -41,6 +41,11 @@ export class ChatListComponent extends Component {
         this.setState({ refreshing: true });
         this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+        setTimeout(() => {
+            this.setState({
+                refreshing: false
+            });
+        }, 5000);
     }
 
     componentDidMount() {
@@ -56,6 +61,7 @@ export class ChatListComponent extends Component {
 
     componentWillReceiveProps(props) {
         // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
+        // console.log(props);
         this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
@@ -66,23 +72,23 @@ export class ChatListComponent extends Component {
         var chatRooms = this.state.roomList.slice();
 
         chatRooms.sort(function (a, b) {
-          // Sticky chat first
-          if (a.roomType == 'HOT' && b.roomType != 'HOT') {
-            return -1;
-          } else if ((b.roomType == 'HOT' && a.roomType != 'HOT')) {
-            return 1;
-          } else {
-            // Chat types are the same, sort by time
-            return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
-          }
+            // Sticky chat first
+            if (a.roomType == 'HOT' && b.roomType != 'HOT') {
+                return -1;
+            } else if ((b.roomType == 'HOT' && a.roomType != 'HOT')) {
+                return 1;
+            } else {
+                // Chat types are the same, sort by time
+                return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+            }
         });
 
         // Create list of chats to show
-        const chatsToShow = chatRooms.map(function(chat) {
+        const chatsToShow = chatRooms.map(function (chat) {
 
             const chatContainsSearchTerm =
                 (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
-                 chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
+                    chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
             if (chatContainsSearchTerm) {
                 // Create chat card
@@ -96,41 +102,42 @@ export class ChatListComponent extends Component {
         // If no search results found
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
             return (
-              <ScrollView
-                style={{ flex: 1 }}
-                refreshControl={<RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh.bind(this)} />}
-                style={{backgroundColor: 'red'}}>
-                  <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                      <Text>No results found for {this.props.searchTerm}.</Text>
-                  </View>
-              </ScrollView>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    refreshControl={<RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)} />}
+                    style={{ backgroundColor: 'red' }}>
+                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text>No results found for {this.props.searchTerm}.</Text>
+                    </View>
+                </ScrollView>
             );
         } else {
             return (
                 <ScrollView
-                  style={{ flex: 1 }}
-                  refreshControl={<RefreshControl
-                  refreshing={this.state.refreshing}
-                  onRefresh={this._onRefresh.bind(this)}
-                  style={{marginTop: -15}}/>}
-                  >
+                    style={{ flex: 1 }}
+                    refreshControl={<RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                        style={{ marginTop: -15 }} />}
+                    >
                     {chatsToShow.length == 0 ?
-                      <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
-                      : chatsToShow}
+                        <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
+                        : chatsToShow}
                 </ScrollView>
             );
         }
     }
 }
 
-function getList(state) {
-    let socket = state.socketHandler.socket;
-
+const mapStateToProps = (state) => {
     return {
-        socket: socket
+        socket: state.socket
     }
+        ;
 }
-
-export default connectRedux(getList)(ChatListComponent);
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);
