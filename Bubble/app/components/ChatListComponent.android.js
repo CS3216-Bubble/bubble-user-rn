@@ -157,12 +157,13 @@ var styles = StyleSheet.create({
     }
 });
 
-function getList(state) {
-    let socket = state.socketHandler.socket;
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket
+  }
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);
 
-    return {
-        socket: socket
-    }
-}
-
-export default connectRedux(getList)(ChatListComponent);

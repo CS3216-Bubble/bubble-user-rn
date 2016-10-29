@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
   }
 });
 
-function getList(state) {
-  let socket = state.socketHandler.socket;
-
+const mapStateToProps = (state) => {
   return {
-    socket: socket
+    socket: state.socket
   }
-}
-
-export default connectRedux(getList)(ChatLoadingView);
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatLoadingView);

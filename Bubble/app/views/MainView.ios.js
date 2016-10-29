@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect as connectRedux } from 'react-redux';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 import ChatListView from './ChatListView';
 import ChatFormView from './ChatFormView';
 import InformationView from './InformationView';
@@ -16,7 +15,7 @@ export default class MainView extends Component {
     };
 
     onCreateChatPressed = () => {
-      this.setState({selectedTab: 'create'});
+        this.setState({ selectedTab: 'create' });
     }
 
     _renderContent = () => {
@@ -24,35 +23,35 @@ export default class MainView extends Component {
             case 'all':
                 return (
                     <ChatListView
-                      key="all"
-                      title="All Chats"
-                      showOpenChatsOnly={false}
-                      onCreateChatPressed={this.onCreateChatPressed}
-                    />
+                        key="all"
+                        title="All Chats"
+                        showOpenChatsOnly={false}
+                        onCreateChatPressed={this.onCreateChatPressed}
+                        />
                 );
             case 'open':
                 return (
                     <ChatListView
-                      key="open"
-                      title="Open Chats"
-                      showOpenChatsOnly={true}
-                      onCreateChatPressed={this.onCreateChatPressed}
-                    />
+                        key="open"
+                        title="Open Chats"
+                        showOpenChatsOnly={true}
+                        onCreateChatPressed={this.onCreateChatPressed}
+                        />
                 );
             case 'create':
                 return (
                     <ChatFormView
-                      key="open"
-                      title="Create Chat"
-                      isBackButtonVisible={false}
-                    />
+                        key="open"
+                        title="Create Chat"
+                        isBackButtonVisible={false}
+                        />
                 );
             case 'info':
                 return (
                     <InformationView
-                      key="open"
-                      title="Useful Info"
-                    />
+                        key="open"
+                        title="Useful Info"
+                        />
                 );
             case 'settings':
                 return (
@@ -60,10 +59,6 @@ export default class MainView extends Component {
                 );
         }
     };
-
-    componentWillReceiveProps(props) {
-        // console.log("MAINVIEW IOS RECEIVES PROPS", props);
-    }
 
     render() {
         return (

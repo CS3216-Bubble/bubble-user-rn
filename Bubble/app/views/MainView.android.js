@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Container, Content, Header, Title, Tabs } from 'native-base';
-import ActionButton from 'react-native-action-button';
-import CustomTheme from '../themes/bubble';
 import { ThemeProvider, Toolbar, Button } from 'react-native-material-ui';
 import { connect as connectRedux } from 'react-redux';
-
+import { Styles } from '../styles/Styles';
+import { Actions } from 'react-native-router-flux';
+import ActionButton from 'react-native-action-button';
+import CustomTheme from '../themes/bubble';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import ChatListComponent from '../components/ChatListComponent';
 import SettingsComponent from '../components/SettingsComponent';
-
-import { Styles } from '../styles/Styles';
-
-import { Actions } from 'react-native-router-flux';
 
 var adjectives = require('../utils/adjectives');
 var animals = require('../utils/animals');
@@ -133,9 +129,12 @@ export class MainView extends Component {
   }
 }
 
-function accessSocket(state) {
-  let socket = state.socketHandler.socket;
-  return { socket: socket };
-}
-
-export default connectRedux(accessSocket)(MainView);
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket
+  }
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(MainView);

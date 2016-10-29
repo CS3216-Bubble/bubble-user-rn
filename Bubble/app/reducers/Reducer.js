@@ -25,6 +25,7 @@ import {
     SET_SEARCH_FILTER,
     CACHE_NICKNAME,
     CACHE_USER_ID,
+    REHYDRATION_COMPLETE,
     CONNECT,
     DISCONNECT,
     LISTEN_TO_CONNECT,
@@ -91,13 +92,14 @@ const initialState = {
         mutedChatRooms: []
     },
     chatRooms: {},
-    chatList: {},
+    chatList: [],
     connection: "DISCONNECTED",
     aliasId: [],
     nickNameMap: {},
     filter: null,
     search: null,
-    outbox: []
+    outbox: [],
+    rehydrated: false
 };
 
 // Reducer Definition
@@ -268,6 +270,7 @@ export default function Reducer(state = initialState, action) {
                 search: action.searchTerm
             });
 
+        // Utils
         case CACHE_NICKNAME:
             var nickNameMap = Object.assign({}, state.nickNameMap);
             if (action.userId != null && action.nickname != null) {
@@ -291,12 +294,17 @@ export default function Reducer(state = initialState, action) {
         // Sockets
         case CONNECT:
             if (state.connection !== "CONNECTED") {
-                state.socket.emit("connect");
+                console.log(state.socket.connect);
+                state.socket.connect();
                 return Object.assign({}, state, {
                     connection: "CONNECTING"
                 });
             }
             return state;
+        case REHYDRATION_COMPLETE:
+            return Object.assign({}, state, {
+                    rehydrated: true
+                });
 
         case DISCONNECT:
             if (state.connection !== "DISCONNECTED") {
@@ -356,97 +364,124 @@ export default function Reducer(state = initialState, action) {
             // - INVALID_ROOM_NAME
             // - NO_OLD_SOCKET_ID
             // - OLD_SOCKET_ID_NOT_FOUND
-            break;
+            state.socket.on("bubble_error", action.callback);
+            return state;
 
         case CREATE_ROOM:
-
-            break;
+            state.socket.emit("create_room", action.payload);
+            return state;
 
         case LISTEN_TO_CREATE_ROOM:
-            break;
+            state.socket.on("create_room", action.callback);
+            return state;
 
         case JOIN_ROOM:
-            break;
+            state.socket.emit("join_room", action.payload);
+            return state;
 
         case LISTEN_TO_JOIN_ROOM:
-            break;
+            state.socket.on("join_room", action.callback);
+            return state;
 
         case EXIT_ROOM:
-            break;
+            state.socket.emit("exit_room", action.payload);
+            return state;
 
         case LISTEN_TO_EXIT_ROOM:
-            break;
+            state.socket.on("exit_room", action.callback);
+            return state;
 
         case LIST_ROOMS:
-            break;
+            state.socket.emit("list_rooms", action.payload);
+            return state;
 
         case LISTEN_TO_LIST_ROOMS:
-            break;
+            state.socket.on("list_rooms", action.callback);
+            return state;
 
         case VIEW_ROOM:
-            break;
+            state.socket.emit("view_room", action.payload);
+            return state;
 
         case LISTEN_TO_VIEW_ROOM:
-            break;
+            state.socket.on("view_room", action.callback);
+            return state;
 
         case DID_BEGIN_TYPING:
-            break;
+            state.socket.emit("typing", action.payload);
+            return state;
 
         case DID_STOP_TYPING:
-            break;
+            state.socket.emit("stop_typing", action.payload);
+            return state;
 
         case LISTEN_TO_START_TYPING:
-            break;
+            state.socket.on("typing", action.callback);
+            return state;
 
         case LISTEN_TO_STOP_TYPING:
-            break;
+            state.socket.on("stop_typing", action.callback);
+            return state;
 
         case REPORT_USER:
-            break;
+            state.socket.emit("report_user", action.payload);
+            return state;
 
         case SEND_MESSAGE:
-            break;
+            state.socket.emit("add_message", action.payload);
+            return state;
 
         case LISTEN_TO_SEND_MESSAGE:
-            break;
+            state.socket.on("add_message", action.callback);
+            return state;
 
         case SEND_REACTION:
-            break;
+            state.socket.emit("add_reaction", action.payload);
+            return state;
 
         case LISTEN_TO_SEND_REACTION:
-            break;
+            state.socket.on("add_reaction", action.callback);
+            return state;
 
         case SET_USER_NAME:
-            break;
+            state.socket.emit("set_user_name", action.payload);
+            return state;
 
         case LISTEN_TO_SET_USER_NAME:
             break;
 
         case FIND_COUNSELLOR:
-            break;
+            state.socket.emit("find_counsellor", action.payload);
+            return state;
 
         case LISTEN_TO_FIND_COUNSELLOR:
             break;
 
         case CLAIM_ID:
-            break;
+            state.socket.emit("claim_id", action.payload);
+            return state;
 
         case LISTEN_TO_CLAIM_ID:
-
+            state.socket.on("claim_id", action.callback);
+            return state;
         // Set connection status (Connected)
         // Insert Id
 
         // Call completion callback, if available
         // Handle exception with failure callback
 
+
         case MY_ROOMS:
-            break;
+            state.socket.emit("my_rooms");
+            return state;
 
         case LISTEN_TO_MY_ROOMS:
-            break;
+            state.socket.on("my_rooms", action.callback);
+            return state;
 
         case REMOVE_LISTENERS:
-            break;
+            action.callback(state.socket);
+            return state;
 
         default:
             return state;

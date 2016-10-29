@@ -107,12 +107,13 @@ export class CategoryListComponent extends Component {
     }
 }
 
-function getList(state) {
-    let socket = state.socketHandler.socket;
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket
+  }
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(CategoryListComponent);
 
-    return {
-        socket: socket
-    }
-}
-
-export default connectRedux(getList)(CategoryListComponent);

@@ -357,9 +357,12 @@ export class ChatView extends Component {
 
 /*** Using reducer socket ***/
 
-function initChatView(state) {
-    let socket = state.socketHandler.socket;
-    return { socket: socket };
-}
-
-export default connectRedux(initChatView)(ChatView);
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket
+  }
+;}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatView);
