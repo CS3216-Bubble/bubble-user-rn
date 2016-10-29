@@ -26,7 +26,7 @@
     ```
     2. Install Android SDK Platform-tools, revision 23.0.1. (Open through Android Studios)
     3. Install and setup Android Virtual Device.
-        ``` bash
+        ```
         android avd
         ```
         
@@ -36,11 +36,11 @@
     npm install
     ```
 6. Run with Android in Bubble directory.
-    ``` bash
+    ```
     react-native run-android
     ```
     > If you encounter Server 500 Error, try to kill the process that is sharing the same port as the emulator and try again.
 7.  Run with iOS in Bubble directory.
-    ``` bash
+    ``` 
     react-native run-ios
     ```
