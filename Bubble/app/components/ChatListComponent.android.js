@@ -107,7 +107,7 @@ export class ChatListComponent extends Component {
 
         const categoryButtons = Globals.CATEGORIES.map(function (name, index) {
             return (
-                <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} rounded info key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
+                <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
                     <Text style={{ fontSize: 10, color: 'white', fontWeight: "600" }} >{name}</Text>
                 </Button>
             );
@@ -132,16 +132,19 @@ export class ChatListComponent extends Component {
             );
         } else {
             return (
+                <View style={{flex: 1}}>
+                {this.props.searchTerm == '' ? categoryFilter : null}
                 <ScrollView
                   style={{ flex: 1 }}
                   refreshControl={<RefreshControl
                   refreshing={this.state.refreshing}
                   onRefresh={this._onRefresh.bind(this)} />}>
-                    {this.props.searchTerm == '' ? categoryFilter : null}
+
                     {chatsToShow.length == 0 ?
                       <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
                       : chatsToShow}
                 </ScrollView>
+                </View>
             );
         }
     }
@@ -171,4 +174,3 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);
-

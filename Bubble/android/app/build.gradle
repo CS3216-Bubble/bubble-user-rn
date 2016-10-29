@@ -147,6 +147,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':react-native-push-notification')
+    compile project(':ReactNativeDropdownAndroid')
     compile ('com.google.android.gms:play-services-gcm:8.1.0') {
         force = true;
     }
