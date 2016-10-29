@@ -19,6 +19,11 @@ export default class MyChatCardComponent extends Component {
       showCategoriesOnCard: PropTypes.bool.isRequired,
     }
 
+    onLeaveBtnPressed = () => {
+      console.log('leave chat');
+      // Leave chat
+    }
+
     render() {
         const chat = this.props.chat;
         const chatProps = { roomId: chat.roomId };
@@ -81,14 +86,16 @@ export default class MyChatCardComponent extends Component {
         const swipeoutBtns = [
           {
             text: 'Leave',
-            backgroundColor: 'red'
+            backgroundColor: 'red',
+            onPress: this.onLeaveBtnPressed
           }
         ];
 
         return (
           <Swipeout
             right={swipeoutBtns}
-            backgroundColor="#FFFFFF">
+            backgroundColor="#FFFFFF"
+          >
             <TouchableHighlight
               key={chat.roomId}
               onPress={() => {Actions.chatView(chatProps);}}
