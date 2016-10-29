@@ -39,9 +39,15 @@ export class ChatListComponent extends Component {
     }
 
     _onRefresh() {
+        console.log(this.props.socket);
         this.setState({ refreshing: true });
         this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+        setTimeout(() => {
+            this.setState({
+                refreshing: false
+            });
+        }, 5000);
     }
 
     componentDidMount() {
@@ -56,7 +62,6 @@ export class ChatListComponent extends Component {
     }
 
     componentWillReceiveProps(props) {
-        // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
         this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }

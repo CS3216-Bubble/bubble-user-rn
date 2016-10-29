@@ -3,8 +3,6 @@ import { AppRegistry } from 'react-native';
 import { Scene, Router, Actions, Route, Schema, Animations, Modal } from 'react-native-router-flux';
 import { Styles } from './app/styles/Styles';
 import { Provider } from 'react-redux';
-import { AsyncStorage } from 'react-native'
-import { persistStore } from 'redux-persist';
 import Store from './app/store/Store';
 import ModalView from './app/views/ModalView';
 import MainView from './app/views/MainView';
@@ -17,18 +15,6 @@ import LandingView from './app/views/LandingView';
 import OnboardingView from './app/views/OnboardingView';
 
 export default class Bubble extends Component {
-
-    // constructor() {
-    //     super()
-    //     this.state = { rehydrated: false }
-    // }
-
-    // componentWillMount() {
-    //     persistStore(Store, { storage: AsyncStorage }, () => {
-    //         this.setState({ rehydrated: true })
-    //         console.log('restored')
-    //     });
-    // }
 
     render() {
         return (

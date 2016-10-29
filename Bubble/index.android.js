@@ -4,7 +4,6 @@ import { Scene, Router, Actions, Route, Schema, Animations, Modal } from 'react-
 import { Styles } from './app/styles/Styles';
 import { Provider } from 'react-redux';
 import Store from './app/store/Store';
-import Persistor from './app/store/Store';
 import ModalView from './app/views/ModalView';
 import MainView from './app/views/MainView';
 import ChatView from './app/views/ChatView';
@@ -14,12 +13,8 @@ import ChatLoadingView from './app/views/ChatLoadingView';
 import CategoryListView from './app/views/CategoryListView';
 import LandingView from './app/views/LandingView';
 import OnboardingView from './app/views/OnboardingView';
-import { connect as connectRedux } from 'react-redux';
-import { connect, listRooms } from './app/actions/Actions';
-
-// console.ignoredYellowBox = ['Warning: setState(...)'];
-
 import PushController from './app/PushController';
+
 export default class Bubble extends Component {
     render() {
 

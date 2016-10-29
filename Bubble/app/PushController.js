@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PushNotification from 'react-native-push-notification';
+import { connect as connectRedux } from 'react-redux';
 
 class PushController extends Component {
   componentDidMount() {

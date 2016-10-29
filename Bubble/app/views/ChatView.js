@@ -351,9 +351,15 @@ export class ChatView extends Component {
 
 /*** Using reducer socket ***/
 
-const mapStateToProps = (state) => {
+function mergeAndSort(outbox, chatCache) {
+    return [];
+}
+
+const mapStateToProps = (state, ownProps) => {
+    console.log(ownProps.roomId);
   return {
-    socket: state.socket
+    socket: state.socket,
+    chatCache: mergeAndSort(state.outbox, state.chatRooms[ownProps.roomId])
   }
 ;}
 const mapDispatchToProps = (dispatch) => {
