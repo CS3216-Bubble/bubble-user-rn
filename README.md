@@ -32,14 +32,15 @@
         
 5. Install dependencies.
     ``` bash
+    cd Bubble
     npm install
     ```
-6. Run with Android.
+6. Run with Android in Bubble directory.
     ``` bash
     react-native run-android
     ```
     > If you encounter Server 500 Error, try to kill the process that is sharing the same port as the emulator and try again.
-7.  Run with iOS.
+7.  Run with iOS in Bubble directory.
     ``` bash
     react-native run-ios
     ```
