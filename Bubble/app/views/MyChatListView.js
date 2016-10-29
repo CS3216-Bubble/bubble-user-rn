@@ -64,7 +64,7 @@ export default class MyChatListView extends Component {
                     {this.state.searchTerm.length > 0 && <Icon name='ios-close' style={{backgroundColor: "transparent", paddingTop: 2}}onPress={this.clearSearchBar}/> }
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
-                    <Icon name='ios-create' />
+                    <Icon name='ios-create-outline' />
                   </Button>
                 </Header>
                 <View style={{flex:1}}>
