@@ -30,6 +30,8 @@ import {
     LISTEN_TO_CONNECT,
     LISTEN_TO_DISCONNECT,
     LISTEN_TO_TIMEOUT,
+    LISTEN_TO_RECONNECTING,
+    LISTEN_TO_RECONNECT_FAILED,
     LISTEN_TO_ERROR,
     CREATE_ROOM,
     LISTEN_TO_CREATE_ROOM,
@@ -55,7 +57,10 @@ import {
     FIND_COUNSELLOR,
     LISTEN_TO_FIND_COUNSELLOR,
     CLAIM_ID,
-    LISTEN_TO_CLAIM_ID
+    LISTEN_TO_CLAIM_ID,
+    MY_ROOMS,
+    LISTEN_TO_MY_ROOMS,
+    REMOVE_LISTENERS
 } from '../actions/Actions';
 
 window.navigator.userAgent = 'ReactNative';
@@ -63,7 +68,12 @@ const io = require('socket.io-client/socket.io');
 const host = "http://getbubblechat.com/";
 
 function socketInit() {
-    socket = io(host, { transports: ['websocket'] });
+    socket = io(host, {
+        transports: ['websocket'], reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        timeout: 20000
+    });
     return socket;
 }
 
@@ -280,24 +290,76 @@ export default function Reducer(state = initialState, action) {
 
         // Sockets
         case CONNECT:
-            break;
+            if (state.connection !== "CONNECTED") {
+                state.socket.emit("connect");
+                return Object.assign({}, state, {
+                    connection: "CONNECTING"
+                });
+            }
+            return state;
 
         case DISCONNECT:
-            break;
+            if (state.connection !== "DISCONNECTED") {
+                state.socket.emit("disconnect");
+            }
+            return state;
 
         case LISTEN_TO_CONNECT:
-            break;
-
+            /* To-do in the callback:
+                1. Set socket listeners for other primary events
+                2. Attempt to claim id if previous id exists
+                3. Set connection status
+                4. Save current id
+            */
+            state.socket.on("connect", action.callback);
+            return state;
         case LISTEN_TO_DISCONNECT:
-            break;
-
+            /* To-do:
+                1. Set connection status
+            */
+            state.socket.on("disconnect", action.callback);
+            return state;
         case LISTEN_TO_TIMEOUT:
-            break;
+            state.socket.on("timeout", action.callback);
+            return state;
+
+        case LISTEN_TO_RECONNECTING:
+            /* To-do:
+                1. Set connection status
+            */
+            state.socket.on("reconnecting", action.callback);
+            return state;
+
+        case LISTEN_TO_RECONNECT_FAILED:
+            /* To-do:
+                1. Set connection status
+            */
+            state.socket.on("reconnect_failed", action.callback);
+            return state;
 
         case LISTEN_TO_ERROR:
+            // Handle cases:
+            // - NO_MESSAGE
+            // - NO_REACTION
+            // - NO_NAME
+            // - NO_ROOM_ID
+            // - NO_ROOM_NAME
+            // - ROOM_FULL
+            // - ROOM_ID_NOT_FOUND
+            // - USER_ALREADY_IN_ROOM
+            // - USER_NOT_IN_ROOM
+            // - COUNSELLOR_UNAVAILABLE
+            // - NO_USER_TO_REPORT
+            // - ROOM_CLOSED
+            // - NO_TARGET_USER
+            // - INVALID_ROOM_ID
+            // - INVALID_ROOM_NAME
+            // - NO_OLD_SOCKET_ID
+            // - OLD_SOCKET_ID_NOT_FOUND
             break;
 
         case CREATE_ROOM:
+
             break;
 
         case LISTEN_TO_CREATE_ROOM:
@@ -370,6 +432,20 @@ export default function Reducer(state = initialState, action) {
             break;
 
         case LISTEN_TO_CLAIM_ID:
+
+        // Set connection status (Connected)
+        // Insert Id
+
+        // Call completion callback, if available
+        // Handle exception with failure callback
+
+        case MY_ROOMS:
+            break;
+
+        case LISTEN_TO_MY_ROOMS:
+            break;
+
+        case REMOVE_LISTENERS:
             break;
 
         default:

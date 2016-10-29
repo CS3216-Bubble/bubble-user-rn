@@ -20,6 +20,8 @@ export default class ChatListView extends Component {
           searchTerm: '',
           showCategoryFilter: true
         };
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+        this.clearSearchBar = this.clearSearchBar.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -50,6 +52,7 @@ export default class ChatListView extends Component {
           );
         }, this);
 
+        // <Text style={{color:'#0E7AFE'}}>Search</Text>
         return (
             <Container>
                 <Header searchBar rounded>
@@ -60,10 +63,10 @@ export default class ChatListView extends Component {
                       value={this.state.searchTerm}
                       onChangeText={this.onSearchBarTextChange}
                       style={{paddingBottom: 10}}/>
-                    <Icon name='ios-close' onPress={this.clearSearchBar}/>
+                    {this.state.searchTerm.length > 0 && <Icon name='ios-close' style={{backgroundColor: "transparent", paddingTop: 2}}onPress={this.clearSearchBar}/> }
                   </InputGroup>
                   <Button transparent onPress={Actions.chatFormView}>
-                    <Text style={{color:'#0E7AFE'}}>Search</Text>
+                    <Icon name='ios-create' />
                   </Button>
                 </Header>
                 <View style={{flex:1}}>
