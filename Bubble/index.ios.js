@@ -13,7 +13,6 @@ import ChatInfoView from './app/views/ChatInfoView';
 import ChatFormView from './app/views/ChatFormView';
 import ChatLoadingView from './app/views/ChatLoadingView';
 import CategoryListView from './app/views/CategoryListView';
-import ProfileFormView from './app/views/ProfileFormView';
 import LandingView from './app/views/LandingView';
 import OnboardingView from './app/views/OnboardingView';
 
@@ -44,7 +43,6 @@ export default class Bubble extends Component {
                             <Scene key="chatFormView" component={ChatFormView} title="Create Chat" />
                             <Scene key="chatLoadingView" component={ChatLoadingView} title="Chat Loading" />
                             <Scene key="categoryListView" component={CategoryListView} title="Category List" />
-                            <Scene key="profileForm" component={ProfileFormView} title="Edit Profile" />
                             <Scene key="onboardingView" component={OnboardingView} title="Getting Started" />
                         </Scene>
                         <Scene key="modalView" component={ModalView} />

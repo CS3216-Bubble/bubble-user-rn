@@ -9,6 +9,13 @@ import ChatFormComponent from '../components/ChatFormComponent';
 
 import Globals from '../globals';
 
+const defaultForm = {
+  name: '',
+  description: '',
+  numUsers: '2',
+  categories: [],
+}
+
 export default class ChatFormView extends Component {
   static propTypes = {
     isBackButtonVisible: PropTypes.bool,
@@ -18,17 +25,61 @@ export default class ChatFormView extends Component {
     super(props);
 
     if (!this.props.isBackButtonVisible) {
-      this.state = {isBackButtonVisible: false, form: {}, isFormValid: false};
+      this.state = {
+        isBackButtonVisible: false,
+        form: defaultForm,
+        isFormValid: false
+      };
     } else {
-      this.state = {isBackButtonVisible: this.props.isBackButtonVisible, form: {}, isFormValid: false};
+      this.state = {
+        isBackButtonVisible: this.props.isBackButtonVisible,
+        form: defaultForm,
+        isFormValid: false
+      };
     }
 
-    this.onFormChange = this.onFormChange.bind(this);
     this.createChat = this.createChat.bind(this);
   }
 
-  onFormChange(form) {
+  // Form logic
+  onNameChange = (name) => {
+    var form = this.state.form;
+    form.name = name;
+
     this.setState({form: form, isFormValid: this.isFormValid(form)});
+  }
+
+  onDescriptionChange = (description) => {
+    var form = this.state.form;
+    form.description = description;
+
+    this.setState({form: form});
+  }
+
+  onNumUsersChange = (number) => {
+    // Remove non-numeric characters
+    number = number.replace(/\D/g,'');
+
+    var int = parseInt(number);
+
+    // Enforce user limit
+    if (int > Globals.MAX_USERS) {
+      number = '' + Globals.MAX_USERS;
+    } else if (int < Globals.MIN_USERS || number == '') {
+      number = '' + Globals.MIN_USERS;
+    }
+
+    var form = this.state.form;
+    form.numUsers = number;
+
+    this.setState({form: form, isFormValid: this.isFormValid(form)});
+  }
+
+  onCategoriesChange = (categories) => {
+    var form = this.state.form;
+    form.categories = categories;
+
+    this.setState({form: form});
   }
 
   isFormValid = (form) => {
@@ -36,14 +87,18 @@ export default class ChatFormView extends Component {
   }
 
   createChat = () => {
-    // Validate form first
+    const form = this.state.form;
+
+    // Clear form
+    this.setState({form: defaultForm});
 
     // Remove this ChatFormView from nav stack and replace with chat view
     // Enter chat loading view with chat id/object
-    Actions.chatLoadingView({type: ActionConst.REPLACE, form: this.state.form});
+    Actions.chatLoadingView({type: ActionConst.REPLACE, form: form});
   }
 
   render() {
+
       const fontStyle = this.state.isFormValid ?
                     (Platform.OS === 'ios' ? {color:'#0E7AFE'} : {color:'#FFFFFF'})
                     : {color: '#999999'};
@@ -60,7 +115,13 @@ export default class ChatFormView extends Component {
                   </Button>
               </Header>
               <Content>
-                  <ChatFormComponent onFormChange={this.onFormChange} categoryNames={Globals.CATEGORIES}/>
+                  <ChatFormComponent
+                    form={this.state.form}
+                    onNameChange={this.onNameChange}
+                    onDescriptionChange={this.onDescriptionChange}
+                    onNumUsersChange={this.onNumUsersChange}
+                    onCategoriesChange={this.onCategoriesChange}
+                  />
               </Content>
           </Container>
       );

@@ -3,6 +3,7 @@ import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
 import { connect as connectRedux } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ChatListView from './ChatListView';
+import MyChatListView from './MyChatListView';
 import ChatFormView from './ChatFormView';
 import InformationView from './InformationView';
 import SettingsView from './SettingsView';
@@ -23,20 +24,18 @@ export default class MainView extends Component {
             case 'all':
                 return (
                     <ChatListView
-                        key="all"
-                        title="All Chats"
-                        showOpenChatsOnly={false}
-                        onCreateChatPressed={this.onCreateChatPressed}
-                        />
+                      key="all"
+                      title="All Chats"
+                      onCreateChatPressed={this.onCreateChatPressed}
+                    />
                 );
             case 'open':
                 return (
-                    <ChatListView
-                        key="open"
-                        title="Open Chats"
-                        showOpenChatsOnly={true}
-                        onCreateChatPressed={this.onCreateChatPressed}
-                        />
+                    <MyChatListView
+                      key="open"
+                      title="Open Chats"
+                      onCreateChatPressed={this.onCreateChatPressed}
+                    />
                 );
             case 'create':
                 return (

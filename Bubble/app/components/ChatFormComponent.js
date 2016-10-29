@@ -8,72 +8,27 @@ import Globals from '../globals';
 export default class ChatFormComponent extends Component {
 
   static propTypes = {
-    onFormChange: PropTypes.func.isRequired,
-    categoryNames: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    onNameChange: PropTypes.func.isRequired,
+    onDescriptionChange: PropTypes.func.isRequired,
+    onNumUsersChange: PropTypes.func.isRequired,
+    onCategoriesChange: PropTypes.func.isRequired
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({categories: nextProps.form.categories});
   }
 
   state = {
-    categoryNames: this.props.categoryNames,
-    name: '',
-    description: '',
-    numUsers: '2',
-    categories: [],
-  }
-
-  constructor(props) {
-    super(props);
-  }
-
-  onNameChange = (name) => {
-    this.setState({name: name});
-    this.onFormChange();
-  }
-
-  onDescriptionChange = (description) => {
-    this.setState({description: description});
-    this.onFormChange();
-  }
-
-  onNumUsersChange = (number) => {
-    console.log(number);
-    // Remove non-numeric characters
-    number = number.replace(/\D/g,'');
-
-    var int = parseInt(number);
-
-    // Enforce user limit
-    if (int > Globals.MAX_USERS) {
-      number = '' + Globals.MAX_USERS;
-    } else if (int < Globals.MIN_USERS || number == '') {
-      number = '' + Globals.MIN_USERS;
-    }
-
-    this.setState({numUsers: number});
-    this.onFormChange();
+    categories: this.props.form.categories
   }
 
   onSelectCategory = (category) => {
-    var categories = this.state.categories;
-    var index = categories.indexOf(category);
-
-    if (index > -1) { // Category has been selected
-      // Remove the category
-      categories.splice(index, 1);
-    } else {
-      // Add the category
-      categories.push(category);
-    }
-
-    this.setState({categories: categories});
-    this.onFormChange();
-  }
-
-  onFormChange = () => {
-    this.props.onFormChange(this.state);
+    this.props.onCategoriesChange(this.state.categories);
   }
 
   isNameValid = () => {
-    return this.state.name != '';
+    return this.props.form.name != '';
   }
 
   render() {
@@ -83,8 +38,8 @@ export default class ChatFormComponent extends Component {
           <ListItem>
             <InputGroup iconRight={!this.isNameValid()} error={!this.isNameValid()}>
               <Input
-                value={this.state.name}
-                onChangeText={this.onNameChange}
+                value={this.props.form.name}
+                onChangeText={this.props.onNameChange}
                 placeholder='Name'
               />
               { this.isNameValid() ? null :
@@ -95,8 +50,8 @@ export default class ChatFormComponent extends Component {
           <ListItem>
             <InputGroup>
               <Input
-                value={this.state.description}
-                onChangeText={this.onDescriptionChange}
+                value={this.props.form.description}
+                onChangeText={this.props.onDescriptionChange}
                 placeholder='Description'
               />
             </InputGroup>
@@ -107,8 +62,8 @@ export default class ChatFormComponent extends Component {
               <Icon name='ios-person' />
               <Input
                 keyboardType='numeric'
-                value={this.state.numUsers}
-                onChangeText={this.onNumUsersChange}
+                value={this.props.form.numUsers}
+                onChangeText={this.props.onNumUsersChange}
                 placeholder='No. of Users'
               />
             </InputGroup>
@@ -121,6 +76,7 @@ export default class ChatFormComponent extends Component {
         <View style={{paddingLeft: 20}}>
           <MultipleChoice
             options={Globals.CATEGORIES}
+            selectedOptions={this.state.categories}
             onSelection={this.onSelectCategory}
             />
         </View>

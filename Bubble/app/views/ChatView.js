@@ -222,15 +222,9 @@ export class ChatView extends Component {
     }
 
     /* onExit is called when the user attempts to return to the previous page.
-       This will prompt the dialog|alert that warns about exiting rooms and rooms expiring,
-       unless the option for the dialog is turned off otherwise. */
+       This will not make the user leave the room */
     onExit() {
-        // prompt exit confirmation -> warn about unsent messages and
-        this.props.socket.emit("exit_room", { roomId: this.props.roomId, user: this.props.socket.id });
         Actions.pop();
-        setTimeout(() => {
-            Actions.refresh({ name: "Bubble" });
-        }, 400);
     }
 
     componentDidMount() {
