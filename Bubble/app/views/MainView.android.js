@@ -88,7 +88,7 @@ export class MainView extends Component {
   render() {
 
     var header;
-    if (this.state.selectedTab === 0) {
+    if (this.state.selectedTab === 0 || this.state.selectedTab === 1) {
       header = (
         <Toolbar
           centerElement="Bubble"
@@ -104,6 +104,7 @@ export class MainView extends Component {
       header = (
         <Toolbar
           centerElement="Bubble"
+          isSearchActive={false}
           />
       );
     }
