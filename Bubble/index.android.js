@@ -28,8 +28,8 @@ import PushController from './app/PushController';
 export default class Bubble extends Component {
     render() {
         return (
-          <PushController>
             <Provider store={Store}>
+              <PushController>
                 <Router>
 
                     <Scene key="modal" component={Modal} >
@@ -47,8 +47,8 @@ export default class Bubble extends Component {
                         <Scene key="modalView" component={ModalView} />
                     </Scene>
                 </Router>
+              </PushController>
             </Provider>
-          </PushController>
 
         );
     }
