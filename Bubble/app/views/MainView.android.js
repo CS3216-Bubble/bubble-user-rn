@@ -9,6 +9,7 @@ import { connect as connectRedux } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import ChatListComponent from '../components/ChatListComponent';
+import MyChatListComponent from '../components/MyChatListComponent';
 import SettingsComponent from '../components/SettingsComponent';
 
 import { Styles } from '../styles/Styles';
@@ -117,8 +118,8 @@ export class MainView extends Component {
           {header}
           <View style={{ flex: 1 }}>
             <Tabs theme={CustomTheme} onChangeTab={this.onChangeTab}>
-              <ChatListComponent tabLabel='All' showOpenChatsOnly={false} searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed}/>
-              <ChatListComponent tabLabel='Open' showOpenChatsOnly={true} searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed} />
+              <ChatListComponent tabLabel='All' searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed}/>
+              <MyChatListComponent tabLabel='Open' searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed} />
               <SettingsComponent tabLabel='Settings' user={this.state.user} />
             </Tabs>
           </View>

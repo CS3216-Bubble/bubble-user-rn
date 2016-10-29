@@ -15,7 +15,6 @@ export class ChatListComponent extends Component {
     static propTypes = {
         onCreateChatPressed: PropTypes.func.isRequired,
         searchTerm: PropTypes.string,
-        showOpenChatsOnly: PropTypes.bool,
         showCategoriesOnCard: PropTypes.bool,
     }
 
@@ -29,7 +28,6 @@ export class ChatListComponent extends Component {
         this.state = {
             roomList: [],
             refreshing: false,
-            showOpenChatsOnly: props.showOpenChatsOnly ? props.showOpenChatsOnly : false,
             showCategoriesOnCard: props.showCategoriesOnCard ? props.showCategoriesOnCard : true,
         };
         this.updateList = this.updateList.bind(this);

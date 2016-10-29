@@ -4,9 +4,9 @@ import { Container, Header, Content, Button, Icon, Title, InputGroup, Input } fr
 import { Actions } from 'react-native-router-flux';
 
 import Globals from '../globals';
-import ChatListComponent from '../components/ChatListComponent';
+import MyChatListComponent from '../components/MyChatListComponent';
 
-export default class ChatListView extends Component {
+export default class MyChatListView extends Component {
     static propTypes = {
       title: PropTypes.string.isRequired,
       onCreateChatPressed: PropTypes.func.isRequired,
@@ -51,7 +51,6 @@ export default class ChatListView extends Component {
           );
         }, this);
 
-        // <Text style={{color:'#0E7AFE'}}>Search</Text>
         return (
             <Container>
                 <Header searchBar rounded>
@@ -69,11 +68,9 @@ export default class ChatListView extends Component {
                   </Button>
                 </Header>
                 <View style={{flex:1}}>
-                  <View style={styles.categoryButtonContainer}>{ categoryButtons }</View>
-                  <ChatListComponent
+                  <MyChatListComponent
                     refresh={this.state.refresh}
                     searchTerm={this.state.searchTerm}
-                    showOpenChatsOnly={this.props.showOpenChatsOnly}
                     onCreateChatPressed={this.props.onCreateChatPressed} />
                 </View>
             </Container>

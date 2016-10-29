@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform, TouchableWithoutFeedback } from 'react-native';
+import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform, TouchableWithoutFeedback } from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
 
 import { Styles } from '../styles/Styles';
@@ -8,12 +8,10 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 import moment from 'moment';
 
-import ChatCardComponent from './ChatCardComponent';
+import MyChatCardComponent from './MyChatCardComponent';
 import ChatPlaceholderComponent from './ChatPlaceholderComponent';
 
-import Globals from '../globals';
-
-export class ChatListComponent extends Component {
+export class MyChatListComponent extends Component {
     static propTypes = {
         onCreateChatPressed: PropTypes.func.isRequired,
         searchTerm: PropTypes.string,
@@ -34,8 +32,9 @@ export class ChatListComponent extends Component {
         };
         this.updateList = this.updateList.bind(this);
 
-        UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
     }
 
     _onRefresh() {
@@ -66,49 +65,32 @@ export class ChatListComponent extends Component {
 
         var chatRooms = this.state.roomList.slice();
 
-
-
         chatRooms.sort(function (a, b) {
-            // Sticky chat first
-            if (a.roomType == 'HOT' && b.roomType != 'HOT') {
-              return -1;
-            } else if ((b.roomType == 'HOT' && a.roomType != 'HOT')) {
-              return 1;
-            } else {
-              // Chat types are the same, sort by time
-              return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
-            }
+          // Sticky chat first
+          if (a.roomType == 'HOT' && b.roomType != 'HOT') {
+            return -1;
+          } else if ((b.roomType == 'HOT' && a.roomType != 'HOT')) {
+            return 1;
+          } else {
+            // Chat types are the same, sort by time
+            return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+          }
         });
 
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function(chat) {
 
-
             const chatContainsSearchTerm =
-              (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
-               chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
+                (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
+                 chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
-               if (chatContainsSearchTerm) {
+            if (chatContainsSearchTerm) {
                 // Create chat card
                 return (
-
-                        <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
-
+                    <MyChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
                 );
             }
         }, this);
-
-        const categoryButtons = Globals.CATEGORIES.map(function (name, index) {
-            return (
-                <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} rounded info key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
-                    <Text style={{ fontSize: 10, color: 'white', fontWeight: "600" }} >{name}</Text>
-                </Button>
-            );
-        }, this);
-
-        const categoryFilter = (
-            <View style={styles.categoryButtonContainer}>{categoryButtons}</View>
-        );
 
         // If no search results found
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
@@ -117,7 +99,8 @@ export class ChatListComponent extends Component {
                 style={{ flex: 1 }}
                 refreshControl={<RefreshControl
                 refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh.bind(this)} />}>
+                onRefresh={this._onRefresh.bind(this)} />}
+                style={{backgroundColor: 'red'}}>
                   <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                       <Text>No results found for {this.props.searchTerm}.</Text>
                   </View>
@@ -129,8 +112,9 @@ export class ChatListComponent extends Component {
                   style={{ flex: 1 }}
                   refreshControl={<RefreshControl
                   refreshing={this.state.refreshing}
-                  onRefresh={this._onRefresh.bind(this)} />}>
-                    {this.props.searchTerm == '' ? categoryFilter : null}
+                  onRefresh={this._onRefresh.bind(this)}
+                  style={{marginTop: -15}}/>}
+                  >
                     {chatsToShow.length == 0 ?
                       <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
                       : chatsToShow}
@@ -140,21 +124,6 @@ export class ChatListComponent extends Component {
     }
 }
 
-var styles = StyleSheet.create({
-    categoryButtonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-        padding: 10,
-        borderBottomColor: '#bbb',
-        borderBottomWidth: StyleSheet.hairlineWidth
-    },
-    categoryButton: {
-        marginBottom: 10,
-    }
-});
-
 function getList(state) {
     let socket = state.socketHandler.socket;
 
@@ -163,4 +132,4 @@ function getList(state) {
     }
 }
 
-export default connectRedux(getList)(ChatListComponent);
+export default connectRedux(getList)(MyChatListComponent);
