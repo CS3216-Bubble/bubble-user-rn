@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, ScrollView, View, Switch } from 'react-native';
 import { Picker, Text, Button } from 'native-base';
-import ModalDropdown from 'react-native-modal-dropdown';
 
 import ProfileComponent from './ProfileComponent';
 

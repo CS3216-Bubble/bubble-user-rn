@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Image, Text, TouchableHighlight } from 'react-native';
 import { Button, Thumbnail } from 'native-base';
+import Accordion from 'react-native-accordion';
 import { Styles } from '../styles/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -77,8 +78,12 @@ export default class MyChatCardComponent extends Component {
           backgroundColor: Globals.CATEGORY_BG_COLOURS[categoryName]
         }
 
-        return (
-          <TouchableHighlight key={chat.roomId} onPress={() => {Actions.chatView(chatProps);}} underlayColor="#E5FEFF">
+        const header = (
+          <TouchableHighlight
+            key={chat.roomId}
+            onPress={() => {Actions.chatView(chatProps);}}
+            onLongPress={this.showAccordion}
+            underlayColor="#E5FEFF">
             <View key={chat.roomId} style={Styles.cardContainer}>
                   <View style={Styles.cardMainRow}>
                       <View>
@@ -117,6 +122,20 @@ export default class MyChatCardComponent extends Component {
                 }
             </View>
           </TouchableHighlight>
+        );
+
+        const content = (
+          <View style={{backgroundColor: 'red'}}>
+            <Text>Leave chat</Text>
+          </View>
+        );
+
+        return (
+          <Accordion
+            header={header}
+            content={content}
+            easing="easeOutCubic"
+          />
         );
     }
 }
