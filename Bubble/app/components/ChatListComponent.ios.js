@@ -132,8 +132,7 @@ export class ChatListComponent extends Component {
 const mapStateToProps = (state) => {
     return {
         socket: state.socket
-    }
-        ;
+    };
 }
 const mapDispatchToProps = (dispatch) => {
     return {};

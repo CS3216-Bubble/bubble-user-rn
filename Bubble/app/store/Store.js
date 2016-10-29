@@ -10,9 +10,9 @@ var storage = undefined;
 // storage = {blacklist: [], storage: AsyncStorage};
 
 const Store = compose(autoRehydrate())(createStore)(Reducer)
-persistStore(Store, storage, () => {
-  console.log('restored')
-})
+// persistStore(Store, storage, () => {
+//   console.log('restored')
+// })
 // persistStore(Store)
 
 export default Store;

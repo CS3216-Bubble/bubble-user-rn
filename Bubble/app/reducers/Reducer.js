@@ -17,6 +17,7 @@ import {
     SET_CHATLIST,
     BACKUP_CHATROOM,
     SET_CONNECTION_STATUS,
+    SET_PENDING_MESSAGES,
     ENQUEUE_PENDING_MESSAGE,
     DEQUEUE_PENDING_MESSAGE,
     CLEAR_PENDING_MESSAGES,
@@ -226,6 +227,12 @@ export default function Reducer(state = initialState, action) {
                 });
             }
             return state;
+
+        case SET_PENDING_MESSAGES:
+            return Object.assign({}, state, {
+                outbox: action.messages
+            });
+
         case ENQUEUE_PENDING_MESSAGE:
             var outbox = Object.assign({}, state.outbox);
             outbox.push(action.message);
@@ -303,8 +310,8 @@ export default function Reducer(state = initialState, action) {
             return state;
         case REHYDRATION_COMPLETE:
             return Object.assign({}, state, {
-                    rehydrated: true
-                });
+                rehydrated: true
+            });
 
         case DISCONNECT:
             if (state.connection !== "DISCONNECTED") {

@@ -41,6 +41,11 @@ export class MyChatListComponent extends Component {
         this.setState({ refreshing: true });
         this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+        setTimeout(() => {
+            this.setState({
+                refreshing: false
+            });
+        }, 5000);
     }
 
     componentDidMount() {

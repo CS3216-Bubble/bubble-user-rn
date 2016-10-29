@@ -35,11 +35,12 @@ export default class ChatComponent extends Component {
 
     hashID(userId) {
         var hash = 0;
-        if (userId.length == 0) return hash;
-        for (i = 0; i < userId.length; i++) {
-            char = userId.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
+        if (userId && userId.length != 0) {
+            for (i = 0; i < userId.length; i++) {
+                char = userId.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
         }
         return hash;
     }

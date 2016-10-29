@@ -13,8 +13,9 @@ import { Styles } from '../styles/Styles';
 
 import { connect as connectRedux } from 'react-redux';
 
-import dismissKeyboard from 'dismissKeyboard'
+import dismissKeyboard from 'dismissKeyboard';
 
+import { setPendingMessages, backupChatRoom } from '../actions/Actions';
 var _ = require('lodash');
 
 export class ChatView extends Component {
@@ -23,9 +24,9 @@ export class ChatView extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            chat: null,
-            messages: [],
-            queue: [],
+            chat: this.props.chat,
+            messages: this.props.chatCache,
+            queue: this.props.outbox,
             toggleModal: false,
             modalInfo: { userId: "userId", otherUserId: "otherUserId", roomId: "roomId", otherUserName: "otherUserName" }
         };
@@ -78,10 +79,11 @@ export class ChatView extends Component {
     /* onReceiveChat is called when the chat is being loaded or refreshed.
        This will cause the whole chatroom to be reloaded. */
     onReceiveChat(data) {
-        console.log(data);
+        // console.log(data);
         // Replaces the current chat state of the view
+        var messages = mergeAndSort(this.props.outbox, data.messages);
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        this.setState({ chat: data, messages: data.messages, queue: this.state.queue });
+        this.setState({ chat: data, messages: messages, queue: this.state.queue });
     }
 
     /* onReceiveMessage is called when a message broadcast is received.
@@ -109,9 +111,7 @@ export class ChatView extends Component {
                         }
                     }
                     // Sort messages by date
-                    tempMessages.sort(function (a, b) {
-                        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-                    });
+                    sort(tempMessages);
                     // Update state (remove message from queue, replace message in display messages)
                     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
                     this.setState({ chat: this.state.chat, messages: tempMessages, queue: tempQueue });
@@ -126,9 +126,7 @@ export class ChatView extends Component {
             var tempMessages = this.state.messages.slice();
             tempMessages.unshift(data);
             // Sort messages by date
-            tempMessages.sort(function (a, b) {
-                return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-            });
+            sort(tempMessages);
             // Update state
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
             this.setState({ chat: this.state.chat, messages: tempMessages, queue: this.state.queue });
@@ -147,9 +145,7 @@ export class ChatView extends Component {
         var tempMessages = this.state.messages.slice();
         tempMessages.unshift(data);
         // Sort messages by date
-        tempMessages.sort(function (a, b) {
-            return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-        });
+        sort(tempMessages);
         // Update state
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({ chat: this.state.chat, messages: tempMessages, queue: this.state.queue });
@@ -227,6 +223,11 @@ export class ChatView extends Component {
         Actions.pop();
     }
 
+    componentWillReceiveProps(props) {
+        console.log("RECEIVED PROPS BROOOOOO");
+        this.setState({ chat: props.chat, messages: props.chatCache });
+    }
+
     componentDidMount() {
         // Overwrite default listeners
         this.props.socket.on('connect', this.onConnect);
@@ -260,16 +261,55 @@ export class ChatView extends Component {
         this.props.socket.removeListener('disconnect', this.onDisconnect);
         this.props.socket.removeListener('connect_timeout', this.onTimeout);
         this.props.socket.removeListener('bubble_error', this.onError)
+
+        // Write state to redux
+        if (this.state.chat && this.state.chat != null) {
+            const chatBackup = Object.assign({}, this.state.chat);
+            console.log("NOW SAVING: ", chatBackup);
+            this.props.saveChatSession(chatBackup);
+        }
+        if (this.state.queue && this.state.queue != null) {
+            const queueBackup = this.state.queue.slice();
+            console.log("NOW SAVING: ", queueBackup);
+            this.props.saveUnsentMsgs(queueBackup);
+        }
     }
 
     render() {
         // When chat is not yet available, display placeholder and|or loader
-        if (this.state.chat == null) {
-            return (<View />);
-        }
+        // if (this.state.chat == null) {
+        //     return (<View />);
+        // }
 
         // When chat is indeed available, display chat component
+        if (this.state.chat == null) {
+            return (<Container>
+                <Header>
+                    <Button transparent onPress={this.onExit}>
+                        <Icon size={30}
+                            name='ios-arrow-back'
+                            color="#0E7AFE" />
+                    </Button>
+                    <Title ellipsizeMode='middle' numberOfLines={1}>
+                        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
+                            <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={"Not Available"} />
+                        </View>
+                    </Title>
+                    <Button transparent onPress={() => Actions.chatInfoView({ chat: this.state.chat })}>
+                        <Icon size={32}
+                            name='ios-information-circle-outline'
+                            color="#0E7AFE" />
+                    </Button>
+                </Header>
+                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                    <Text style={{ textAlign: "center" }}>
+                        You're Offline! Come back later!
+                        </Text>
+                </View>
+            </Container>);
+        }
         else if (Platform.OS === 'ios') {
+            console.log("MESSAGES", this.state.messages);
             return (
                 <Container>
                     <Header>
@@ -281,10 +321,10 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
                                 <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={this.state.chat.roomName} />
-                                {this.state.chat != null && <Text note style={Styles.subtitle}> {this.state.chat.roomType.charAt(0).toUpperCase() + this.state.chat.roomType.toLowerCase().slice(1)} Chat </Text>}
+                                {this.state.chat != null && <Text note style={Styles.subtitle}> {this.state.chat.roomType.charAt(0).toUpperCase() + this.state.chat.roomType.toLowerCase().slice(1)}Chat </Text>}
                             </View>
                         </Title>
-                        <Button transparent onPress={() => Actions.chatInfoView({chat: this.state.chat})}>
+                        <Button transparent onPress={() => Actions.chatInfoView({ chat: this.state.chat })}>
                             <Icon size={32}
                                 name='ios-information-circle-outline'
                                 color="#0E7AFE" />
@@ -321,7 +361,7 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             {this.state.chat.roomName}
                         </Title>
-                        <Button transparent onPress={() => Actions.chatInfoView({chat: this.state.chat})}>
+                        <Button transparent onPress={() => Actions.chatInfoView({ chat: this.state.chat })}>
                             <Icon size={32}
                                 name='ios-information-circle-outline'
                                 color="#0E7AFE" />
@@ -352,17 +392,44 @@ export class ChatView extends Component {
 /*** Using reducer socket ***/
 
 function mergeAndSort(outbox, chatCache) {
-    return [];
+    console.log("I AM MERGE SORTER", outbox, chatCache);
+    var msgs = [];
+    if (chatCache) {
+        msgs = chatCache.concat(outbox);
+    } else if (outbox) {
+        msgs = outbox.splice();
+    }
+    sort(msgs);
+    return msgs;
+}
+
+function sort(messages) {
+    // Sort messages by date
+    messages.sort(function (a, b) {
+        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(ownProps.roomId);
-  return {
-    socket: state.socket,
-    chatCache: mergeAndSort(state.outbox, state.chatRooms[ownProps.roomId])
-  }
-;}
-const mapDispatchToProps = (dispatch) => {
-  return {};
+    var chatMsgsCached = [];
+    var chatCached = null;
+    if (state.chatRooms[ownProps.roomId]) {
+        chatCached = state.chatRooms[ownProps.roomId];
+        chatMsgsCached = state.chatRooms[ownProps.roomId].messages;
+    }
+
+    return {
+        socket: state.socket,
+        outbox: state.outbox,
+        chat: chatCached,
+        chatCache: mergeAndSort(state.outbox, chatMsgsCached)
+    }
+        ;
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        saveUnsentMsgs: (messages) => { dispatch(setPendingMessages(messages)) },
+        saveChatSession: (chat) => { dispatch(backupChatRoom(ownProps.roomId, chat)) }
+    };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatView);

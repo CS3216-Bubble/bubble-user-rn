@@ -116,6 +116,7 @@ export function backupChatRoom(roomId, chatRoomState) {
 
 // Action Types
 export const SET_CONNECTION_STATUS = 'SET_CONNECTION_STATUS'
+export const SET_PENDING_MESSAGES = 'SET_PENDING_MESSAGES'
 export const ENQUEUE_PENDING_MESSAGE = 'ENQUEUE_PENDING_MESSAGE'
 export const DEQUEUE_PENDING_MESSAGE = 'DEQUEUE_PENDING_MESSAGE'
 export const CLEAR_PENDING_MESSAGES = 'CLEAR_PENDING_MESSAGES'
@@ -126,6 +127,12 @@ export function setConnectionStatus(status) {
     return {
         type: SET_CONNECTION_STATUS,
         status: status
+    }
+}
+export function setPendingMessages(messages) {
+    return {
+        type: SET_PENDING_MESSAGES,
+        messages: messages
     }
 }
 export function enqueuePendingMessage(message) {
