@@ -120,7 +120,7 @@ export class ChatListComponent extends Component {
                     refreshControl={<RefreshControl
                         refreshing={this.state.refreshing}
                         onRefresh={this._onRefresh.bind(this)}
-                        style={{ marginTop: -15 }} />}
+                        style={{ marginTop: -19 }} />}
                     >
                     {chatsToShow.length == 0 ?
                         <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
