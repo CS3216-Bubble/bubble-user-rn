@@ -9,6 +9,7 @@ import { Styles } from '../styles/Styles';
 import { connect as connectRedux } from 'react-redux';
 import dismissKeyboard from 'dismissKeyboard';
 import { setPendingMessages, backupChatRoom, cacheUserId, reassignPendingMessages } from '../actions/Actions';
+import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 
 var _ = require('lodash');
 var adjectives = require('../utils/adjectives');
@@ -501,7 +502,11 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
                                 <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={this.state.chat.roomName} />
-                                {(this.state.someoneTyping !== '') ? <Text> {this.state.someoneTyping} is typing.. </Text> : [] }
+                                {(this.state.someoneTyping !== '') ?  <View style={{flexDirection: 'row', alignItems: "center", justifyContent: "center"}}> 
+      <Text style={{fontSize: 12, fontWeight: "300"}}> 
+        {this.state.someoneTyping} is typing...
+      </Text>  
+    </View> : [] }
                             </View>
                         </Title>
                         <Button transparent onPress={() => Actions.chatInfoView({ chat: this.state.chat })}>
