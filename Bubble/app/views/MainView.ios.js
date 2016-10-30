@@ -13,6 +13,7 @@ export default class MainView extends Component {
         iconSize: 25,
         refresh: false,
         selectedTab: 'all',
+        toggleMyChats: false
     };
 
     onCreateChatPressed = () => {
@@ -33,6 +34,7 @@ export default class MainView extends Component {
                 return (
                     <MyChatListView
                       key="open"
+                      toggle = {this.state.toggleMyChats}
                       title="Open Chats"
                       onCreateChatPressed={this.onCreateChatPressed}
                     />
@@ -82,7 +84,7 @@ export default class MainView extends Component {
                     selected={this.state.selectedTab === 'open'}
                     onPress={() => {
                         this.setState({
-                            selectedTab: 'open',
+                            selectedTab: 'open', toggleMyChats: !this.state.toggleMyChats
                         });
                     } }>
                     {this._renderContent()}

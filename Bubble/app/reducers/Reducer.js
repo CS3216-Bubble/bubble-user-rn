@@ -63,7 +63,8 @@ import {
     LISTEN_TO_CLAIM_ID,
     MY_ROOMS,
     LISTEN_TO_MY_ROOMS,
-    REMOVE_LISTENERS
+    REMOVE_LISTENERS,
+    SET_TOKEN_STATUS
 } from '../actions/Actions';
 
 window.navigator.userAgent = 'ReactNative';
@@ -114,7 +115,8 @@ const initialState = {
     search: null,
     outbox: {},
     rehydrated: false,
-    claimToken: initUUID
+    claimToken: initUUID,
+    claimed: false
 };
 
 // Reducer Definition
@@ -319,6 +321,10 @@ export default function Reducer(state = initialState, action) {
         case SET_CLAIM_TOKEN:
             return Object.assign({}, state, {
                 claimToken: action.token
+            });
+        case SET_TOKEN_STATUS:
+            return Object.assign({}, state, {
+                claimed: action.claimed
             });
 
         // Sockets

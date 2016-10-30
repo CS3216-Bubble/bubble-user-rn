@@ -42,6 +42,7 @@ export class ChatView extends Component {
         this.onTriggerModal = this.onTriggerModal.bind(this);
         this.onExit = this.onExit.bind(this);
         this.onClaim = this.onClaim.bind(this);
+        this.onJoinRoom = this.onJoinRoom.bind(this);
     }
 
     onClaim(data) {
@@ -60,11 +61,11 @@ export class ChatView extends Component {
         this.props.reassignOutbox();
         // Add new id to alias 
         this.props.memoId(userId);
-        if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
+       if (this.props.aliasId.length > 1 && this.props.aliasId[0] != this.props.socket.id[1]) {
             // Claim using first (latestId, if not same)
             this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0], claimToken: this.props.claimToken });
-            console.log("Trying to claim old id:", this.props.aliasId[0]);
-        } else if (this.props.aliasId.length == 0) {
+            console.log("Trying to claim old id:", this.props.aliasId[1]);
+        } else if (this.props.aliasId.length <= 1) {
             // Add new id to alias
             this.props.memoId(this.props.socket.id);
             // // console.log("memorising id", this.props.socket.id);
@@ -78,11 +79,11 @@ export class ChatView extends Component {
         this.props.reassignOutbox();
         // Add new id to alias
         this.props.memoId(userId);
-        if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
+        if (this.props.aliasId.length > 1 && this.props.aliasId[0] != this.props.socket.id[1]) {
             // Claim using first (latestId, if not same)
             this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0], claimToken: this.props.claimToken });
-            console.log("Trying to claim old id:", this.props.aliasId[0]);
-        } else if (this.props.aliasId.length == 0) {
+            console.log("Trying to claim old id:", this.props.aliasId[1]);
+        } else if (this.props.aliasId.length <= 1) {
             // Add new id to alias
             this.props.memoId(this.props.socket.id);
             // // console.log("memorising id", this.props.socket.id);
@@ -94,7 +95,7 @@ export class ChatView extends Component {
     }
 
     onDisconnect(data) {
-        console.log("Disconnected", this.props.socket.id);
+        console.log("Disconnected with last known id: ", this.props.aliasId[0]);
         // Assign all to last known socket id
         this.props.reassignOutbox();
         // // console.log("reassigning unsent messages...");
@@ -307,7 +308,15 @@ export class ChatView extends Component {
         }
     }
 
+    onJoinRoom(data) {
+        if (this.props.noToken) {
+            console.log("EMITTING TOKEN .. PLS ACCEPT");
+            this.props.socket.emit('set_claim_token', {claimToken: this.props.claimToken});
+        }
+    }
+
     componentDidMount() {
+        
         console.log(this.props.claimToken);
         // // console.log("Mounted!");
         // Overwrite default listeners
@@ -317,19 +326,21 @@ export class ChatView extends Component {
         this.props.socket.on('connect_timeout', this.onTimeout);
         this.props.socket.on('bubble_error', this.onError)
         this.props.socket.on('reconnect', this.onReconnect)
+        this.props.socket.on('set_claim_token', (data) => {console.log(data)});
 
         // Set listeners
         this.props.socket.on('view_room', this.onReceiveChat);
         this.props.socket.on('add_message', this.onReceiveMessage);
         this.props.socket.on('add_reaction', this.onReceiveReaction);
         this.props.socket.on("claim_id", this.onClaim);
+        this.props.socket.on('join_room', this.onJoinRoom);
 
         // Checks for connection. If not connected, will attempt to connect.
         // this.props.socket.connect();
 
         if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
             // Claim using first (latestId, if not same)
-            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0], claimToken: this.props.claimToken });
+            // this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0], claimToken: this.props.claimToken });
             // console.log("Trying to claim old id:", this.props.aliasId[0]);
         } else if (this.props.aliasId.length == 0) {
             // Add new id to alias
@@ -357,6 +368,7 @@ export class ChatView extends Component {
         this.props.socket.removeListener('connect_timeout', this.onTimeout);
         this.props.socket.removeListener('bubble_error', this.onError)
         this.props.socket.removeListener("claim_id", this.onClaim);
+        this.props.socket.removeListener('join_room', this.onJoinRoom);
 
         // Write state to redux
         if (this.state.chat && this.state.chat != null) {
@@ -531,7 +543,8 @@ const mapStateToProps = (state, ownProps) => {
         outbox: outboxCached,
         chat: chatCached,
         chatCache: mergeAndSort(outboxCached, chatMsgsCached), 
-        claimToken: state.claimToken
+        claimToken: state.claimToken,
+        noToken: !state.claimed
     }
         ;
 }

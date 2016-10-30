@@ -64,12 +64,13 @@ export class MainView extends Component {
         imgSrc: 'http://flathash.com/' + this.props.socket.id,
       },
       selectedTab: 0,
-      searchTerm: ''
+      searchTerm: '',
+      toggleMyChats: false
     }
   }
 
   onChangeTab = (tab) => {
-    this.setState({ selectedTab: tab.i });
+    this.setState({ selectedTab: tab.i, toggleMyChats: !this.state.toggleMyChats });
   }
 
   onSearchBarTextChange = (text) => {
@@ -116,7 +117,7 @@ export class MainView extends Component {
           <View style={{ flex: 1 }}>
             <Tabs theme={CustomTheme} onChangeTab={this.onChangeTab}>
               <ChatListComponent tabLabel='All' searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed}/>
-              <MyChatListComponent tabLabel='My Chats' searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed} />
+              <MyChatListComponent toggle={this.state.toggleMyChats} tabLabel='My Chats' searchTerm={this.state.searchTerm} onCreateChatPressed={this.onCreateChatPressed} />
               <SettingsComponent tabLabel='Settings' user={this.state.user} />
             </Tabs>
           </View>

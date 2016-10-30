@@ -189,6 +189,7 @@ export const CACHE_NICKNAME = 'CACHE_NICKNAME'
 export const CACHE_USER_ID = 'CACHE_USER_ID'
 export const SET_CLAIM_TOKEN = 'SET_CLAIM_TOKEN'
 export const REHYDRATION_COMPLETE = 'REHYDRATION_COMPLETE'
+export const SET_TOKEN_STATUS = "SET_TOKEN_STATUS"
 
 // Action Creators
 export function cacheNickname(userId, nickname) {
@@ -215,6 +216,13 @@ export function rehydrationComplete() {
         type:REHYDRATION_COMPLETE
     }
 }
+export function setTokenStatus(tokenStatus) {
+    return {
+        type:SET_TOKEN_STATUS,
+        claimed: tokenStatus
+    }
+}
+
 
 
 //--------------- Sockets ---------------
