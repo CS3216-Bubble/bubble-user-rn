@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
 import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager, TextInput } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, Footer } from 'native-base';
-
 import { Actions } from 'react-native-router-flux';
-
 import CustomTheme from '../themes/bubble';
-
 import ChatComponent from '../components/ChatComponent';
 import UserActionModalComponent from '../components/UserActionModalComponent';
-
 import { Styles } from '../styles/Styles';
-
 import { connect as connectRedux } from 'react-redux';
-
 import dismissKeyboard from 'dismissKeyboard';
+import { setPendingMessages, backupChatRoom, cacheUserId, reassignPendingMessages } from '../actions/Actions';
 
-import { setPendingMessages, backupChatRoom } from '../actions/Actions';
 var _ = require('lodash');
 
 export class ChatView extends Component {
-
     // Initialise
     constructor(props, context) {
         super(props, context);
@@ -34,7 +27,6 @@ export class ChatView extends Component {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
         }
-
         // Link functions
         this.onConnect = this.onConnect.bind(this);
         this.onDisconnect = this.onDisconnect.bind(this);
@@ -48,16 +40,55 @@ export class ChatView extends Component {
         this.onSend = this.onSend.bind(this);
         this.onTriggerModal = this.onTriggerModal.bind(this);
         this.onExit = this.onExit.bind(this);
+        this.onClaim = this.onClaim.bind(this);
+    }
+
+    onClaim(data) {
+        console.log("SUCCESS IN CLAIMING ID: ", data, "WITH CURRENT ", this.props.socket.id);
+        var userId = this.props.socket.id;
+        if (userId) {
+            // Add new id to alias 
+            this.props.memoId(userId);
+            // take over all unsent messages
+            this.props.reassignOutbox();
+        }
+        this.props.socket.emit("view_room", { user: this.props.socket.id, roomId: this.props.roomId });
+        // this.props.socket.emit("join_room", { roomId: this.props.roomId, user: this.props.socket.id });
     }
 
     /* Overriding default listeners */
     onConnect(data) {
         console.log("Connected", this.props.socket.id);
-        // Attempt to join room
+        if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
+            // Claim using first (latestId, if not same)
+            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0] });
+            console.log("Trying to claim old id:", this.props.aliasId[0]);
+        } else if (this.props.aliasId.length == 0) {
+            // Add new id to alias
+            this.props.memoId(this.props.socket.id);
+            console.log("memorising id", this.props.socket.id);
+        }
     }
+
     onDisconnect(data) {
         console.log("Disconnected", this.props.socket.id);
-        // Auto reconnects (can we do this with the same socket id? if not need a persistent userid)
+        // Assign all to last known socket id
+        this.props.reassignOutbox();
+        console.log("reassigning unsent messages...");
+        // Write state to redux
+        if (this.state.chat && this.state.chat != null) {
+            const chatBackup = Object.assign({}, this.state.chat);
+            // console.log("NOW SAVING: ", chatBackup);
+            this.props.saveChatSession(chatBackup);
+            console.log("Saving chat!", chatBackup);
+        }
+        if (this.state.queue && this.state.queue != null) {
+            const queueBackup = this.state.queue.slice();
+            // console.log("NOW SAVING: ", queueBackup);
+            this.props.saveUnsentMsgs(queueBackup);
+            console.log("Saving unsent!", queueBackup);
+        }
+
     }
     onTimeout(data) {
         console.log("Connection timed out", data);
@@ -82,6 +113,8 @@ export class ChatView extends Component {
         // console.log(data);
         // Replaces the current chat state of the view
         var messages = mergeAndSort(this.props.outbox, data.messages);
+        console.log("Chat received! Updating with these messages!", messages);
+
         LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({ chat: data, messages: messages, queue: this.state.queue });
     }
@@ -90,6 +123,7 @@ export class ChatView extends Component {
        This happens when a message is successfully received on the user-end. */
     // --> CONSIDER USING AsyncStorage FOR PERSISTING
     onReceiveMessage(data) {
+        console.log("Received a message: ", data);
         // Acknowledgement
         if (data.sentByMe) {
             // Copy mutable version
@@ -105,7 +139,10 @@ export class ChatView extends Component {
                     // Find and replace message in display messages (by comparing objects)
                     var j = 0;
                     for (j = 0; j < tempMessages.length; ++j) {
-                        if (_.isEqual(tempMessages[j], messageRef)) {
+                        // if (_.isEqual(tempMessages[j], messageRef)) {
+                        if ((tempMessages[j].userId == messageRef.userId || typeof (tempMessages[j]) == "undefined" || typeof (messageRef.userId) == "undefined") &&
+                            tempMessages[j].messageType == "OPTIMISTIC-MESSAGE" &&
+                            tempMessages[j].content == messageRef.content) {
                             tempMessages[j] = data;
                             break;
                         }
@@ -138,8 +175,9 @@ export class ChatView extends Component {
    This happens when a reaction is successfully received on the user-end. */
     // --> CONSIDER USING AsyncStorage FOR PERSISTING
     onReceiveReaction(data) {
+        console.log("Received a reaction: ", data);
 
-        console.log("REACTION RECEIVED", data);
+        // console.log("REACTION RECEIVED", data);
 
         // Append message into message list
         var tempMessages = this.state.messages.slice();
@@ -170,10 +208,11 @@ export class ChatView extends Component {
             roomRoomId: message.roomId
         };
 
-        console.log("Enqueued for acknowledgement", tempMessage);
+        // console.log("Enqueued for acknowledgement", tempMessage);
 
         // Send message
         this.props.socket.emit("add_message", message);
+        console.log("Sent a message! ", message);
 
         tempMessages.unshift(tempMessage);
         tempQueue.unshift(tempMessage);
@@ -183,7 +222,7 @@ export class ChatView extends Component {
     }
 
     onEmitThanks(context) {
-        console.log("I AM GOING TO THANK ...", context);
+        // console.log("I AM GOING TO THANK ...", context);
         var request = {
             user: context.userId,
             roomId: context.roomId,
@@ -191,10 +230,11 @@ export class ChatView extends Component {
             targetUser: context.otherUserId
         };
         this.props.socket.emit("add_reaction", request);
+        console.log("Sent a reaction! ", request);
     }
 
     onEmitCheers(context) {
-        console.log("I AM GOING TO CHEER ...", context);
+        // console.log("I AM GOING TO CHEER ...", context);
         var request = {
             user: context.userId,
             roomId: context.roomId,
@@ -202,6 +242,7 @@ export class ChatView extends Component {
             targetUser: context.otherUserId
         };
         this.props.socket.emit("add_reaction", request);
+        console.log("Sent a reaction! ", request);
     }
 
     /* onTriggeModal will activate contextual options on the specific user.
@@ -224,11 +265,21 @@ export class ChatView extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log("RECEIVED PROPS BROOOOOO");
-        this.setState({ chat: props.chat, messages: props.chatCache });
+        console.log("Received props!");
+        console.log("MY IDS", props.aliasId, "VERSUS", this.props.aliasId);
+        console.log("MY OUTBOX", props.outbox, "VERSUS", this.props.outbox);
+        // console.log("MY CHAT", props.chat, "VERSUS", this.props.chat);
+        // console.log("MY CHAT CACHE", props.chatCache, "VERSUS", this.props.chatCache);
+        // console.log("RECEIVED PROPS BROOOOOO");
+        if (props.chat != null) {
+            this.setState({ chat: props.chat, messages: props.chatCache });
+        } else {
+            this.setState({ chat: this.state.chat, messages: props.chatCache });
+        }
     }
 
     componentDidMount() {
+        console.log("Mounted!");
         // Overwrite default listeners
         this.props.socket.on('connect', this.onConnect);
         this.props.socket.on('disconnect', this.onDisconnect);
@@ -239,9 +290,20 @@ export class ChatView extends Component {
         this.props.socket.on('view_room', this.onReceiveChat);
         this.props.socket.on('add_message', this.onReceiveMessage);
         this.props.socket.on('add_reaction', this.onReceiveReaction);
+        this.props.socket.on("claim_id", this.onClaim);
 
         // Checks for connection. If not connected, will attempt to connect.
         this.props.socket.connect();
+
+        if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
+            // Claim using first (latestId, if not same)
+            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0] });
+            console.log("Trying to claim old id:", this.props.aliasId[0]);
+        } else if (this.props.aliasId.length == 0) {
+            // Add new id to alias
+            this.props.memoId(this.props.socket.id);
+            console.log("memorising id", this.props.socket.id);
+        }
 
         // Attempts to obtain permission to join the chat
         // (Should this be done in the previous activity?)
@@ -253,6 +315,7 @@ export class ChatView extends Component {
     }
 
     componentWillUnmount() {
+        console.log("Unmounting!");
         // Remove all listeners that depends on the mount state of the component
         this.props.socket.removeListener('view_room', this.onReceiveChat);
         this.props.socket.removeListener('add_message', this.onReceiveMessage);
@@ -261,21 +324,31 @@ export class ChatView extends Component {
         this.props.socket.removeListener('disconnect', this.onDisconnect);
         this.props.socket.removeListener('connect_timeout', this.onTimeout);
         this.props.socket.removeListener('bubble_error', this.onError)
+        this.props.socket.removeListener("claim_id", this.onClaim);
 
         // Write state to redux
         if (this.state.chat && this.state.chat != null) {
             const chatBackup = Object.assign({}, this.state.chat);
-            console.log("NOW SAVING: ", chatBackup);
+            // console.log("NOW SAVING: ", chatBackup);
             this.props.saveChatSession(chatBackup);
+            console.log("Saving chat!", chatBackup);
         }
         if (this.state.queue && this.state.queue != null) {
             const queueBackup = this.state.queue.slice();
-            console.log("NOW SAVING: ", queueBackup);
+            // console.log("NOW SAVING: ", queueBackup);
             this.props.saveUnsentMsgs(queueBackup);
+            console.log("Saving unsent!", queueBackup);
         }
     }
 
     render() {
+        // console.log("MY IDS", this.props.aliasId);
+        // console.log("MY OUTBOX", this.props.outbox);
+        // console.log("MY CHAT", this.props.chat);
+        // console.log("MY CHAT CACHE", this.props.chatCache);
+
+
+        // console.log("OUTBOX!!!", this.props.outbox);
         // When chat is not yet available, display placeholder and|or loader
         // if (this.state.chat == null) {
         //     return (<View />);
@@ -291,9 +364,7 @@ export class ChatView extends Component {
                             color="#0E7AFE" />
                     </Button>
                     <Title ellipsizeMode='middle' numberOfLines={1}>
-                        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
-                            <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={"Not Available"} />
-                        </View>
+                            <Text style={Styles.titleContainer}> Not Available </Text>
                     </Title>
                     <Button transparent onPress={() => Actions.chatInfoView({ chat: this.state.chat })}>
                         <Icon size={32}
@@ -302,14 +373,12 @@ export class ChatView extends Component {
                     </Button>
                 </Header>
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-                    <Text style={{ textAlign: "center" }}>
-                        You're Offline! Come back later!
-                        </Text>
+                    <Text>You're offline! Come back later.</Text>
                 </View>
             </Container>);
         }
         else if (Platform.OS === 'ios') {
-            console.log("MESSAGES", this.state.messages);
+            // console.log("MESSAGES", this.state.messages);
             return (
                 <Container>
                     <Header>
@@ -392,7 +461,7 @@ export class ChatView extends Component {
 /*** Using reducer socket ***/
 
 function mergeAndSort(outbox, chatCache) {
-    console.log("I AM MERGE SORTER", outbox, chatCache);
+    // console.log("I AM MERGE SORTER", outbox, chatCache);
     var msgs = [];
     if (chatCache) {
         msgs = chatCache.concat(outbox);
@@ -411,25 +480,33 @@ function sort(messages) {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    var outboxCached = [];
     var chatMsgsCached = [];
     var chatCached = null;
     if (state.chatRooms[ownProps.roomId]) {
         chatCached = state.chatRooms[ownProps.roomId];
         chatMsgsCached = state.chatRooms[ownProps.roomId].messages;
     }
+    if (state.outbox[ownProps.roomId]) {
+        outboxCached = state.outbox[ownProps.roomId];
+    }
 
     return {
         socket: state.socket,
-        outbox: state.outbox,
+        aliasId: state.aliasId,
+        outbox: outboxCached,
         chat: chatCached,
-        chatCache: mergeAndSort(state.outbox, chatMsgsCached)
+        chatCache: mergeAndSort(outboxCached, chatMsgsCached)
     }
         ;
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        saveUnsentMsgs: (messages) => { dispatch(setPendingMessages(messages)) },
-        saveChatSession: (chat) => { dispatch(backupChatRoom(ownProps.roomId, chat)) }
+        saveUnsentMsgs: (messages) => { dispatch(setPendingMessages(messages, ownProps.roomId)) },
+        saveChatSession: (chat) => { dispatch(backupChatRoom(ownProps.roomId, chat)) },
+        memoId: (userId) => { dispatch(cacheUserId(userId)) },
+        reassignOutbox: () => { dispatch(reassignPendingMessages()) }
+
     };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatView);

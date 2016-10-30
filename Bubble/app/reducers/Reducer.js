@@ -99,7 +99,7 @@ const initialState = {
     nickNameMap: {},
     filter: null,
     search: null,
-    outbox: [],
+    outbox: {},
     rehydrated: false
 };
 
@@ -229,39 +229,44 @@ export default function Reducer(state = initialState, action) {
             return state;
 
         case SET_PENDING_MESSAGES:
-            return Object.assign({}, state, {
-                outbox: action.messages
-            });
-
-        case ENQUEUE_PENDING_MESSAGE:
             var outbox = Object.assign({}, state.outbox);
-            outbox.push(action.message);
+            outbox[action.roomId] = action.messages;
             return Object.assign({}, state, {
                 outbox: outbox
             });
 
-        case DEQUEUE_PENDING_MESSAGE:
-            var outbox = Object.assign({}, state.outbox);
-            for (var i = 0; i < outbox.length; ++i) {
-                if (message.content == outbox[i].content) {
-                    outbox.splice(outbox, i);
-                    return Object.assign({}, state, {
-                        outbox: outbox
-                    });
-                }
-            }
-            return state;
-        case CLEAR_PENDING_MESSAGES:
-            return Object.assign({}, state, {
-                outbox: []
-            });
+        // case ENQUEUE_PENDING_MESSAGE:
+        //     var outbox = Object.assign({}, state.outbox);
+        //     outbox.push(action.message);
+        //     return Object.assign({}, state, {
+        //         outbox: outbox
+        //     });
+
+        // case DEQUEUE_PENDING_MESSAGE:
+        //     var outbox = Object.assign({}, state.outbox);
+        //     for (var i = 0; i < outbox.length; ++i) {
+        //         if (message.content == outbox[i].content) {
+        //             outbox.splice(outbox, i);
+        //             return Object.assign({}, state, {
+        //                 outbox: outbox
+        //             });
+        //         }
+        //     }
+        //     return state;
+        // case CLEAR_PENDING_MESSAGES:
+        //     return Object.assign({}, state, {
+        //         outbox: {}
+        //     });
 
         case REASSIGN_PENDING_MESSAGES:
-            if (state.connection === "CONNECTED") {
+            if (state.connection === "CONNECTED" && state.aliasId.length > 0) {
                 var outbox = Object.assign({}, state.outbox);
-                for (var i = 0; i < outbox.length; ++i) {
-                    outbox[i].userId = state.socket.id;
-                }
+                outbox.keys(obj).forEach(function (key, index) {
+                    for (var i = 0; i < outbox[key].length; ++i) {
+                        outbox[key][i].userId = state.aliasId[0];
+                        console.log("HOORARH:", key, i, outbox[key][i]);
+                    }
+                });
                 return Object.assign({}, state, {
                     outbox: outbox
                 });
@@ -288,7 +293,7 @@ export default function Reducer(state = initialState, action) {
             });
 
         case CACHE_USER_ID:
-            var aliasId = Object.assign({}, state.aliasId);
+            var aliasId = state.aliasId.slice();
             if (action.userId) {
                 aliasId.unshift(action.userId);
                 return Object.assign({}, state, {

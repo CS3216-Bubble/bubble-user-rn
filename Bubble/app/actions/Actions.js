@@ -129,10 +129,11 @@ export function setConnectionStatus(status) {
         status: status
     }
 }
-export function setPendingMessages(messages) {
+export function setPendingMessages(messages, roomId) {
     return {
         type: SET_PENDING_MESSAGES,
-        messages: messages
+        messages: messages,
+        roomId: roomId
     }
 }
 export function enqueuePendingMessage(message) {

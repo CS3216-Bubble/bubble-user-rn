@@ -91,17 +91,18 @@ export class CategoryListComponent extends Component {
           }
         }, this);
 
+              // {chatsToShow.length == 0 ?
+              //   <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+              //       <Text>No chats found for {this.props.selectedCategory}.</Text>
+              //   </View>
+              //   : chatsToShow}
         return (
           <ScrollView
             style={{ flex: 1 }}
             refreshControl={<RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)} />}>
-              {chatsToShow.length == 0 ?
-                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text>No chats found for {this.props.selectedCategory}.</Text>
-                </View>
-                : chatsToShow}
+              {chatsToShow}
           </ScrollView>
         );
     }
