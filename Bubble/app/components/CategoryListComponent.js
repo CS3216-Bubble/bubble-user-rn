@@ -91,18 +91,24 @@ export class CategoryListComponent extends Component {
           }
         }, this);
 
-              // {chatsToShow.length == 0 ?
-              //   <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-              //       <Text>No chats found for {this.props.selectedCategory}.</Text>
-              //   </View>
-              //   : chatsToShow}
+        const disconnected = (
+          <View style={{backgroundColor: '#e74c3c', padding: 10, height: 40}}>
+            <Text style={{textAlign: 'center', color: '#FFFFFF'}}>Disconnected</Text>
+          </View>
+        );
+
         return (
           <ScrollView
             style={{ flex: 1 }}
             refreshControl={<RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this._onRefresh.bind(this)} />}>
-              {chatsToShow}
+              { userId ? null : disconnected }
+              {chatsToShow.length == 0 ?
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text>No chats found for {this.props.selectedCategory}.</Text>
+                </View>
+                : chatsToShow}
           </ScrollView>
         );
     }
@@ -117,4 +123,3 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(CategoryListComponent);
-

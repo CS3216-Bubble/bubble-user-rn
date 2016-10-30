@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Image, Text, TouchableHighlight } from 'react-native';
 import { Button, Thumbnail } from 'native-base';
+import Swipeout from 'react-native-swipeout';
 import { Styles } from '../styles/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -16,6 +17,11 @@ export default class MyChatCardComponent extends Component {
     static propTypes = {
       chat: PropTypes.object.isRequired,
       showCategoriesOnCard: PropTypes.bool.isRequired,
+    }
+
+    onLeaveBtnPressed = () => {
+      console.log('leave chat');
+      // Leave chat
     }
 
     render() {
@@ -77,46 +83,62 @@ export default class MyChatCardComponent extends Component {
           backgroundColor: Globals.CATEGORY_BG_COLOURS[categoryName]
         }
 
+        const swipeoutBtns = [
+          {
+            text: 'Leave',
+            backgroundColor: 'red',
+            onPress: this.onLeaveBtnPressed
+          }
+        ];
+
         return (
-          <TouchableHighlight key={chat.roomId} onPress={() => {Actions.chatView(chatProps);}} underlayColor="#E5FEFF">
-            <View key={chat.roomId} style={Styles.cardContainer}>
-                  <View style={Styles.cardMainRow}>
-                      <View>
-                        <View style={[Styles.cardThumbnail, thumbnailBackgroundStyle]}>
-                          { thumbnail }
+          <Swipeout
+            right={swipeoutBtns}
+            backgroundColor="#FFFFFF"
+          >
+            <TouchableHighlight
+              key={chat.roomId}
+              onPress={() => {Actions.chatView(chatProps);}}
+              underlayColor="#E5FEFF">
+              <View key={chat.roomId} style={Styles.cardContainer}>
+                    <View style={Styles.cardMainRow}>
+                        <View>
+                          <View style={[Styles.cardThumbnail, thumbnailBackgroundStyle]}>
+                            { thumbnail }
+                          </View>
                         </View>
-                      </View>
-                      <View style={Styles.cardMainRowText}>
-                          <View style={Styles.cardTitle}>
-                              <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
-                                  {chat.roomName}
-                              </Text>
-                              { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
-                          </View>
-                          <Text style={Styles.cardDescription}>
-                              {chat.roomDescription}
-                          </Text>
-                          <View style={Styles.cardSubRow}>
-                              <Text note style={Styles.cardSubRowTextLeft} >
-                                  {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
-                              </Text>
-                              <View style={Styles.cardSubRowRight}>
-                                <Text note style={Styles.cardSubRowTextRight}>
-                                    {chat.numUsers} / {chat.userLimit}
+                        <View style={Styles.cardMainRowText}>
+                            <View style={Styles.cardTitle}>
+                                <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
+                                    {chat.roomName}
                                 </Text>
-                                <Icon name='user' style={{fontSize: 16, color: '#BCBCBC'}}/>
-                              </View>
-                          </View>
-                      </View>
-                  </View>
-                { categoriesToShow.length > 0 ?
-                    <View style={Styles.cardFooterRow}>
-                        {categoriesToShow}
+                                { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
+                            </View>
+                            <Text style={Styles.cardDescription}>
+                                {chat.roomDescription}
+                            </Text>
+                            <View style={Styles.cardSubRow}>
+                                <Text note style={Styles.cardSubRowTextLeft} >
+                                    {moment.duration(moment().diff(moment(chat.lastActive))).humanize()} ago
+                                </Text>
+                                <View style={Styles.cardSubRowRight}>
+                                  <Text note style={Styles.cardSubRowTextRight}>
+                                      {chat.numUsers} / {chat.userLimit}
+                                  </Text>
+                                  <Icon name='user' style={{fontSize: 16, color: '#BCBCBC'}}/>
+                                </View>
+                            </View>
+                        </View>
                     </View>
-                    : null
-                }
-            </View>
-          </TouchableHighlight>
+                  { categoriesToShow.length > 0 ?
+                      <View style={Styles.cardFooterRow}>
+                          {categoriesToShow}
+                      </View>
+                      : null
+                  }
+              </View>
+            </TouchableHighlight>
+          </Swipeout>
         );
     }
 }

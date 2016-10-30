@@ -11,6 +11,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.chymtt.reactnativedropdown.DropdownPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new PickerViewPackage(),
           new VectorIconsPackage(),
+          new DropdownPackage(),
           new ReactNativePushNotificationPackage()
       );
     }

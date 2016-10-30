@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, ScrollView, View, Switch } from 'react-native';
+import { Platform, StyleSheet, ScrollView, View, Switch } from 'react-native';
 import { Picker, Text, Button } from 'native-base';
-import ModalDropdown from 'react-native-modal-dropdown';
+import Dropdown from 'react-native-dropdown-android';
 
 import ProfileComponent from './ProfileComponent';
 
@@ -12,7 +12,8 @@ export default class SettingsComponent extends Component {
 
   state = {
     isNotificationsOn: true,
-    selectedGender: 'other'
+    selectedGender: 'other',
+    selectedGenderIndex: 2
   }
 
   onValueChange = (value) => {
@@ -32,16 +33,25 @@ export default class SettingsComponent extends Component {
             </View>
             <View style={styles.customListItemRight}>
               <Text style={styles.customListItemText}>Gender</Text>
-              <Picker
-                style={styles.picker}
-                iosHeader="Select gender"
-                mode="dropdown"
-                selectedValue={this.state.selectedGender}
-                onValueChange={this.onValueChange}>
-                <Picker.Item label="Male" value="male" />
-                <Picker.Item label="Female" value="female" />
-                <Picker.Item label="Other" value="other" />
-             </Picker>
+              { Platform.OS === 'ios' ?
+                <Picker
+                  style={styles.picker}
+                  iosHeader="Select gender"
+                  mode="dropdown"
+                  selectedValue={this.state.selectedGender}
+                  onValueChange={this.onValueChange}>
+                  <Picker.Item label="Male" value="male" />
+                  <Picker.Item label="Female" value="female" />
+                  <Picker.Item label="Other" value="other" />
+               </Picker>
+               :
+               <Dropdown
+                style={{ height: 20, width: 200}}
+                values={['Male', 'Female', 'Other']}
+                selected={this.state.selectedGenderIndex}
+                onChange={(data) => { this.setState({selectedGenderIndex: data.selected}) }}
+               />
+                }
             </View>
           </ScrollView>
         </View>
