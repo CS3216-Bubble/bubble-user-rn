@@ -29,6 +29,7 @@ export class ChatView extends Component {
         }
         // Link functions
         this.onConnect = this.onConnect.bind(this);
+        this.onReconnect = this.onReconnect.bind(this);
         this.onDisconnect = this.onDisconnect.bind(this);
         this.onTimeout = this.onTimeout.bind(this);
         this.onError = this.onError.bind(this);
@@ -68,6 +69,28 @@ export class ChatView extends Component {
             this.props.memoId(this.props.socket.id);
             // // console.log("memorising id", this.props.socket.id);
         }
+    }
+
+    onReconnect(data) {
+        var userId = this.props.socket.id;
+        console.log("Reconnect as", userId);
+        // take over all unsent messages
+        this.props.reassignOutbox();
+        // Add new id to alias
+        this.props.memoId(userId);
+        if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
+            // Claim using first (latestId, if not same)
+            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0], claimToken: this.props.claimToken });
+            console.log("Trying to claim old id:", this.props.aliasId[0]);
+        } else if (this.props.aliasId.length == 0) {
+            // Add new id to alias
+            this.props.memoId(this.props.socket.id);
+            // // console.log("memorising id", this.props.socket.id);
+        }
+    }
+
+    onDisconnecting(data) {
+        console.log("Disconnecting", this.props.socket.id);
     }
 
     onDisconnect(data) {
@@ -289,9 +312,11 @@ export class ChatView extends Component {
         // // console.log("Mounted!");
         // Overwrite default listeners
         this.props.socket.on('connect', this.onConnect);
+        this.props.socket.on('disconnecting', this.onDisconnecting);
         this.props.socket.on('disconnect', this.onDisconnect);
         this.props.socket.on('connect_timeout', this.onTimeout);
         this.props.socket.on('bubble_error', this.onError)
+        this.props.socket.on('reconnect', this.onReconnect)
 
         // Set listeners
         this.props.socket.on('view_room', this.onReceiveChat);
