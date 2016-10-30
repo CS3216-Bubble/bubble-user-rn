@@ -403,6 +403,8 @@ export class ChatView extends Component {
         this.props.socket.removeListener('connect_timeout', this.onTimeout);
         this.props.socket.removeListener('bubble_error', this.onError)
         this.props.socket.removeListener("claim_id", this.onClaim);
+        this.props.socket.removeListener('typing', this.onReceiveTyping);
+        this.props.socket.removeListener('stop_typing', this.onReceiveTypingStop);
 
         // Write state to redux
         if (this.state.chat && this.state.chat != null) {
