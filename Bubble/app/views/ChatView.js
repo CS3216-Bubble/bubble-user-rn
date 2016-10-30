@@ -41,6 +41,8 @@ export class ChatView extends Component {
         this.onReceiveReaction = this.onReceiveReaction.bind(this);
         this.onReceiveTyping = this.onReceiveTyping.bind(this);
         this.onReceiveTypingStop = this.onReceiveTypingStop.bind(this);
+        this.onReceiveJoinRoom = this.onReceiveJoinRoom.bind(this);
+        this.onReceiveExitRoom = this.onReceiveExitRoom.bind(this);
         this.onEmitThanks = this.onEmitThanks.bind(this);
         this.onEmitCheers = this.onEmitCheers.bind(this);
         this.onEmitTyping = this.onEmitTyping.bind(this);
@@ -224,6 +226,39 @@ export class ChatView extends Component {
         this.setState( {someoneTyping: ''} );
     }
 
+    /*  onReceiveJoinRoom is called when someone joins the room*/
+    onReceiveJoinRoom(data) {
+        // Add date property to join event for sorting
+        data,updatedAt = new Date();
+        data.userName = this.generateName(data.userId);
+        data.messageType = 'JOIN_ROOM';
+        data.id = (new Date()).toISOString();
+        // Append message into message list
+        var tempMessages = this.state.messages.slice();
+        tempMessages.unshift(data);
+        // Sort messages by date
+        sort(tempMessages);
+        // Update state
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        this.setState({ messages: tempMessages });
+    }
+
+    /*  onReceiveJoinRoom is called when someone joins the room*/
+    onReceiveExitRoom(data) {
+        // Add date property to join event for sorting
+        data.updatedAt = new Date();
+        data.userName = this.generateName(data.userId);
+        data.messageType = 'EXIT_ROOM';
+        data.id = (new Date()).toISOString();
+        // Append message into message list
+        var tempMessages = this.state.messages.slice();
+        tempMessages.unshift(data);
+        // Sort messages by date
+        sort(tempMessages);
+        // Update state
+        this.setState({ messages: tempMessages });
+    }
+
     /* onSend is called when the user attempts to send a message.
        This triggers an optimistic update on the user chat, and waits for acknowledgement. */
     onSend(message) {
@@ -348,6 +383,8 @@ export class ChatView extends Component {
         this.props.socket.on("claim_id", this.onClaim);
         this.props.socket.on('typing', this.onReceiveTyping);
         this.props.socket.on('stop_typing', this.onReceiveTypingStop);
+        this.props.socket.on('join_room', this.onReceiveJoinRoom);
+        this.props.socket.on('exit_room', this.onReceiveExitRoom);
 
         // Checks for connection. If not connected, will attempt to connect.
         // this.props.socket.connect();
@@ -383,6 +420,8 @@ export class ChatView extends Component {
         this.props.socket.removeListener("claim_id", this.onClaim);
         this.props.socket.removeListener('typing', this.onReceiveTyping);
         this.props.socket.removeListener('stop_typing', this.onReceiveTypingStop);
+        this.props.socket.removeListener('join_room', this.onReceiveJoinRoom);
+        this.props.socket.removeListener('exit_room', this.onReceiveExitRoom);
 
         // Write state to redux
         if (this.state.chat && this.state.chat != null) {
