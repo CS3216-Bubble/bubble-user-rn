@@ -24,7 +24,7 @@ export default class ChatListView extends Component {
     }
 
     componentWillReceiveProps(props) {
-        // console.log("CHATLISTVIEW RECEIVES PROPS", props);
+        // // console.log("CHATLISTVIEW RECEIVES PROPS", props);
         // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({refresh: !this.state.refresh});
     }

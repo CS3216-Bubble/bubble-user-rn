@@ -20,7 +20,7 @@ export default class MyChatCardComponent extends Component {
     }
 
     onLeaveBtnPressed = () => {
-      console.log('leave chat');
+      // console.log('leave chat');
       // Leave chat
     }
 

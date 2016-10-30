@@ -21,7 +21,7 @@ export class ChatListComponent extends Component {
     }
 
     updateList = (data) => {
-        console.log("DATA", data);
+        // console.log("DATA", data);
         // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({ roomList: data, refreshing: false });
     }
@@ -40,7 +40,7 @@ export class ChatListComponent extends Component {
     }
 
     _onRefresh() {
-        console.log(this.props.socket);
+        // console.log(this.props.socket);
         this.setState({ refreshing: true });
         this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
@@ -53,7 +53,7 @@ export class ChatListComponent extends Component {
 
     componentDidMount() {
         // > View Specific Listeners
-        console.log("MOUNT");
+        // console.log("MOUNT");
         this.props.socket.connect();
         this.props.socket.on('list_rooms', this.updateList);
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });

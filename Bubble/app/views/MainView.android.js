@@ -73,7 +73,7 @@ export class MainView extends Component {
   }
 
   onSearchBarTextChange = (text) => {
-    console.log(text);
+    // console.log(text);
     this.setState({ searchTerm: text });
   }
 

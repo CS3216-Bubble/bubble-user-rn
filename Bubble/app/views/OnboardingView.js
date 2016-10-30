@@ -5,17 +5,17 @@ import AppIntro from 'react-native-app-intro';
 export default class OnboardingView extends Component {
   onSkipBtnHandle = (index) => {
     Alert.alert('Skip');
-    console.log(index);
+    // console.log(index);
   }
   doneBtnHandle = () => {
     Alert.alert('Done');
   }
   nextBtnHandle = (index) => {
     Alert.alert('Next');
-    console.log(index);
+    // console.log(index);
   }
   onSlideChangeHandle = (index, total) => {
-    console.log(index, total);
+    // console.log(index, total);
   }
   render() {
     const pageArray = [{

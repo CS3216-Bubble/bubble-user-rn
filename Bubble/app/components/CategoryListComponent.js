@@ -50,7 +50,7 @@ export class CategoryListComponent extends Component {
     }
 
     componentWillReceiveProps(props) {
-        // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
+        // // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
         this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }

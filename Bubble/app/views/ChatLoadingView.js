@@ -12,11 +12,11 @@ class ChatLoadingView extends Component {
     // > View Specific Listeners
     this.props.socket.on('create_room', this.onRoomCreated);
     this.props.socket.connect();
-    console.log("CONSTRUCT MY VIEW");
+    // console.log("CONSTRUCT MY VIEW");
   }
 
   componentDidMount() {
-    console.log("I DID MOUNT and i am ", this.props.socket.id);
+    // console.log("I DID MOUNT and i am ", this.props.socket.id);
     // Props passed from route
     const chatInfo = {
       user: this.props.socket.id,
@@ -29,13 +29,13 @@ class ChatLoadingView extends Component {
   }
 
   onRoomCreated = (response) => {
-    console.log(response);
+    // console.log(response);
     Actions.chatView({ type: ActionConst.REPLACE, roomId: response.roomId });
     // Actions.chatView({roomId: response.roomId});
   }
 
   componentWillReceiveProps(props) {
-    console.log("I DID RECEIVE PROPS and i am ", this.props.socket.id);
+    // console.log("I DID RECEIVE PROPS and i am ", this.props.socket.id);
     // Props passed from route
     const chatInfo = {
       user: this.props.socket.id,
@@ -49,7 +49,7 @@ class ChatLoadingView extends Component {
 
   componentWillUnmount() {
     this.props.socket.removeListener('create_room', this.onRoomCreated);
-    this.props.socket.removeListener('bubble_error', (data) => { console.log(data) });
+    this.props.socket.removeListener('bubble_error', (data) => { // console.log(data) });
 
   }
 

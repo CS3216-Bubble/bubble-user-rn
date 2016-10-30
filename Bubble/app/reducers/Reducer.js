@@ -264,7 +264,7 @@ export default function Reducer(state = initialState, action) {
                 outbox.keys(obj).forEach(function (key, index) {
                     for (var i = 0; i < outbox[key].length; ++i) {
                         outbox[key][i].userId = state.aliasId[0];
-                        console.log("HOORARH:", key, i, outbox[key][i]);
+                        // console.log("HOORARH:", key, i, outbox[key][i]);
                     }
                 });
                 return Object.assign({}, state, {
@@ -306,7 +306,7 @@ export default function Reducer(state = initialState, action) {
         // Sockets
         case CONNECT:
             if (state.connection !== "CONNECTED") {
-                console.log(state.socket.connect);
+                // console.log(state.socket.connect);
                 state.socket.connect();
                 return Object.assign({}, state, {
                     connection: "CONNECTING"

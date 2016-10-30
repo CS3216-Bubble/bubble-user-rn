@@ -6,6 +6,7 @@ import { Styles } from '../styles/Styles';
 import { Actions } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 
+var _ = require('lodash');
 var adjectives = require('../utils/adjectives');
 var animals = require('../utils/animals');
 var numAvatars = 160;
@@ -90,6 +91,7 @@ export default class ChatComponent extends Component {
                         _id: messageOrg.userId,
                         name: this.generateName(messageOrg.userId),
                         avatar: avatar,
+                        isMe: _.indexOf(this.props.myIds, messageOrg.userId) >= 0
                     },
                 };
                 parsed.push(messageParsed);

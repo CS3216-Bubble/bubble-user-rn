@@ -7,10 +7,10 @@ class PushController extends Component {
     PushNotification.configure({
       onRegister: function(token) {
         // TODO send this token to backend
-        console.log( 'TOKEN:', token );
+        // console.log( 'TOKEN:', token );
       },
       onNotification: function(notification) {
-        console.log( 'NOTIFICATION:', notification );
+        // console.log( 'NOTIFICATION:', notification );
       },
       senderID: "101248374354",
       requestPermissions: true,
