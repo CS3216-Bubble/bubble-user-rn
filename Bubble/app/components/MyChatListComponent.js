@@ -22,8 +22,18 @@ export class MyChatListComponent extends Component {
     }
 
     updateList = (data) => {
+        const myRooms = this.state.listing;
+
+        var filteredRooms = [];
+        data.map(function(room) {
+          if (myRooms.indexOf(room.roomId) > -1) {
+            return filteredRooms.push(room);
+          }
+        });
+
+        console.log(filteredRooms);
         // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        this.setState({ roomList: data, refreshing: false });
+        this.setState({ roomList: filteredRooms, refreshing: false });
     }
 
     constructor(props, context) {
@@ -45,7 +55,8 @@ export class MyChatListComponent extends Component {
 
     onReceiveRoomListing(data) {
         console.log("room listing received", data);
-        this.setState({ listing: data });
+
+        this.setState({ listing: data});
     }
 
 
@@ -122,6 +133,8 @@ export class MyChatListComponent extends Component {
             </View>
         );
 
+        console.log(chatsToShow);
+
         // If no search results found
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
             return (
@@ -159,8 +172,7 @@ export class MyChatListComponent extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         socket: state.socket,
-    }
-        ;
+    };
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {

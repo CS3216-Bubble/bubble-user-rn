@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { AppRegistry, Alert } from 'react-native';
+import { Actions, ActionConst } from 'react-native-router-flux';
+import { connect as connectRedux } from 'react-redux';
 import AppIntro from 'react-native-app-intro';
 
-export default class OnboardingView extends Component {
+export class OnboardingView extends Component {
   onSkipBtnHandle = (index) => {
-    Alert.alert('Skip');
-    // console.log(index);
+    // this.props.onOnboardingFinished();
+    Actions.main({type: ActionConst.REPLACE});
   }
   doneBtnHandle = () => {
-    Alert.alert('Done');
+    // this.props.onOnboardingFinished();
+    Actions.main({type: ActionConst.REPLACE});
   }
   nextBtnHandle = (index) => {
-    Alert.alert('Next');
-    // console.log(index);
+
   }
   onSlideChangeHandle = (index, total) => {
     // console.log(index, total);
@@ -52,3 +54,18 @@ export default class OnboardingView extends Component {
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+    };
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        // onOnboardingFinished: () => {
+        //   dispatch(unsetFirstTimeUser());
+        // }
+    };
+};
+
+export default connectRedux(mapStateToProps, mapDispatchToProps)(OnboardingView);

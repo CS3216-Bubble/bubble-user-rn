@@ -16,6 +16,13 @@ export default class MainView extends Component {
         toggleMyChats: false
     };
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        if (nextProps.selectedTab) {
+            this.setState({selectedTab: nextProps.selectedTab});
+        }
+    }
+
     onCreateChatPressed = () => {
         this.setState({ selectedTab: 'create' });
     }

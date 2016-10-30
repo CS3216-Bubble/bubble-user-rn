@@ -25,13 +25,13 @@ export default class Bubble extends Component {
                     <Scene key="modal" component={Modal} >
                         <Scene key="root" hideNavBar={true}>
                             <Scene key="landingView" component={LandingView} title="Welcome to Bubble" initial={true} />
+                            <Scene key="onboardingView" component={OnboardingView} title="Getting Started" />
                             <Scene key="main" component={MainView} title="Main" />
                             <Scene key="chatView" component={ChatView} title="Chat" />
                             <Scene key="chatInfoView" component={ChatInfoView} title="Chat Info" />
                             <Scene key="chatFormView" component={ChatFormView} title="Create Chat" />
                             <Scene key="chatLoadingView" component={ChatLoadingView} title="Chat Loading" />
                             <Scene key="categoryListView" component={CategoryListView} title="Category List" />
-                            <Scene key="onboardingView" component={OnboardingView} title="Getting Started" />
                         </Scene>
                         <Scene key="modalView" component={ModalView} />
                     </Scene>

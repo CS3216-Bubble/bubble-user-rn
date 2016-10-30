@@ -94,7 +94,7 @@ export default class ChatFormView extends Component {
 
     // Remove this ChatFormView from nav stack and replace with chat view
     // Enter chat loading view with chat id/object
-    Actions.chatLoadingView({type: ActionConst.REPLACE, form: form});
+    Actions.chatLoadingView({form: form});
   }
 
   render() {
@@ -108,7 +108,7 @@ export default class ChatFormView extends Component {
               <Header>
                   <Title>Create Chat</Title>
                   <Button transparent onPress={Actions.pop}>
-                      { this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : <Text>Back</Text> }
+                      { this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : <Text></Text> }
                   </Button>
                   <Button disabled={!this.state.isFormValid} transparent onPress={this.createChat}>
                       <Text style={fontStyle}>Create</Text>

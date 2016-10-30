@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager, TextInput } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, Footer } from 'native-base';
-import { Actions } from 'react-native-router-flux';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import CustomTheme from '../themes/bubble';
 import ChatComponent from '../components/ChatComponent';
 import UserActionModalComponent from '../components/UserActionModalComponent';
@@ -357,7 +357,11 @@ export class ChatView extends Component {
     /* onExit is called when the user attempts to return to the previous page.
        This will not make the user leave the room */
     onExit() {
-        Actions.pop();
+        if (Platform.OS === 'ios') {
+            Actions.main({type: ActionConst.REPLACE, selectedTab: 'all'});
+        } else {
+            Actions.pop();
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -502,10 +506,10 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
                                 <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={this.state.chat.roomName} />
-                                {(this.state.someoneTyping !== '') ?  <View style={{flexDirection: 'row', alignItems: "center", justifyContent: "center"}}> 
-      <Text style={{fontSize: 12, fontWeight: "300"}}> 
+                                {(this.state.someoneTyping !== '') ?  <View style={{flexDirection: 'row', alignItems: "center", justifyContent: "center"}}>
+      <Text style={{fontSize: 12, fontWeight: "300"}}>
         {this.state.someoneTyping} is typing...
-      </Text>  
+      </Text>
     </View> : [] }
                             </View>
                         </Title>

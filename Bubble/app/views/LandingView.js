@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { Image, View, StyleSheet, Text } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
+import { connect as connectRedux } from 'react-redux';
 
 const splashScreenDelay = 0;
 
-export default class LandingView extends Component {
+export class LandingView extends Component {
     render() {
         setTimeout(() => {
-          Actions.main({type: ActionConst.REPLACE});
+          if (this.props.isFirstTimeUser) {
+            Actions.onboardingView({type: ActionConst.REPLACE});
+          } else {
+            Actions.main({type: ActionConst.REPLACE});
+          }
         }, splashScreenDelay);
         return (
             <View style={styles.splashContainer}>
@@ -33,3 +38,16 @@ var styles = StyleSheet.create({
       color: '#FFFFFF'
     }
 });
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        isFirstTimeUser: state.settings.isFirstTimeUser,
+    };
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+    };
+};
+
+export default connectRedux(mapStateToProps, mapDispatchToProps)(LandingView);
