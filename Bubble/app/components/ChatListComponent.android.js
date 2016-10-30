@@ -64,7 +64,6 @@ export class ChatListComponent extends Component {
         this.props.socket.on('set_claim_token', (data) => {console.log(data)});
         this.props.socket.connect();
         console.log(this.props.claimToken);
-        this.props.socket.emit('set_claim_token', {claimToken: this.props.claimToken});
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 

@@ -5,11 +5,19 @@ import { routeReducer } from 'redux-simple-router';
 import {AsyncStorage} from 'react-native';
 import thunk from 'redux-thunk';
 import Reducer from '../reducers/Reducer';
+import createLogger from 'redux-logger';
+
 
 var storage = undefined;
 // storage = {blacklist: [], storage: AsyncStorage};
 
-const Store = compose(autoRehydrate())(createStore)(Reducer)
+let middleware = [thunk]
+if (__DEV__) {
+  const logger = createLogger();
+  middleware = [...middleware, logger]
+}
+
+const Store = createStore(Reducer, compose(applyMiddleware(...middleware), autoRehydrate()))
 // persistStore(Store, storage, () => {
 //   // console.log('restored')
 // })

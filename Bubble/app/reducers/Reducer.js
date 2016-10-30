@@ -309,18 +309,27 @@ export default function Reducer(state = initialState, action) {
             });
 
         case CACHE_USER_ID:
-            var aliasId = state.aliasId.slice();
-            if (action.userId) {
-                aliasId.unshift(action.userId);
-                return Object.assign({}, state, {
-                    aliasId: aliasId
-                });
-            }
+            return Object.assign({}, state, {
+                aliasId: [action.userId, ...state.aliasId],
+            });
             return state;
 
         case SET_CLAIM_TOKEN:
             return Object.assign({}, state, {
                 claimToken: action.token
+            });
+        case 'claim_id_PENDING':
+            return Object.assign({}, state, {
+              claim_pending: true,
+            });
+        case 'claim_id_SUCCESS':
+            return Object.assign({}, state, {
+              claimed: true,
+              claim_pending: false,
+            });
+        case 'set_claim_token_SUCCESS':
+            return Object.assign({}, state, {
+              claimToken: action.claimToken,
             });
         case SET_TOKEN_STATUS:
             return Object.assign({}, state, {
