@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, UIManager } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, InputGroup, Input } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-
+import { connect as connectRedux } from 'react-redux';
 import Globals from '../globals';
 import MyChatListComponent from '../components/MyChatListComponent';
 
-export default class MyChatListView extends Component {
+export class MyChatListView extends Component {
     static propTypes = {
       title: PropTypes.string.isRequired,
       onCreateChatPressed: PropTypes.func.isRequired,
@@ -17,7 +17,8 @@ export default class MyChatListView extends Component {
         this.state = {
           refresh: false,
           searchTerm: '',
-          showCategoryFilter: true
+          showCategoryFilter: true,
+          listing: []
         };
         LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
         this.clearSearchBar = this.clearSearchBar.bind(this);
@@ -27,6 +28,11 @@ export default class MyChatListView extends Component {
         // // console.log("CHATLISTVIEW RECEIVES PROPS", props);
         // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({refresh: !this.state.refresh});
+    }
+
+    componentWillUnmount() {
+        console.log("UNMOUNTING MY VIEW LIST");
+        this.props.socket.removeListener('my_rooms', this.onReceiveRoomListing);
     }
 
     onSearchBarTextChange = (text) => {
@@ -71,7 +77,8 @@ export default class MyChatListView extends Component {
                   <MyChatListComponent
                     refresh={this.state.refresh}
                     searchTerm={this.state.searchTerm}
-                    onCreateChatPressed={this.props.onCreateChatPressed} />
+                    onCreateChatPressed={this.props.onCreateChatPressed}
+                    listing={this.state.listing} />
                 </View>
             </Container>
         );
@@ -92,3 +99,15 @@ var styles = StyleSheet.create({
       marginBottom: 10,
     }
 });
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        socket: state.socket,
+    }
+        ;
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+    };
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(MyChatListView);

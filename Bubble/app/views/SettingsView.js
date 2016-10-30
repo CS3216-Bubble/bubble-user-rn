@@ -39,8 +39,8 @@ export class SettingsView extends Component {
 
     state = {
         user: {
-            name: this.generateName(this.props.socket.id),
-            imgSrc: 'http://flathash.com/' + this.props.socket.id
+            name: this.props.socket.id ? this.generateName(this.props.socket.id) : "Anonymous Bubbler",
+            imgSrc: 'http://flathash.com/' + (this.props.socket.id ?  this.props.socket.id : '1')
         }
     }
 
