@@ -19,6 +19,8 @@ export default class ChatComponent extends Component {
         this.state = { 
             messages: [],
             someoneTyping: '',
+            onTyping: () => {},
+            onTypingStop: () => {},
         };
         this.onSend = this.onSend.bind(this);
         this.parseMessages = this.parseMessages.bind(this);
@@ -31,7 +33,10 @@ export default class ChatComponent extends Component {
     componentDidMount() {
         this.setState({ 
             messages: this.parseMessages(this.props.messages),
-            someoneTyping: this.props.someoneTyping, });
+            someoneTyping: this.props.someoneTyping,
+            onTyping: this.props.onTyping,
+            onTypingStop: this.props.onTyping
+        });
     }
 
     // Subsequent updates
@@ -39,6 +44,8 @@ export default class ChatComponent extends Component {
         this.setState({ 
             messages: this.parseMessages(props.messages),
             someoneTyping: props.someoneTyping,
+            onTyping: props.onTyping,
+            onTypingStop: props.onTypingStop,
          });
     }
 
@@ -127,6 +134,8 @@ export default class ChatComponent extends Component {
                 user={{ _id: this.props.user }}
                 isAnimated={true}
                 someoneTyping={this.state.someoneTyping}
+                onTyping={this.state.onTyping}
+                onTypingStop={this.state.onTypingStop}
                 onAvatarPress={(otherUserId, otherUserName) => { this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId, otherUserName) } }
                 />
         );

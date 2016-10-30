@@ -44,6 +44,8 @@ export class ChatView extends Component {
         this.onReceiveTypingStop = this.onReceiveTypingStop.bind(this);
         this.onEmitThanks = this.onEmitThanks.bind(this);
         this.onEmitCheers = this.onEmitCheers.bind(this);
+        this.onEmitTyping = this.onEmitTyping.bind(this);
+        this.onEmitTypingStop = this.onEmitTypingStop.bind(this);
         this.onSend = this.onSend.bind(this);
         this.onTriggerModal = this.onTriggerModal.bind(this);
         this.onExit = this.onExit.bind(this);
@@ -322,6 +324,22 @@ export class ChatView extends Component {
         // // console.log("Sent a reaction! ", request);
     }
 
+    onEmitTyping() {
+        var request = {
+            user: this.props.socket.id,
+            roomId: this.props.roomId,
+        }
+        this.props.socket.emit('typing', request);
+    }
+
+    onEmitTypingStop() {
+        var request = {
+            user: this.props.socket.id,
+            roomId: this.props.roomId,
+        }
+        this.props.socket.emit('stop_typing', request);
+    }
+
     /* onTriggeModal will activate contextual options on the specific user.
        These options are presented in the form of a modal. */
     onTriggerModal(userId, otherUserId, roomId, otherUserName) {
@@ -502,6 +520,8 @@ export class ChatView extends Component {
                             myIds={this.props.aliasId}
                             style={{ flex: 1 }}
                             someoneTyping=''
+                            onTyping={this.onEmitTyping}
+                            onTypingStop={this.onEmitTypingStop}
                             />
                         <UserActionModalComponent
                             toggle={this.state.toggleModal}
@@ -541,6 +561,8 @@ export class ChatView extends Component {
                             style={{ flex: 1 }}
                             myIds={this.props.aliasId}
                             someoneTyping={this.state.someoneTyping}
+                            onTyping={this.onEmitTyping}
+                            onTypingStop={this.onEmitTypingStop}
                             />
                         <UserActionModalComponent
                             toggle={this.state.toggleModal}
