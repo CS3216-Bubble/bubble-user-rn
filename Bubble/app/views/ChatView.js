@@ -300,7 +300,7 @@ export class ChatView extends Component {
         this.props.socket.on("claim_id", this.onClaim);
 
         // Checks for connection. If not connected, will attempt to connect.
-        this.props.socket.connect();
+        // this.props.socket.connect();
 
         if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
             // Claim using first (latestId, if not same)
