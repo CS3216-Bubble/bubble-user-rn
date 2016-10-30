@@ -221,7 +221,7 @@ export class ChatView extends Component {
         this.setState( {someoneTyping: this.generateName(data.userId)} );
     }
 
-    /*  onReceiveTyping is called when someone stopped typing */
+    /*  onReceiveTypingStop is called when someone stopped typing */
     onReceiveTypingStop(data) {
         this.setState( {someoneTyping: ''} );
     }
