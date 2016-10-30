@@ -187,6 +187,7 @@ export function setSearchFilter(searchTerm) {
 // Action Types
 export const CACHE_NICKNAME = 'CACHE_NICKNAME'
 export const CACHE_USER_ID = 'CACHE_USER_ID'
+export const SET_CLAIM_TOKEN = 'SET_CLAIM_TOKEN'
 export const REHYDRATION_COMPLETE = 'REHYDRATION_COMPLETE'
 
 // Action Creators
@@ -201,6 +202,12 @@ export function cacheUserId(userId) {
     return {
         type: CACHE_USER_ID,
         userId: userId,
+    }
+}
+export function setClaimToken(token) {
+    return {
+        type: SET_CLAIM_TOKEN,
+        token: token,
     }
 }
 export function rehydrationComplete() {

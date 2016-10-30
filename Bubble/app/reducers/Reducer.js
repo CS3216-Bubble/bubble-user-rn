@@ -26,6 +26,7 @@ import {
     SET_SEARCH_FILTER,
     CACHE_NICKNAME,
     CACHE_USER_ID,
+    SET_CLAIM_TOKEN,
     REHYDRATION_COMPLETE,
     CONNECT,
     DISCONNECT,
@@ -79,6 +80,18 @@ function socketInit() {
     return socket;
 }
 
+function guid() {
+
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+    console.log(uuid);
+    return uuid;
+}
+
+const initUUID = guid();
+
 // Initialise State
 const initialState = {
     socket: socketInit(),
@@ -100,7 +113,8 @@ const initialState = {
     filter: null,
     search: null,
     outbox: {},
-    rehydrated: false
+    rehydrated: false,
+    claimToken: initUUID
 };
 
 // Reducer Definition
@@ -302,6 +316,10 @@ export default function Reducer(state = initialState, action) {
             }
             return state;
 
+        case SET_CLAIM_TOKEN:
+            return Object.assign({}, state, {
+                claimToken: action.token
+            });
 
         // Sockets
         case CONNECT:

@@ -44,23 +44,25 @@ export class ChatView extends Component {
     }
 
     onClaim(data) {
-        // // console.log("SUCCESS IN CLAIMING ID: ", data, "WITH CURRENT ", this.props.socket.id);
+        console.log("SUCCESS IN CLAIMING ID: ", data, "WITH CURRENT ", this.props.socket.id);
         this.props.socket.emit("view_room", { user: this.props.socket.id, roomId: this.props.roomId });
+        // Will proceed to send my unack messages again
+        console.log("Will proceed to send my unack messages again");
         // this.props.socket.emit("join_room", { roomId: this.props.roomId, user: this.props.socket.id });
     }
 
     /* Overriding default listeners */
     onConnect(data) {
         var userId = this.props.socket.id;
-        // // console.log("Connected", userId);
+        console.log("Connected", userId);
         // take over all unsent messages
         this.props.reassignOutbox();
         // Add new id to alias 
         this.props.memoId(userId);
         if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
             // Claim using first (latestId, if not same)
-            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0] });
-            // // console.log("Trying to claim old id:", this.props.aliasId[0]);
+            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0], claimToken: this.props.claimToken });
+            console.log("Trying to claim old id:", this.props.aliasId[0]);
         } else if (this.props.aliasId.length == 0) {
             // Add new id to alias
             this.props.memoId(this.props.socket.id);
@@ -69,7 +71,7 @@ export class ChatView extends Component {
     }
 
     onDisconnect(data) {
-        // // console.log("Disconnected", this.props.socket.id);
+        console.log("Disconnected", this.props.socket.id);
         // Assign all to last known socket id
         this.props.reassignOutbox();
         // // console.log("reassigning unsent messages...");
@@ -88,13 +90,13 @@ export class ChatView extends Component {
     onError(error) {
         switch (error.code) {
             case 'room_closed':
-                // // console.log("Room closed", error);
+                console.log("Room closed", error);
                 break;
             case 'user_not_in_room':
-                // // console.log("User has not joined this room", error);
+                console.log("User has not joined this room", error);
                 break;
             default:
-                // // console.log("Generic socket error", error);
+                console.log("Generic socket error", error);
                 break;
         }
     }
@@ -283,6 +285,7 @@ export class ChatView extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.claimToken);
         // // console.log("Mounted!");
         // Overwrite default listeners
         this.props.socket.on('connect', this.onConnect);
@@ -301,7 +304,7 @@ export class ChatView extends Component {
 
         if (this.props.aliasId.length > 0 && this.props.aliasId[0] != this.props.socket.id) {
             // Claim using first (latestId, if not same)
-            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0] });
+            this.props.socket.emit("claim_id", { oldSocketId: this.props.aliasId[0], claimToken: this.props.claimToken });
             // console.log("Trying to claim old id:", this.props.aliasId[0]);
         } else if (this.props.aliasId.length == 0) {
             // Add new id to alias
@@ -410,7 +413,7 @@ export class ChatView extends Component {
                             messages={this.state.messages}
                             roomId={this.props.roomId}
                             user={this.props.socket.id}
-                            myIds = {this.props.aliasId}
+                            myIds={this.props.aliasId}
                             style={{ flex: 1 }}
                             />
                         <UserActionModalComponent
@@ -449,7 +452,7 @@ export class ChatView extends Component {
                             roomId={this.props.roomId}
                             user={this.props.aliasId[0]}
                             style={{ flex: 1 }}
-                            myIds = {this.props.aliasId}
+                            myIds={this.props.aliasId}
                             />
                         <UserActionModalComponent
                             toggle={this.state.toggleModal}
@@ -502,7 +505,8 @@ const mapStateToProps = (state, ownProps) => {
         aliasId: state.aliasId,
         outbox: outboxCached,
         chat: chatCached,
-        chatCache: mergeAndSort(outboxCached, chatMsgsCached)
+        chatCache: mergeAndSort(outboxCached, chatMsgsCached), 
+        claimToken: state.claimToken
     }
         ;
 }

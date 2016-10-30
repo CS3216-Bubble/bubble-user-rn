@@ -49,7 +49,7 @@ class ChatLoadingView extends Component {
 
   componentWillUnmount() {
     this.props.socket.removeListener('create_room', this.onRoomCreated);
-    this.props.socket.removeListener('bubble_error', (data) => { // console.log(data) });
+    this.props.socket.removeListener('bubble_error', (data) => { console.log(data) });
 
   }
 

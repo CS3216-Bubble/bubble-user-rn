@@ -10,6 +10,7 @@ import moment from 'moment';
 
 import ChatCardComponent from './ChatCardComponent';
 import ChatPlaceholderComponent from './ChatPlaceholderComponent';
+import { setClaimToken } from '../actions/Actions';
 
 export class ChatListComponent extends Component {
     static propTypes = {
@@ -48,15 +49,24 @@ export class ChatListComponent extends Component {
         }, 5000);
     }
 
+    // setClaimToken(data) {
+    //     assignToken(data.claimToken);
+    // }
+
     componentDidMount() {
         // > View Specific Listeners
         this.props.socket.on('list_rooms', this.updateList);
+        // this.props.socket.on('set_claim_token', (data) => {console.log(data)});
+        // this.props.socket.on('set_claim_token', this.setClaimToken);
         this.props.socket.connect();
+        console.log(this.props.claimToken);
+        this.props.socket.emit('set_claim_token', {claimToken: this.props.claimToken});
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     componentWillUnmount() {
         this.props.socket.removeListener('list_rooms', this.updateList);
+        this.props.socket.removeListener('set_claim_token', (data) => {console.log(data)});
     }
 
     componentWillReceiveProps(props) {
@@ -98,9 +108,9 @@ export class ChatListComponent extends Component {
         }, this);
 
         const disconnected = (
-          <View style={{backgroundColor: '#e74c3c', padding: 10, height: 40}}>
-            <Text style={{textAlign: 'center', color: '#FFFFFF'}}>Disconnected</Text>
-          </View>
+            <View style={{ backgroundColor: '#e74c3c', padding: 10, height: 40 }}>
+                <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Disconnected</Text>
+            </View>
         );
 
         // If no search results found
@@ -112,7 +122,7 @@ export class ChatListComponent extends Component {
                         refreshing={this.state.refreshing}
                         onRefresh={this._onRefresh.bind(this)} />}
                     style={{ backgroundColor: 'red' }}>
-                    { userId ? null : disconnected }
+                    {userId ? null : disconnected}
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Text>No results found for {this.props.searchTerm}.</Text>
                     </View>
@@ -127,7 +137,7 @@ export class ChatListComponent extends Component {
                         onRefresh={this._onRefresh.bind(this)}
                         style={{ marginTop: -19 }} />}
                     >
-                    { userId ? null : disconnected }
+                    {userId ? null : disconnected}
                     {chatsToShow.length == 0 ?
                         <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
                         : chatsToShow}
@@ -139,10 +149,13 @@ export class ChatListComponent extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        socket: state.socket
+        socket: state.socket,
+        claimToken: state.claimToken
     };
 }
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        // assignToken: (token) => { dispatch(setClaimToken(token)) }
+    };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);

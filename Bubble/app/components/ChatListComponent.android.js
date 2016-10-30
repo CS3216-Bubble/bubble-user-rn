@@ -10,6 +10,7 @@ import moment from 'moment';
 
 import ChatCardComponent from './ChatCardComponent';
 import ChatPlaceholderComponent from './ChatPlaceholderComponent';
+import { setClaimToken } from '../actions/Actions';
 
 import Globals from '../globals';
 
@@ -39,6 +40,10 @@ export class ChatListComponent extends Component {
 
     }
 
+    // setClaimToken(data) {
+    //     assignToken(data.claimToken);
+    // }
+
     _onRefresh() {
         // console.log(this.props.socket);
         this.setState({ refreshing: true });
@@ -54,13 +59,18 @@ export class ChatListComponent extends Component {
     componentDidMount() {
         // > View Specific Listeners
         // console.log("MOUNT");
-        this.props.socket.connect();
+        // this.props.socket.on('set_claim_token', this.setClaimToken);
         this.props.socket.on('list_rooms', this.updateList);
+        this.props.socket.on('set_claim_token', (data) => {console.log(data)});
+        this.props.socket.connect();
+        console.log(this.props.claimToken);
+        this.props.socket.emit('set_claim_token', {claimToken: this.props.claimToken});
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     componentWillUnmount() {
         this.props.socket.removeListener('list_rooms', this.updateList);
+        this.props.socket.removeListener('set_claim_token', (data) => {console.log(data)});
     }
 
     componentWillReceiveProps(props) {
@@ -78,28 +88,28 @@ export class ChatListComponent extends Component {
         chatRooms.sort(function (a, b) {
             // Sticky chat first
             if (a.roomType == 'HOT' && b.roomType != 'HOT') {
-              return -1;
+                return -1;
             } else if ((b.roomType == 'HOT' && a.roomType != 'HOT')) {
-              return 1;
+                return 1;
             } else {
-              // Chat types are the same, sort by time
-              return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
+                // Chat types are the same, sort by time
+                return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
             }
         });
 
         // Create list of chats to show
-        const chatsToShow = chatRooms.map(function(chat) {
+        const chatsToShow = chatRooms.map(function (chat) {
 
 
             const chatContainsSearchTerm =
-              (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
-               chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
+                (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
+                    chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
-               if (chatContainsSearchTerm) {
+            if (chatContainsSearchTerm) {
                 // Create chat card
                 return (
 
-                        <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+                    <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
 
                 );
             }
@@ -107,7 +117,7 @@ export class ChatListComponent extends Component {
 
         const categoryButtons = Globals.CATEGORIES.map(function (name, index) {
             return (
-                <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
+                <Button style={{ backgroundColor: Globals.CATEGORY_COLOURS[name] }} key={index} onPress={() => Actions.categoryListView({ selectedCategory: name })}>
                     <Text style={{ fontSize: 10, color: 'white', fontWeight: "600" }} >{name}</Text>
                 </Button>
             );
@@ -118,39 +128,39 @@ export class ChatListComponent extends Component {
         );
 
         const disconnected = (
-          <View style={{backgroundColor: '#e74c3c', padding: 10, height: 40}}>
-            <Text style={{textAlign: 'center', color: '#FFFFFF'}}>Disconnected</Text>
-          </View>
+            <View style={{ backgroundColor: '#e74c3c', padding: 10, height: 40 }}>
+                <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Disconnected</Text>
+            </View>
         );
 
         // If no search results found
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
             return (
-              <ScrollView
-                style={{ flex: 1 }}
-                refreshControl={<RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh.bind(this)} />}>
-                  { userId ? null : disconnected }
-                  <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                      <Text>No results found for {this.props.searchTerm}.</Text>
-                  </View>
-              </ScrollView>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    refreshControl={<RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)} />}>
+                    {userId ? null : disconnected}
+                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text>No results found for {this.props.searchTerm}.</Text>
+                    </View>
+                </ScrollView>
             );
         } else {
             return (
-                <View style={{flex: 1}}>
-                {this.props.searchTerm == '' ? categoryFilter : null}
-                <ScrollView
-                  style={{ flex: 1 }}
-                  refreshControl={<RefreshControl
-                  refreshing={this.state.refreshing}
-                  onRefresh={this._onRefresh.bind(this)} />}>
-                    { userId ? null : disconnected }
-                    {chatsToShow.length == 0 ?
-                      <ChatPlaceholderComponent style={{flex: 1}} onCreateChatPressed={this.props.onCreateChatPressed}/>
-                      : chatsToShow}
-                </ScrollView>
+                <View style={{ flex: 1 }}>
+                    {this.props.searchTerm == '' ? categoryFilter : null}
+                    <ScrollView
+                        style={{ flex: 1 }}
+                        refreshControl={<RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)} />}>
+                        {userId ? null : disconnected}
+                        {chatsToShow.length == 0 ?
+                            <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
+                            : chatsToShow}
+                    </ScrollView>
                 </View>
             );
         }
@@ -173,11 +183,15 @@ var styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return {
-    socket: state.socket
-  }
-;}
+    return {
+        socket: state.socket,
+        claimToken: state.claimToken
+    }
+        ;
+}
 const mapDispatchToProps = (dispatch) => {
-  return {};
+    return {
+        // assignToken: (token) => { dispatch(setClaimToken(token)) }
+    };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);
