@@ -14,12 +14,14 @@ import CategoryListView from './app/views/CategoryListView';
 import LandingView from './app/views/LandingView';
 import OnboardingView from './app/views/OnboardingView';
 import PushController from './app/PushController';
+import Root from './app/Root';
 
 export default class Bubble extends Component {
     render() {
 
         return (
             <Provider store={Store}>
+              <Root>
               <PushController>
                 <Router>
                     <Scene key="modal" component={Modal} >
@@ -37,6 +39,7 @@ export default class Bubble extends Component {
                     </Scene>
                 </Router>
               </PushController>
+              </Root>
             </Provider>
         );
     }
