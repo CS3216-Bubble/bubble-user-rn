@@ -3,7 +3,7 @@ import { Image, View, StyleSheet, Text } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 
-const splashScreenDelay = 0;
+const splashScreenDelay = 2000;
 
 export class LandingView extends Component {
     render() {
