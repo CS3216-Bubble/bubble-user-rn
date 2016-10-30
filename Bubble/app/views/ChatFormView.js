@@ -12,7 +12,7 @@ import Globals from '../globals';
 const defaultForm = {
   name: '',
   description: '',
-  numUsers: '2',
+  numUsers: '7',
   categories: [],
 }
 
