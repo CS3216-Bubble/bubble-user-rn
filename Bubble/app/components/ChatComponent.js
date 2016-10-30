@@ -16,7 +16,10 @@ export default class ChatComponent extends Component {
     // Initialise
     constructor(props, context) {
         super(props, context);
-        this.state = { messages: [] };
+        this.state = { 
+            messages: [],
+            someoneTyping: '',
+        };
         this.onSend = this.onSend.bind(this);
         this.parseMessages = this.parseMessages.bind(this);
         this.hashID = this.hashID.bind(this);
@@ -26,12 +29,17 @@ export default class ChatComponent extends Component {
 
     // Initial update
     componentDidMount() {
-        this.setState({ messages: this.parseMessages(this.props.messages) });
+        this.setState({ 
+            messages: this.parseMessages(this.props.messages),
+            someoneTyping: this.props.someoneTyping, });
     }
 
     // Subsequent updates
     componentWillReceiveProps(props) {
-        this.setState({ messages: this.parseMessages(props.messages) });
+        this.setState({ 
+            messages: this.parseMessages(props.messages),
+            someoneTyping: props.someoneTyping,
+         });
     }
 
     hashID(userId) {
@@ -118,6 +126,7 @@ export default class ChatComponent extends Component {
                 onSend={this.onSend}
                 user={{ _id: this.props.user }}
                 isAnimated={true}
+                someoneTyping={this.state.someoneTyping}
                 onAvatarPress={(otherUserId, otherUserName) => { this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId, otherUserName) } }
                 />
         );

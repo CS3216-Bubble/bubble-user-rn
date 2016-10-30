@@ -11,6 +11,9 @@ import dismissKeyboard from 'dismissKeyboard';
 import { setPendingMessages, backupChatRoom, cacheUserId, reassignPendingMessages } from '../actions/Actions';
 
 var _ = require('lodash');
+var adjectives = require('../utils/adjectives');
+var animals = require('../utils/animals');
+var numAvatars = 160;
 
 export class ChatView extends Component {
     // Initialise
@@ -21,7 +24,8 @@ export class ChatView extends Component {
             queue: [],
             messages: this.props.chatCache,
             toggleModal: false,
-            modalInfo: { userId: "userId", otherUserId: "otherUserId", roomId: "roomId", otherUserName: "otherUserName" }
+            modalInfo: { userId: "userId", otherUserId: "otherUserId", roomId: "roomId", otherUserName: "otherUserName" },
+            someoneTyping: '',
         };
 
         if (Platform.OS === 'android') {
@@ -36,13 +40,44 @@ export class ChatView extends Component {
         this.onReceiveChat = this.onReceiveChat.bind(this);
         this.onReceiveMessage = this.onReceiveMessage.bind(this);
         this.onReceiveReaction = this.onReceiveReaction.bind(this);
+        this.onReceiveTyping = this.onReceiveTyping.bind(this);
+        this.onReceiveTypingStop = this.onReceiveTypingStop.bind(this);
         this.onEmitThanks = this.onEmitThanks.bind(this);
         this.onEmitCheers = this.onEmitCheers.bind(this);
         this.onSend = this.onSend.bind(this);
         this.onTriggerModal = this.onTriggerModal.bind(this);
         this.onExit = this.onExit.bind(this);
         this.onClaim = this.onClaim.bind(this);
+        this.hashID = this.hashID.bind(this);
+        this.generateName = this.generateName.bind(this);
         this.onJoinRoom = this.onJoinRoom.bind(this);
+
+    }
+
+    // Utility function for hashing
+    hashID(userId) {
+        var hash = 0;
+        if (userId && userId.length != 0) {
+            for (i = 0; i < userId.length; i++) {
+                char = userId.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+        }
+        return hash;
+    }
+
+    // Name generator
+    generateName(userId) {
+        var hashCode = this.hashID(userId);
+        var adj = adjectives.adjectives;
+        var ani = animals.animals;
+        // Get adjective
+        var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
+        // Get animal
+        var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
+        // Return result
+        return adjective + " " + animal;
     }
 
     onClaim(data) {
@@ -59,7 +94,7 @@ export class ChatView extends Component {
         console.log("Connected", userId);
         // take over all unsent messages
         this.props.reassignOutbox();
-        // Add new id to alias 
+        // Add new id to alias
         this.props.memoId(userId);
        if (this.props.aliasId.length > 1 && this.props.aliasId[0] != this.props.socket.id[1]) {
             // Claim using first (latestId, if not same)
@@ -221,6 +256,16 @@ export class ChatView extends Component {
 
     }
 
+    /*  onReceiveTyping is called when someone is typing */
+    onReceiveTyping(data) {
+        this.setState( {someoneTyping: this.generateName(data.userId)} );
+    }
+
+    /*  onReceiveTyping is called when someone stopped typing */
+    onReceiveTypingStop(data) {
+        this.setState( {someoneTyping: ''} );
+    }
+
     /* onSend is called when the user attempts to send a message.
        This triggers an optimistic update on the user chat, and waits for acknowledgement. */
     onSend(message) {
@@ -316,7 +361,7 @@ export class ChatView extends Component {
     }
 
     componentDidMount() {
-        
+
         console.log(this.props.claimToken);
         // // console.log("Mounted!");
         // Overwrite default listeners
@@ -334,6 +379,8 @@ export class ChatView extends Component {
         this.props.socket.on('add_reaction', this.onReceiveReaction);
         this.props.socket.on("claim_id", this.onClaim);
         this.props.socket.on('join_room', this.onJoinRoom);
+        this.props.socket.on('typing', this.onReceiveTyping);
+        this.props.socket.on('stop_typing', this.onReceiveTypingStop);
 
         // Checks for connection. If not connected, will attempt to connect.
         // this.props.socket.connect();
@@ -369,6 +416,8 @@ export class ChatView extends Component {
         this.props.socket.removeListener('bubble_error', this.onError)
         this.props.socket.removeListener("claim_id", this.onClaim);
         this.props.socket.removeListener('join_room', this.onJoinRoom);
+        this.props.socket.removeListener('typing', this.onReceiveTyping);
+        this.props.socket.removeListener('stop_typing', this.onReceiveTypingStop);
 
         // Write state to redux
         if (this.state.chat && this.state.chat != null) {
@@ -434,7 +483,7 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
                                 <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={this.state.chat.roomName} />
-                                {this.state.chat != null && <Text note style={Styles.subtitle}> {this.state.chat.roomType.charAt(0).toUpperCase() + this.state.chat.roomType.toLowerCase().slice(1)}Chat </Text>}
+                                {(this.state.someoneTyping !== '') ? <Text> {this.state.someoneTyping} is typing.. </Text> : [] }
                             </View>
                         </Title>
                         <Button transparent onPress={() => Actions.chatInfoView({ chat: this.state.chat })}>
@@ -452,6 +501,7 @@ export class ChatView extends Component {
                             user={this.props.socket.id}
                             myIds={this.props.aliasId}
                             style={{ flex: 1 }}
+                            someoneTyping=''
                             />
                         <UserActionModalComponent
                             toggle={this.state.toggleModal}
@@ -490,6 +540,7 @@ export class ChatView extends Component {
                             user={this.props.aliasId[0]}
                             style={{ flex: 1 }}
                             myIds={this.props.aliasId}
+                            someoneTyping={this.state.someoneTyping}
                             />
                         <UserActionModalComponent
                             toggle={this.state.toggleModal}
@@ -542,7 +593,7 @@ const mapStateToProps = (state, ownProps) => {
         aliasId: state.aliasId,
         outbox: outboxCached,
         chat: chatCached,
-        chatCache: mergeAndSort(outboxCached, chatMsgsCached), 
+        chatCache: mergeAndSort(outboxCached, chatMsgsCached),
         claimToken: state.claimToken,
         noToken: !state.claimed
     }
