@@ -6,7 +6,7 @@ import { connect as connectRedux } from 'react-redux';
 import AppIntro from 'react-native-app-intro';
 
 export class OnboardingView extends Component {
-  
+
   onSkipBtnHandle = (index) => {
     this.props.onOnboardingFinished();
     Actions.main({type: ActionConst.REPLACE});
@@ -83,9 +83,9 @@ export class OnboardingView extends Component {
       if (slide.type === 'header') {
         return (
           <View key={index} style={[styles.slide, { backgroundColor: slide.backgroundColor }]}>
-            <View level={10} style={styles.headerImgContainer}>{ slide.img }</View>
-            <View level={15}><Text style={styles.text}>{slide.title}</Text></View>
-            <View level={8}><Text style={styles.description}>{slide.description}</Text></View>
+            <View level={15} style={styles.headerImgContainer}>{ slide.img }</View>
+            <View level={8}><Text style={styles.text}>{slide.title}</Text></View>
+            <View level={10}><Text style={styles.description}>{slide.description}</Text></View>
           </View>
         );
       } else {
