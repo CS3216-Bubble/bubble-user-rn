@@ -5,7 +5,6 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import CustomTheme from '../themes/bubble';
 import ChatInfoComponent from '../components/ChatInfoComponent';
 import { connect as connectRedux } from 'react-redux';
-import Overlay from 'react-native-overlay';
 
 export class ChatInfoView extends Component {
     static propTypes = {
