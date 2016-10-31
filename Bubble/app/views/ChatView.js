@@ -218,18 +218,18 @@ export class ChatView extends Component {
 
     /*  onReceiveTyping is called when someone is typing */
     onReceiveTyping(data) {
-        this.setState( {someoneTyping: this.generateName(data.userId)} );
+        this.setState({ someoneTyping: this.generateName(data.userId) });
     }
 
     /*  onReceiveTypingStop is called when someone stopped typing */
     onReceiveTypingStop(data) {
-        this.setState( {someoneTyping: ''} );
+        this.setState({ someoneTyping: '' });
     }
 
     /*  onReceiveJoinRoom is called when someone joins the room*/
     onReceiveJoinRoom(data) {
         // Add date property to join event for sorting
-        data,updatedAt = new Date();
+        data, updatedAt = new Date();
         data.userName = this.generateName(data.userId);
         data.messageType = 'JOIN_ROOM';
         data.id = (new Date()).toISOString();
@@ -348,7 +348,15 @@ export class ChatView extends Component {
        This will not make the user leave the room */
     onExit() {
         if (Platform.OS === 'ios') {
-            Actions.main({type: ActionConst.REPLACE, selectedTab: 'all'});
+            Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
+        } else {
+            Actions.pop();
+        }
+    }
+
+        onQuit() {
+        if (Platform.OS === 'ios') {
+            Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
         } else {
             Actions.pop();
         }
@@ -374,7 +382,7 @@ export class ChatView extends Component {
         this.props.socket.on('disconnect', this.onDisconnect);
         this.props.socket.on('connect_timeout', this.onTimeout);
         this.props.socket.on('bubble_error', this.onError)
-        this.props.socket.on('set_claim_token', (data) => {console.log(data)});
+        this.props.socket.on('set_claim_token', (data) => { console.log(data) });
 
         // Set listeners
         this.props.socket.on('view_room', this.onReceiveChat);
@@ -452,7 +460,7 @@ export class ChatView extends Component {
         // }
 
         // When chat is indeed available, display chat component
-        if (this.state.chat == null) {
+        if (typeof this.props.socket.id == 'undefined') {
             return (<Container>
                 <Header>
                     <Button transparent onPress={this.onExit}>
@@ -473,6 +481,9 @@ export class ChatView extends Component {
                     <Text>You're offline! Come back later.</Text>
                 </View>
             </Container>);
+        } else if (this.state.chat == null) {
+            // INSERT LOADER HERE
+            return null;
         }
         else if (Platform.OS === 'ios') {
             // // console.log("MESSAGES", this.state.messages);
@@ -487,11 +498,11 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
                                 <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={this.state.chat.roomName} />
-                                {(this.state.someoneTyping !== '') ?  <View style={{flexDirection: 'row', alignItems: "center", justifyContent: "center"}}>
-      <Text style={{fontSize: 12, fontWeight: "300"}}>
-        {this.state.someoneTyping} is typing...
+                                {(this.state.someoneTyping !== '') ? <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
+                                    <Text style={{ fontSize: 12, fontWeight: "300" }}>
+                                        {this.state.someoneTyping}is typing...
       </Text>
-    </View> : [] }
+                                </View> : []}
                             </View>
                         </Title>
                         <Button transparent onPress={() => Actions.chatInfoView({ chat: this.state.chat })}>
