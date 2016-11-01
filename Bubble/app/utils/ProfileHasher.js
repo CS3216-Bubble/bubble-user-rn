@@ -24,7 +24,7 @@ function hashID(userId) {
 
 // Name generator
 export function generateName(userId) {
-    var hashCode = this.hashID(userId);
+    var hashCode = hashID(userId);
     var adj = adjectives.adjectives;
     var ani = animals.animals;
     // Get adjective

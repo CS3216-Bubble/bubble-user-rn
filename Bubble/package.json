@@ -17,7 +17,7 @@
     "native-base": "^0.5.9",
     "path-browserify": "0.0.0",
     "react": "^15.3.2",
-    "react-native": "0.35.0",
+    "react-native": "^0.36.0",
     "react-native-action-button": "^2.0.9",
     "react-native-app-intro": "^1.1.5",
     "react-native-dropdown-android": "0.0.12",
