@@ -6,7 +6,8 @@ import {
     RefreshControl,
     ScrollView,
     LayoutAnimation,
-    UIManager
+    UIManager,
+    Platform
 } from 'react-native';
 import {
     Container,
@@ -80,30 +81,35 @@ export default class ChatListView extends Component {
 
         return (
             <Container>
-                <Header searchBar rounded>
-                    <InputGroup>
-                        <Icon name='ios-search' />
-                        <Input
-                            placeholder='Search'
-                            value={this.state.searchTerm}
-                            onChangeText={this.onSearchBarTextChange}
-                            style={{
-                                paddingBottom: 10
-                            }} /> {this.state.searchTerm.length > 0 && <Icon
-                                name='ios-close'
+                {Platform.OS == 'ios' &&
+                    <Header searchBar rounded>
+                        <InputGroup>
+                            <Icon name='ios-search' />
+                            <Input
+                                placeholder='Search'
+                                value={this.state.searchTerm}
+                                onChangeText={this.onSearchBarTextChange}
                                 style={{
-                                    backgroundColor: "transparent",
-                                    paddingTop: 2
-                                }} onPress={this.clearSearchBar} />}
-                    </InputGroup>
-                    <Button transparent onPress={Actions.chatFormView}>
-                        <Icon name='ios-create-outline' />
-                    </Button>
-                </Header>
+                                    paddingBottom: 10
+                                }} /> {this.state.searchTerm.length > 0 && <Icon
+                                    name='ios-close'
+                                    style={{
+                                        backgroundColor: "transparent",
+                                        paddingTop: 2
+                                    }} onPress={this.clearSearchBar} />}
+                        </InputGroup>
+                        <Button transparent onPress={Actions.chatFormView}>
+                            <Icon name='ios-create-outline' />
+                        </Button>
+                    </Header>
+                }
+
                 <View style={{
                     flex: 1
                 }}>
-                    <View style={styles.categoryButtonContainer}>{categoryButtons}</View>
+                    {Platform.OS == 'ios' &&
+                        <View style={styles.categoryButtonContainer}>{categoryButtons}</View>
+                    }
                     <ChatListComponent
                         refresh={this.state.refresh}
                         searchTerm={this.state.searchTerm}

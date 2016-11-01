@@ -22,7 +22,6 @@ export class MainView extends Component {
         };
     }
 
-
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps);
         if (nextProps.selectedTab) {
@@ -144,7 +143,6 @@ export class MainView extends Component {
     }
 }
 
-
 // Redux Call
 const mapStateToProps = (state) => {
     return { socket: state.socket };
@@ -153,7 +151,6 @@ const mapDispatchToProps = (dispatch) => {
     return {};
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(MainView);
-
 
 // TODO: Collate all styles under Styles.js
 var styles = StyleSheet.create({

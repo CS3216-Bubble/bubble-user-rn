@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;  // <--- Import Package
 import com.beefe.picker.PickerViewPackage;
 import com.chymtt.reactnativedropdown.DropdownPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -29,7 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new VectorIconsPackage(),
-            new ReactNativePushNotificationPackage(),
+            new ReactNativePushNotificationPackage(), // <---- Add the Package
             new PickerViewPackage(),
             new DropdownPackage()
       );

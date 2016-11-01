@@ -8,46 +8,46 @@ const splashScreenDelay = 2000;
 export class LandingView extends Component {
     render() {
         setTimeout(() => {
-          if (this.props.isFirstTimeUser) {
-            Actions.onboardingView({type: ActionConst.REPLACE});
-          } else {
-            Actions.main({type: ActionConst.REPLACE});
-          }
+            if (this.props.isFirstTimeUser) {
+                Actions.onboardingView({ type: ActionConst.REPLACE });
+            } else {
+                Actions.main({ type: ActionConst.REPLACE });
+            }
         }, splashScreenDelay);
         return (
             <View style={styles.splashContainer}>
-              <Image style={styles.splashImage} source={require('../img/logo_white.png')} />
+                <Image style={styles.splashImage} source={require('../img/logo_white.png')} />
             </View>
         );
     }
 }
 
-var styles = StyleSheet.create({
-    splashContainer: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#69D2E7'
-    },
-    splashImage: {
-      width: 180,
-      resizeMode: 'contain'
-    },
-    splashText: {
-      color: '#FFFFFF'
-    }
-});
-
+// Redux Call
 const mapStateToProps = (state, ownProps) => {
     return {
         isFirstTimeUser: state.settings.isFirstTimeUser,
     };
 }
-
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
     };
 };
-
 export default connectRedux(mapStateToProps, mapDispatchToProps)(LandingView);
+
+// TODO: Shift to Styles.js
+var styles = StyleSheet.create({
+    splashContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#69D2E7'
+    },
+    splashImage: {
+        width: 180,
+        resizeMode: 'contain'
+    },
+    splashText: {
+        color: '#FFFFFF'
+    }
+});

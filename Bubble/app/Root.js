@@ -5,25 +5,11 @@ import {claimId, claimSuccess, setClaimToken, setClaimTokenSuccess} from './acti
 
 class Root extends Component {
 
-    constructor(props, context) {
-        super(props, context);
+    componentDidMount() {
         const {socket} = this.props;
         socket.on('connect', this.onConnect.bind(this));
         socket.on('claim_id', this.onClaimId.bind(this));
         socket.on('set_claim_token', this.onSetClaimTokenSuccess.bind(this));
-        socket.on('add_message', this.toNotify.bind(this));
-        // Initiate connection
-        // socket.connect();
-    }
-
-    componentDidMount() {
-        const {socket} = this.props;
-    //     socket.on('connect', this.onConnect.bind(this));
-    //     socket.on('claim_id', this.onClaimId.bind(this));
-    //     socket.on('set_claim_token', this.onSetClaimTokenSuccess.bind(this));
-    //     socket.on('add_message', this.toNotify.bind(this));
-    //     // Initiate connection
-        // socket.connect();
     }
 
     onSetClaimTokenSuccess() {
@@ -53,13 +39,6 @@ class Root extends Component {
         }
 
         memoId(socketId);
-    }
-
-    toNotify(data) {
-
-        // TODO: Perform selective local notifications here (for IOS and Android)
-        // Filters can be added from Redux store given saved settings on which chats to
-        // exclude Requires roomId, userId, roomName
     }
 
     render() {

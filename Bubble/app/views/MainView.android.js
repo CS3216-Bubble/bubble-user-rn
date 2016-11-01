@@ -3,9 +3,12 @@ import {View} from 'react-native';
 import {Container, Content, Header, Title, Tabs} from 'native-base';
 import {connect as connectRedux} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
-import ChatListComponent from '../components/ChatListComponent';
-import MyChatListComponent from '../components/MyChatListComponent';
-import SettingsComponent from '../components/SettingsComponent';
+import ChatListView from '../views/ChatListView';
+import MyChatListView from '../views/MyChatListView';
+import SettingsView from '../views/SettingsView';
+// import ChatListComponent from '../components/ChatListComponent';
+// import MyChatListComponent from '../components/MyChatListComponent';
+// import SettingsComponent from '../components/SettingsComponent';
 import {Styles} from '../styles/Styles';
 import CustomTheme from '../themes/bubble';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -75,16 +78,16 @@ export class MainView extends Component {
                         flex: 1
                     }}>
                         <Tabs theme={CustomTheme} onChangeTab={this.onChangeTab}>
-                            <ChatListComponent
+                            <ChatListView
                                 tabLabel='All'
                                 searchTerm={this.state.searchTerm}
                                 onCreateChatPressed={this.onCreateChatPressed}/>
-                            <MyChatListComponent
+                            <MyChatListView
                                 toggle={this.state.toggleMyChats}
                                 tabLabel='My Chats'
                                 searchTerm={this.state.searchTerm}
                                 onCreateChatPressed={this.onCreateChatPressed}/>
-                            <SettingsComponent tabLabel='Settings' user={this.state.user}/>
+                            <SettingsView tabLabel='Settings' user={this.state.user}/>
                         </Tabs>
                     </View>
                     {this.state.selectedTab === 0
