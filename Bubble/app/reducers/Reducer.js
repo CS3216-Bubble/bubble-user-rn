@@ -116,6 +116,10 @@ const initialState = {
       refreshing: false,
       data: [],
     },
+    myRooms: {
+      refreshing: false,
+      data: [],
+    },
 };
 
 // Reducer Definition
@@ -134,6 +138,22 @@ export default function Reducer(state = initialState, action) {
           return {
             ...state,
             roomList: {
+              refreshing: false,
+              data: action.payload,
+            }
+          }
+        case `${MY_ROOMS}_PENDING`:
+          return {
+            ...state,
+            myRooms: {
+              refreshing: true,
+              data: [],
+            }
+          }
+        case `${MY_ROOMS}_SUCCESS`:
+          return {
+            ...state,
+            myRooms: {
               refreshing: false,
               data: action.payload,
             }
@@ -488,14 +508,6 @@ export default function Reducer(state = initialState, action) {
         // Call completion callback, if available
         // Handle exception with failure callback
 
-
-        case MY_ROOMS:
-            state.socket.emit("my_rooms");
-            return state;
-
-        case LISTEN_TO_MY_ROOMS:
-            state.socket.on("my_rooms", action.callback);
-            return state;
 
         case REMOVE_LISTENERS:
             action.callback(state.socket);

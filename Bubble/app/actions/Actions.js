@@ -639,19 +639,17 @@ export function listenToFindCounsellor(callback) {
     }
 }
 
-// myRooms requires no payload
-export function myRooms() {
+export function myRooms(socket) {
+    socket.emit('my_rooms');
     return {
-        type: MY_ROOMS
+        type: `${MY_ROOMS}_PENDING`,
     }
 }
 
-// listenToMyRooms provides to emitter:
-//     roomIds: string[]
-export function listenToMyRooms(callback) {
+export function onMyRooms(data) {
     return {
-        type: LISTEN_TO_MY_ROOMS,
-        callback: callback
+        type: `${MY_ROOMS}_SUCCESS`,
+        payload: data,
     }
 }
 
