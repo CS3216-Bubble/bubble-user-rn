@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
 import { connect as connectRedux } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ChatListView from './ChatListView';
 import MyChatListView from './MyChatListView';
 import ChatFormView from './ChatFormView';
 import InformationView from './InformationView';
 import SettingsView from './SettingsView';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class MainView extends Component {
     state = {
@@ -17,7 +17,7 @@ export default class MainView extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
+        // console.log(nextProps);
         if (nextProps.selectedTab) {
             this.setState({selectedTab: nextProps.selectedTab});
         }
@@ -51,7 +51,7 @@ export default class MainView extends Component {
                     <ChatFormView
                         key="open"
                         title="Create Chat"
-                        isBackButtonVisible={false}
+                        isBackButtonVisible={true}
                         />
                 );
             case 'info':
@@ -70,7 +70,6 @@ export default class MainView extends Component {
 
     render() {
         return (
-
             <TabBarIOS>
                 <Icon.TabBarItemIOS
                     title="All"
@@ -138,6 +137,7 @@ export default class MainView extends Component {
     }
 }
 
+// TODO: Collate all styles under Styles.js
 var styles = StyleSheet.create({
     tabContent: {
         flex: 1,

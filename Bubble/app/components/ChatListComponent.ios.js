@@ -1,5 +1,17 @@
 import React, { Component, PropTypes } from 'react';
-import { Image, Text, View, TouchableHighlight, ScrollView, RefreshControl, Alert, LayoutAnimation, UIManager, Platform, TouchableWithoutFeedback } from 'react-native';
+import {
+    Image,
+    Text,
+    View,
+    TouchableHighlight,
+    ScrollView,
+    RefreshControl,
+    Alert,
+    LayoutAnimation,
+    UIManager,
+    Platform,
+    TouchableWithoutFeedback
+} from 'react-native';
 import { Card, CardItem, Title, Button } from 'native-base';
 
 import { Styles } from '../styles/Styles';
@@ -16,11 +28,10 @@ export class ChatListComponent extends Component {
     static propTypes = {
         onCreateChatPressed: PropTypes.func.isRequired,
         searchTerm: PropTypes.string,
-        showCategoriesOnCard: PropTypes.bool,
+        showCategoriesOnCard: PropTypes.bool
     }
 
     updateList = (data) => {
-        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({ roomList: data, refreshing: false });
     }
 
@@ -29,9 +40,13 @@ export class ChatListComponent extends Component {
         this.state = {
             roomList: [],
             refreshing: false,
-            showCategoriesOnCard: props.showCategoriesOnCard ? props.showCategoriesOnCard : true,
+            showCategoriesOnCard: props.showCategoriesOnCard
+                ? props.showCategoriesOnCard
+                : true
         };
-        this.updateList = this.updateList.bind(this);
+        this.updateList = this
+            .updateList
+            .bind(this);
 
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -40,43 +55,68 @@ export class ChatListComponent extends Component {
 
     _onRefresh() {
         this.setState({ refreshing: true });
-        this.props.socket.connect();
-        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+        this
+            .props
+            .socket
+            .connect();
+        this
+            .props
+            .socket
+            .emit("list_rooms", { user: this.props.socket.id });
         setTimeout(() => {
-            this.setState({
-                refreshing: false
-            });
+            this.setState({ refreshing: false });
         }, 5000);
     }
-
-    // setClaimToken(data) {
-    //     assignToken(data.claimToken);
-    // }
 
     componentDidMount() {
         console.log("MOUNTED");
         // > View Specific Listeners
-        this.props.socket.on('list_rooms', this.updateList);
-        // this.props.socket.on('set_claim_token', this.setClaimToken);
-        this.props.socket.connect();
+        this
+            .props
+            .socket
+            .on('list_rooms', this.updateList);
+        this
+            .props
+            .socket
+            .connect();
         console.log(this.props.claimToken);
-        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+        this
+            .props
+            .socket
+            .emit("list_rooms", { user: this.props.socket.id });
     }
 
     componentWillUnmount() {
-        this.props.socket.removeListener('list_rooms', this.updateList);
-        this.props.socket.removeListener('set_claim_token', (data) => {console.log(data)});
+        this
+            .props
+            .socket
+            .removeListener('list_rooms', this.updateList);
+        this
+            .props
+            .socket
+            .removeListener('set_claim_token', (data) => {
+                console.log(data)
+            });
     }
 
     componentWillReceiveProps(props) {
-        this.props.socket.connect();
-        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+        this
+            .props
+            .socket
+            .connect();
+        this
+            .props
+            .socket
+            .emit("list_rooms", { user: this.props.socket.id });
     }
 
     render() {
         var userId = this.props.socket.id;
 
-        var chatRooms = this.state.roomList.slice();
+        var chatRooms = this
+            .state
+            .roomList
+            .slice();
 
         chatRooms.sort(function (a, b) {
             // Sticky chat first
@@ -93,22 +133,29 @@ export class ChatListComponent extends Component {
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function (chat) {
 
-            const chatContainsSearchTerm =
-                (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
-                    chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
+            const chatContainsSearchTerm = (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 || chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
             if (chatContainsSearchTerm) {
                 // Create chat card
-                return (
-                    <ChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
-
-                );
+                return (<ChatCardComponent
+                    key={chat.roomId}
+                    chat={chat}
+                    showCategoriesOnCard={this.state.showCategoriesOnCard} />);
             }
         }, this);
 
         const disconnected = (
-            <View style={{ backgroundColor: '#e74c3c', padding: 10, height: 40 }}>
-                <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Disconnected</Text>
+            <View
+                style={{
+                    backgroundColor: '#e74c3c',
+                    padding: 10,
+                    height: 40
+                }}>
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        color: '#FFFFFF'
+                    }}>Disconnected</Text>
             </View>
         );
 
@@ -116,13 +163,30 @@ export class ChatListComponent extends Component {
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
             return (
                 <ScrollView
-                    style={{ flex: 1 }}
-                    refreshControl={<RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh.bind(this)} />}
-                    style={{ backgroundColor: 'red' }}>
-                    {userId ? null : disconnected}
-                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                    style={{
+                        flex: 1
+                    }}
+                    refreshControl={< RefreshControl refreshing={
+                        this.state.refreshing
+                    }
+                        onRefresh={
+                            this
+                                ._onRefresh
+                                .bind(this)
+                        } />}
+                    style={{
+                        backgroundColor: 'red'
+                    }}>
+                    {userId
+                        ? null
+                        : disconnected}
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                         <Text>No results found for {this.props.searchTerm}.</Text>
                     </View>
                 </ScrollView>
@@ -130,15 +194,27 @@ export class ChatListComponent extends Component {
         } else {
             return (
                 <ScrollView
-                    style={{ flex: 1 }}
-                    refreshControl={<RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh.bind(this)}
-                        style={{ marginTop: -19 }} />}
-                    >
-                    {userId ? null : disconnected}
-                    {chatsToShow.length == 0 ?
-                        <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
+                    style={{
+                        flex: 1
+                    }}
+                    refreshControl={< RefreshControl refreshing={
+                        this.state.refreshing
+                    }
+                        onRefresh={
+                            this
+                                ._onRefresh
+                                .bind(this)
+                        }
+                        style={{ marginTop: -19 }} />}>
+                    {userId
+                        ? null
+                        : disconnected}
+                    {chatsToShow.length == 0
+                        ? <ChatPlaceholderComponent
+                            style={{
+                                flex: 1
+                            }}
+                            onCreateChatPressed={this.props.onCreateChatPressed} />
                         : chatsToShow}
                 </ScrollView>
             );
@@ -147,10 +223,7 @@ export class ChatListComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        socket: state.socket,
-        claimToken: state.claimToken
-    };
+    return { socket: state.socket, claimToken: state.claimToken };
 }
 const mapDispatchToProps = (dispatch) => {
     return {

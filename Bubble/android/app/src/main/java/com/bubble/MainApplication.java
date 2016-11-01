@@ -4,7 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.react.rnspinkit.RNSpinkitPackage;
+import com.chymtt.reactnativedropdown.DropdownPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -28,8 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new RNSpinkitPackage(),
-           new MainReactPackage(),
+          new MainReactPackage(),
+            new DropdownPackage(),
           new PickerViewPackage(),
           new VectorIconsPackage(),
           new DropdownPackage(),

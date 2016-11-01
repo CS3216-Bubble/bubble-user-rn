@@ -13,12 +13,15 @@ import ChatLoadingView from './app/views/ChatLoadingView';
 import CategoryListView from './app/views/CategoryListView';
 import LandingView from './app/views/LandingView';
 import OnboardingView from './app/views/OnboardingView';
+import Root from './app/Root';
+
 
 export default class Bubble extends Component {
 
     render() {
         return (
             <Provider store={Store}>
+                <Root>
                 <Router>
                     <Scene key="modal" component={Modal} >
                         <Scene key="root" hideNavBar={true}>
@@ -34,6 +37,7 @@ export default class Bubble extends Component {
                         <Scene key="modalView" component={ModalView} />
                     </Scene>
                 </Router>
+                </Root>
             </Provider>
         );
     }

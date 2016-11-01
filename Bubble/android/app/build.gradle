@@ -141,7 +141,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':react-native-spinkit')
+    compile project(':react-native-dropdown-android')
     compile project(':react-native-picker')
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])

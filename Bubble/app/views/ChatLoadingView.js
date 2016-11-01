@@ -11,7 +11,7 @@ class ChatLoadingView extends Component {
     this.onRoomCreated = this.onRoomCreated.bind(this);
     // > View Specific Listeners
     this.props.socket.on('create_room', this.onRoomCreated);
-    this.props.socket.connect();
+    // this.props.socket.connect();
     // console.log("CONSTRUCT MY VIEW");
   }
 

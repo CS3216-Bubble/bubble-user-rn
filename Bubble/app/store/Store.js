@@ -15,6 +15,8 @@ let middleware = [thunk]
 if (__DEV__) {
   const logger = createLogger();
   middleware = [...middleware, logger]
+  // middleware = [...middleware]
+
 }
 
 const Store = createStore(Reducer, compose(applyMiddleware(...middleware), autoRehydrate()))

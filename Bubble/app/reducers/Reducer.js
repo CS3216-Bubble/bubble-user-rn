@@ -66,18 +66,19 @@ import {
     REMOVE_LISTENERS,
     SET_TOKEN_STATUS
 } from '../actions/Actions';
+import './UserAgent';
 
-window.navigator.userAgent = 'ReactNative';
 const io = require('socket.io-client/socket.io');
 const host = "http://getbubblechat.com/";
 
 function socketInit() {
-    socket = io(host, {
+    var socket = io(host, {
         transports: ['websocket'], reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
         timeout: 20000
     });
+    console.log("THIS IS MY SOCAT!!!", socket);
     return socket;
 }
 
@@ -87,7 +88,7 @@ function guid() {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
-    console.log(uuid);
+    // console.log(uuid);
     return uuid;
 }
 
@@ -312,7 +313,6 @@ export default function Reducer(state = initialState, action) {
             return Object.assign({}, state, {
                 aliasId: [action.userId, ...state.aliasId],
             });
-            return state;
 
         case SET_CLAIM_TOKEN:
             return Object.assign({}, state, {
@@ -340,7 +340,7 @@ export default function Reducer(state = initialState, action) {
         case CONNECT:
             if (state.connection !== "CONNECTED") {
                 // console.log(state.socket.connect);
-                state.socket.connect();
+                // state.socket.connect();
                 return Object.assign({}, state, {
                     connection: "CONNECTING"
                 });

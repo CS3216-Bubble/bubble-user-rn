@@ -34,14 +34,14 @@ export class CategoryListComponent extends Component {
 
     _onRefresh() {
         this.setState({ refreshing: true });
-        this.props.socket.connect();
+        // this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     componentDidMount() {
         // > View Specific Listeners
         this.props.socket.on('list_rooms', this.updateList);
-        this.props.socket.connect();
+        // this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
@@ -51,7 +51,7 @@ export class CategoryListComponent extends Component {
 
     componentWillReceiveProps(props) {
         // // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
-        this.props.socket.connect();
+        // this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 

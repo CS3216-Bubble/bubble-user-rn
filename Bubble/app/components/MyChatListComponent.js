@@ -62,7 +62,7 @@ export class MyChatListComponent extends Component {
 
     _onRefresh() {
         this.setState({ refreshing: true });
-        this.props.socket.connect();
+        // this.props.socket.connect();
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
         this.props.socket.emit('my_rooms');
         setTimeout(() => {
@@ -77,7 +77,7 @@ export class MyChatListComponent extends Component {
         // > View Specific Listeners
         this.props.socket.on('list_rooms', this.updateList);
         this.props.socket.on('my_rooms', this.onReceiveRoomListing);
-        this.props.socket.connect();
+        // this.props.socket.connect();
         this.props.socket.emit('my_rooms');
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
@@ -90,7 +90,7 @@ export class MyChatListComponent extends Component {
     componentWillReceiveProps(props) {
         console.log("RECEIVED PROPS ON LIST VIEW!");
         // // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
-        this.props.socket.connect();
+        // this.props.socket.connect();
         this.props.socket.emit('my_rooms');
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
