@@ -11,6 +11,8 @@ import moment from 'moment';
 import MyChatCardComponent from './MyChatCardComponent';
 import ChatPlaceholderComponent from './ChatPlaceholderComponent';
 
+import { myRooms } from '../actions/Actions';
+
 var _ = require('lodash');
 
 
@@ -21,84 +23,31 @@ export class MyChatListComponent extends Component {
         showCategoriesOnCard: PropTypes.bool,
     }
 
-    updateList = (data) => {
-        const myRooms = this.state.listing;
-
-        var filteredRooms = [];
-        data.map(function(room) {
-          if (myRooms.indexOf(room.roomId) > -1) {
-            return filteredRooms.push(room);
-          }
-        });
-
-        console.log(filteredRooms);
-        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        this.setState({ roomList: filteredRooms, refreshing: false });
-    }
-
     constructor(props, context) {
         super(props, context);
         this.state = {
-            roomList: [],
-            refreshing: false,
-            listing: [],
             showCategoriesOnCard: props.showCategoriesOnCard ? props.showCategoriesOnCard : true,
         };
-        this.updateList = this.updateList.bind(this);
-        this.onReceiveRoomListing = this.onReceiveRoomListing.bind(this);
 
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
 
-
-    onReceiveRoomListing(data) {
-        console.log("room listing received", data);
-
-        this.setState({ listing: data});
-    }
-
-
     _onRefresh() {
-        this.setState({ refreshing: true });
-        // this.props.socket.connect();
-        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
-        this.props.socket.emit('my_rooms');
-        setTimeout(() => {
-            this.setState({
-                refreshing: false
-            });
-        }, 5000);
+        this.props.fetchMyRooms(this.props.socket);
     }
 
-    componentDidMount() {
-        console.log("MOUNTING MY VIEW LIST");
-        // > View Specific Listeners
-        this.props.socket.on('list_rooms', this.updateList);
-        this.props.socket.on('my_rooms', this.onReceiveRoomListing);
-        // this.props.socket.connect();
-        this.props.socket.emit('my_rooms');
-        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
-    }
-
-    componentWillUnmount() {
-        this.props.socket.removeListener('list_rooms', this.updateList);
-        this.props.socket.removeListener('my_rooms', this.getRoomList);
-    }
-
-    componentWillReceiveProps(props) {
-        console.log("RECEIVED PROPS ON LIST VIEW!");
-        // // console.log("CHATLISTCOMPONENT RECEIVES PROPS", props);
-        // this.props.socket.connect();
-        this.props.socket.emit('my_rooms');
-        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
+    componentWillMount() {
+        this.props.fetchMyRooms(this.props.socket);
     }
 
     render() {
-        var userId = this.props.socket.id;
-
-        var chatRooms = this.state.roomList.slice();
+        const userId = this.props.socket.id;
+      console.log('aslkdfjasljdf');
+      console.log(this.props.myRooms);
+        const chatRooms = this.props.myRooms.slice();
+        const refreshing = this.props.refreshing;
 
         chatRooms.sort(function (a, b) {
             // Sticky chat first
@@ -113,13 +62,16 @@ export class MyChatListComponent extends Component {
         });
 
         // Create list of chats to show
-        const chatsToShow = chatRooms.map(function (chat) {
+        const chatsToShow = chatRooms.map(function (chatId) {
+          const chat = this.props.roomList.filter(
+            cc => cc.roomId = chatId
+          )[0]
 
             const chatContainsSearchTerm =
                 (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
                     chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
-            if (chatContainsSearchTerm && _.indexOf(this.state.listing, chat.roomId) >= 0) {
+            if (chatContainsSearchTerm) {
                 // Create chat card
                 return (
                     <MyChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
@@ -141,7 +93,7 @@ export class MyChatListComponent extends Component {
                 <ScrollView
                     style={{ flex: 1 }}
                     refreshControl={<RefreshControl
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this._onRefresh.bind(this)} />}
                     style={{ backgroundColor: 'red' }}>
                     {userId ? null : disconnected}
@@ -155,7 +107,7 @@ export class MyChatListComponent extends Component {
                 <ScrollView
                     style={{ flex: 1 }}
                     refreshControl={<RefreshControl
-                        refreshing={this.state.refreshing}
+                        refreshing={refreshing}
                         onRefresh={this._onRefresh.bind(this)}
                         style={{ marginTop: -19 }} />}
                     >
@@ -172,10 +124,14 @@ export class MyChatListComponent extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         socket: state.socket,
+        roomList: state.roomList.data,
+        myRooms: state.myRooms.data,
+        refreshing: state.myRooms.refreshing,
     };
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+      fetchMyRooms: (socket) => dispatch(myRooms(socket)),
     };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(MyChatListComponent);

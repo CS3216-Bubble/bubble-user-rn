@@ -51,7 +51,7 @@ export class ChatListComponent extends Component {
         this.props.listRooms(this.props.socket);
     }
 
-    componentWilLMount() {
+    componentWillMount() {
         this.props.listRooms(this.props.socket);
     }
 

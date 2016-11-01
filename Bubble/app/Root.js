@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {onListRooms, cacheUserId, setPendingMessages, backupChatRoom, reassignPendingMessages} from './actions/Actions';
+import {onMyRooms, onListRooms, cacheUserId, setPendingMessages, backupChatRoom, reassignPendingMessages} from './actions/Actions';
 
 class Root extends Component {
 
@@ -8,6 +8,7 @@ class Root extends Component {
         const {socket} = this.props;
         socket.on('connect', this.onConnect.bind(this));
         socket.on('list_rooms', this.props.onListRooms);
+        socket.on('my_rooms', this.props.onMyRooms);
     }
 
     onConnect() {
@@ -48,6 +49,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(reassignPendingMessages())
         },
         onListRooms: (data) => dispatch(onListRooms(data)),
+        onMyRooms: (data) => dispatch(onMyRooms(data)),
     };
 };
 
