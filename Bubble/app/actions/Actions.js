@@ -230,7 +230,6 @@ export const LISTEN_TO_JOIN_ROOM = 'LISTEN_TO_JOIN_ROOM'
 export const EXIT_ROOM = 'EXIT_ROOM'
 export const LISTEN_TO_EXIT_ROOM = 'LISTEN_TO_EXIT_ROOM'
 export const LIST_ROOMS = 'LIST_ROOMS'
-export const LISTEN_TO_LIST_ROOMS = 'LISTEN_TO_LIST_ROOMS'
 export const VIEW_ROOM = 'VIEW_ROOM'
 export const LISTEN_TO_VIEW_ROOM = 'LISTEN_TO_VIEW_ROOM'
 export const DID_BEGIN_TYPING = 'DID_BEGIN_TYPING'
@@ -418,15 +417,6 @@ export function onListRooms(data) {
     return {
         type: `${LIST_ROOMS}_SUCCESS`,
         payload: data,
-    }
-}
-
-// listenToListRooms provides:
-//     rooms: Object[]
-export function listenToListRooms(callback) {
-    return {
-        type: LISTEN_TO_LIST_ROOMS,
-        callback: callback
     }
 }
 
