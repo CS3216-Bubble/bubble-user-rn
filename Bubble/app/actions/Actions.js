@@ -407,13 +407,17 @@ export function listenToExitRoom(callback) {
 
 // listRooms requires payload:
 //     user: string
-export function listRooms(userId) {
-    const userIdentity = {
-        user: userId
-    }
+export function listRooms(socket) {
+    socket.emit('list_rooms');
     return {
-        type: LIST_ROOMS,
-        payload: userIdentity
+        type: `${LIST_ROOMS}_PENDING`,
+    }
+}
+
+export function onListRooms(data) {
+    return {
+        type: `${LIST_ROOMS}_SUCCESS`,
+        payload: data,
     }
 }
 

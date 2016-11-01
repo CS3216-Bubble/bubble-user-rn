@@ -112,14 +112,33 @@ const initialState = {
     search: null,
     outbox: {},
     rehydrated: false,
+     // used by ChatListComponent as part of migration from state to redux
+    roomList: {
+      refreshing: false,
+      data: [],
+    },
 };
 
 // Reducer Definition
 export default function Reducer(state = initialState, action) {
 
     switch (action.type) {
-
-
+        case `${LIST_ROOMS}_PENDING`:
+          return {
+            ...state,
+            roomList: {
+              refreshing: true,
+              data: [],
+            }
+          }
+        case `${LIST_ROOMS}_SUCCESS`:
+          return {
+            ...state,
+            roomList: {
+              refreshing: false,
+              data: action.payload,
+            }
+          }
         // Settings
         case SET_FIRST_TIME_USER:
             var settings = Object.assign({}, state.settings);

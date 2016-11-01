@@ -26,6 +26,8 @@ import ChatPlaceholderComponent from './ChatPlaceholderComponent';
 
 import Globals from '../globals';
 
+import { listRooms } from '../actions/Actions';
+
 export class ChatListComponent extends Component {
     static propTypes = {
         onCreateChatPressed: PropTypes.func.isRequired,
@@ -33,86 +35,30 @@ export class ChatListComponent extends Component {
         showCategoriesOnCard: PropTypes.bool
     }
 
-    updateList = (data) => {
-        // console.log("DATA", data);
-        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-        this.setState({ roomList: data, refreshing: false });
-    }
-
     constructor(props, context) {
         super(props, context);
         this.state = {
-            roomList: [],
-            refreshing: false,
             showCategoriesOnCard: props.showCategoriesOnCard
                 ? props.showCategoriesOnCard
                 : true
         };
-        this.updateList = this
-            .updateList
-            .bind(this);
 
         UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
     }
 
     _onRefresh() {
-        // console.log(this.props.socket);
-        this.setState({ refreshing: true });
-        this
-            .props
-            .socket
-            .connect();
-        this
-            .props
-            .socket
-            .emit("list_rooms", { user: this.props.socket.id });
-        setTimeout(() => {
-            this.setState({ refreshing: false });
-        }, 5000);
+        this.props.listRooms(this.props.socket);
     }
 
-    componentDidMount() {
-        // > View Specific Listeners console.log("MOUNT");
-        this
-            .props
-            .socket
-            .on('list_rooms', this.updateList);
-        this
-            .props
-            .socket
-            .connect();
-        this
-            .props
-            .socket
-            .emit("list_rooms", { user: this.props.socket.id });
-    }
-
-    componentWillUnmount() {
-        this
-            .props
-            .socket
-            .removeListener('list_rooms', this.updateList);
-    }
-
-    componentWillReceiveProps(props) {
-        this
-            .props
-            .socket
-            .connect();
-        this
-            .props
-            .socket
-            .emit("list_rooms", { user: this.props.socket.id });
+    componentWilLMount() {
+        this.props.listRooms(this.props.socket);
     }
 
     render() {
-        var userId = this.props.socket.id;
-
-        var chatRooms = this
-            .state
-            .roomList
-            .slice();
+        const userId = this.props.socket.id;
+        const chatRooms = this.props.roomList.slice();
+        const refreshing = this.props.refreshing;
 
         chatRooms.sort(function (a, b) {
             // Sticky chat first
@@ -186,9 +132,7 @@ export class ChatListComponent extends Component {
                     style={{
                         flex: 1
                     }}
-                    refreshControl={< RefreshControl refreshing={
-                        this.state.refreshing
-                    }
+                    refreshControl={< RefreshControl refreshing={refreshing}
                         onRefresh={
                             this
                                 ._onRefresh
@@ -220,9 +164,7 @@ export class ChatListComponent extends Component {
                         style={{
                             flex: 1
                         }}
-                        refreshControl={< RefreshControl refreshing={
-                            this.state.refreshing
-                        }
+                        refreshControl={< RefreshControl refreshing={refreshing}
                             onRefresh={
                                 this
                                     ._onRefresh
@@ -261,9 +203,17 @@ var styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    return { socket: state.socket };
+    return {
+      socket: state.socket,
+      roomList: state.roomList.data,
+      refreshing: state.roomList.refreshing,
+    };
 }
+
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+      listRooms: (socket) => dispatch(listRooms(socket)),
+    };
 };
+
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);
