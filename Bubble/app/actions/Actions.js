@@ -224,7 +224,6 @@ export const LISTEN_TO_RECONNECTING = 'LISTEN_TO_RECONNECTING'
 export const LISTEN_TO_RECONNECT_FAILED = 'LISTEN_TO_RECONNECT_FAILED'
 export const LISTEN_TO_ERROR = 'LISTEN_FOR_ERROR'
 export const CREATE_ROOM = 'CREATE_ROOM'
-export const LISTEN_TO_CREATE_ROOM = 'LISTEN_FOR_CREATE_ROOM'
 export const JOIN_ROOM = 'JOIN_ROOM'
 export const LISTEN_TO_JOIN_ROOM = 'LISTEN_TO_JOIN_ROOM'
 export const EXIT_ROOM = 'EXIT_ROOM'
@@ -322,26 +321,17 @@ export function listenToError(callback) {
 //     roomDescription: string,
 //     userLimit: number,
 //     categories: string[]
-export function createRoom(userId, roomName, roomDesc, userLimit, categories) {
-    const newChat = {
-        user: userId,
-        roomName: roomName,
-        roomDescription: roomDesc,
-        userLimit: userLimit,
-        categories: categories
-    }
+export function createRoom(socket, args) {
+    socket.emit('create_room', args);
     return {
-        type: CREATE_ROOM,
-        payload: newChat
+        type: `${CREATE_ROOM}_PENDING`,
     }
 }
 
-// listenToCreateRoom provides:
-//     roomId: string
-export function listenToCreateRoom(callback) {
+export function onCreateRoom(data) {
     return {
-        type: LISTEN_TO_CREATE_ROOM,
-        callback: callback
+        type: `${CREATE_ROOM}_SUCCESS`,
+        payload: data,
     }
 }
 

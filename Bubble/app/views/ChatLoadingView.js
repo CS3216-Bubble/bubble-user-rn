@@ -3,54 +3,35 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { Button, Icon } from 'native-base';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
+import { createRoom, onCreateRoom } from '../actions/Actions';
 
 class ChatLoadingView extends Component {
 
   constructor(props, context) {
     super(props, context);
     this.onRoomCreated = this.onRoomCreated.bind(this);
-    // > View Specific Listeners
     this.props.socket.on('create_room', this.onRoomCreated);
-    // this.props.socket.connect();
-    // console.log("CONSTRUCT MY VIEW");
   }
 
   componentDidMount() {
-    // console.log("I DID MOUNT and i am ", this.props.socket.id);
-    // Props passed from route
     const chatInfo = {
-      user: this.props.socket.id,
       roomName: this.props.form.name,
       roomDescription: this.props.form.description,
       userLimit: this.props.form.numUsers,
       categories: this.props.form.categories
     }
-    this.props.socket.emit('create_room', chatInfo);
+    this.props.createRoom(this.props.socket, chatInfo)
   }
 
   onRoomCreated = (response) => {
     // console.log(response);
     Actions.chatView({ type: ActionConst.REPLACE, roomId: response.roomId });
+    this.props.onCreateRoom(response)
     // Actions.chatView({roomId: response.roomId});
-  }
-
-  componentWillReceiveProps(props) {
-    // console.log("I DID RECEIVE PROPS and i am ", this.props.socket.id);
-    // Props passed from route
-    const chatInfo = {
-      user: this.props.socket.id,
-      roomName: props.form.name,
-      roomDescription: props.form.description,
-      userLimit: props.form.numUsers,
-      categories: props.form.categories
-    }
-    this.props.socket.emit('create_room', chatInfo);
   }
 
   componentWillUnmount() {
     this.props.socket.removeListener('create_room', this.onRoomCreated);
-    this.props.socket.removeListener('bubble_error', (data) => { console.log(data) });
-
   }
 
   render() {
@@ -89,6 +70,9 @@ const mapStateToProps = (state) => {
   }
 ;}
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+      createRoom: (socket, args) => dispatch(createRoom(socket, args)),
+      onCreateRoom: (data) => dispatch(onCreateRoom(data)),
+  };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatLoadingView);

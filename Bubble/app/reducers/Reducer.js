@@ -35,7 +35,6 @@ import {
     LISTEN_TO_RECONNECT_FAILED,
     LISTEN_TO_ERROR,
     CREATE_ROOM,
-    LISTEN_TO_CREATE_ROOM,
     JOIN_ROOM,
     LISTEN_TO_JOIN_ROOM,
     EXIT_ROOM,
@@ -120,6 +119,7 @@ const initialState = {
       refreshing: false,
       data: [],
     },
+    creatingRoom: false,
 };
 
 // Reducer Definition
@@ -156,6 +156,19 @@ export default function Reducer(state = initialState, action) {
             myRooms: {
               refreshing: false,
               data: action.payload,
+            }
+          }
+        case `${CREATE_ROOM}_PENDING`:
+          return {
+            ...state,
+            creatingRoom: true,
+          }
+        case `${CREATE_ROOM}_SUCCESS`:
+          return {
+            ...state,
+            roomList: {
+              ...state.roomList,
+              data: [action.payload, ...state.roomList.data]
             }
           }
         // Settings
@@ -414,14 +427,6 @@ export default function Reducer(state = initialState, action) {
             // - NO_OLD_SOCKET_ID
             // - OLD_SOCKET_ID_NOT_FOUND
             state.socket.on("bubble_error", action.callback);
-            return state;
-
-        case CREATE_ROOM:
-            state.socket.emit("create_room", action.payload);
-            return state;
-
-        case LISTEN_TO_CREATE_ROOM:
-            state.socket.on("create_room", action.callback);
             return state;
 
         case JOIN_ROOM:
