@@ -22,7 +22,6 @@ import moment from 'moment';
 
 import ChatCardComponent from './ChatCardComponent';
 import ChatPlaceholderComponent from './ChatPlaceholderComponent';
-import { setClaimToken } from '../actions/Actions';
 
 export class ChatListComponent extends Component {
     static propTypes = {
@@ -64,13 +63,11 @@ export class ChatListComponent extends Component {
         // > View Specific Listeners
         this.props.socket.on('list_rooms', this.updateList);
         // this.props.socket.connect();
-        console.log(this.props.claimToken);
         this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     componentWillUnmount() {
         this.props.socket.removeListener('list_rooms', this.updateList);
-        this.props.socket.removeListener('set_claim_token', (data) => {console.log(data)});
     }
 
     componentWillReceiveProps(props) {
@@ -188,11 +185,9 @@ export class ChatListComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { socket: state.socket, claimToken: state.claimToken };
+    return { socket: state.socket };
 }
 const mapDispatchToProps = (dispatch) => {
-    return {
-        // assignToken: (token) => { dispatch(setClaimToken(token)) }
-    };
+    return {};
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);

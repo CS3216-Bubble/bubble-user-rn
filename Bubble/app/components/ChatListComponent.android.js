@@ -23,7 +23,6 @@ import moment from 'moment';
 
 import ChatCardComponent from './ChatCardComponent';
 import ChatPlaceholderComponent from './ChatPlaceholderComponent';
-import { setClaimToken } from '../actions/Actions';
 
 import Globals from '../globals';
 
@@ -57,8 +56,6 @@ export class ChatListComponent extends Component {
 
     }
 
-    // setClaimToken(data) {     assignToken(data.claimToken); }
-
     _onRefresh() {
         // console.log(this.props.socket);
         this.setState({ refreshing: true });
@@ -77,7 +74,6 @@ export class ChatListComponent extends Component {
 
     componentDidMount() {
         // > View Specific Listeners console.log("MOUNT");
-        // this.props.socket.on('set_claim_token', this.setClaimToken);
         this
             .props
             .socket
@@ -85,14 +81,7 @@ export class ChatListComponent extends Component {
         this
             .props
             .socket
-            .on('set_claim_token', (data) => {
-                console.log(data)
-            });
-        this
-            .props
-            .socket
             .connect();
-        console.log(this.props.claimToken);
         this
             .props
             .socket
@@ -104,12 +93,6 @@ export class ChatListComponent extends Component {
             .props
             .socket
             .removeListener('list_rooms', this.updateList);
-        this
-            .props
-            .socket
-            .removeListener('set_claim_token', (data) => {
-                console.log(data)
-            });
     }
 
     componentWillReceiveProps(props) {
@@ -278,11 +261,9 @@ var styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    return { socket: state.socket, claimToken: state.claimToken };
+    return { socket: state.socket };
 }
 const mapDispatchToProps = (dispatch) => {
-    return {
-        // assignToken: (token) => { dispatch(setClaimToken(token)) }
-    };
+    return {};
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);

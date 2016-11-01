@@ -25,8 +25,6 @@ import {
     SET_CATEGORIES_FILTER,
     SET_SEARCH_FILTER,
     CACHE_NICKNAME,
-    CACHE_USER_ID,
-    SET_CLAIM_TOKEN,
     REHYDRATION_COMPLETE,
     CONNECT,
     DISCONNECT,
@@ -59,8 +57,6 @@ import {
     LISTEN_TO_SET_USER_NAME,
     FIND_COUNSELLOR,
     LISTEN_TO_FIND_COUNSELLOR,
-    CLAIM_ID,
-    LISTEN_TO_CLAIM_ID,
     MY_ROOMS,
     LISTEN_TO_MY_ROOMS,
     REMOVE_LISTENERS,
@@ -69,7 +65,7 @@ import {
 import './UserAgent';
 
 const io = require('socket.io-client/socket.io');
-const host = "http://getbubblechat.com";
+const host = "192.168.1.17:3000";
 
 function socketInit() {
     var socket = io(host, {
@@ -116,8 +112,6 @@ const initialState = {
     search: null,
     outbox: {},
     rehydrated: false,
-    claimToken: initUUID,
-    claimed: false
 };
 
 // Reducer Definition
@@ -309,33 +303,6 @@ export default function Reducer(state = initialState, action) {
                 nickNameMap: nickNameMap
             });
 
-        case CACHE_USER_ID:
-            return Object.assign({}, state, {
-                aliasId: [action.userId, ...state.aliasId],
-            });
-
-        case SET_CLAIM_TOKEN:
-            return Object.assign({}, state, {
-                claimToken: action.token
-            });
-        case 'claim_id_PENDING':
-            return Object.assign({}, state, {
-              claim_pending: true,
-            });
-        case 'claim_id_SUCCESS':
-            return Object.assign({}, state, {
-              claimed: true,
-              claim_pending: false,
-            });
-        case 'set_claim_token_SUCCESS':
-            return Object.assign({}, state, {
-              claimToken: action.claimToken,
-            });
-        case SET_TOKEN_STATUS:
-            return Object.assign({}, state, {
-                claimed: action.claimed
-            });
-
         // Sockets
         case CONNECT:
             if (state.connection !== "CONNECTED") {
@@ -360,9 +327,8 @@ export default function Reducer(state = initialState, action) {
         case LISTEN_TO_CONNECT:
             /* To-do in the callback:
                 1. Set socket listeners for other primary events
-                2. Attempt to claim id if previous id exists
-                3. Set connection status
-                4. Save current id
+                2. Set connection status
+                3. Save current id
             */
             state.socket.on("connect", action.callback);
             return state;
@@ -502,13 +468,6 @@ export default function Reducer(state = initialState, action) {
         case LISTEN_TO_FIND_COUNSELLOR:
             break;
 
-        case CLAIM_ID:
-            state.socket.emit("claim_id", action.payload);
-            return state;
-
-        case LISTEN_TO_CLAIM_ID:
-            state.socket.on("claim_id", action.callback);
-            return state;
         // Set connection status (Connected)
         // Insert Id
 

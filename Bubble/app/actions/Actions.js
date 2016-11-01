@@ -187,7 +187,6 @@ export function setSearchFilter(searchTerm) {
 // Action Types
 export const CACHE_NICKNAME = 'CACHE_NICKNAME'
 export const CACHE_USER_ID = 'CACHE_USER_ID'
-export const SET_CLAIM_TOKEN = 'SET_CLAIM_TOKEN'
 export const REHYDRATION_COMPLETE = 'REHYDRATION_COMPLETE'
 export const SET_TOKEN_STATUS = "SET_TOKEN_STATUS"
 
@@ -205,21 +204,9 @@ export function cacheUserId(userId) {
         userId: userId,
     }
 }
-export function setClaimToken(token) {
-    return {
-        type: SET_CLAIM_TOKEN,
-        token: token,
-    }
-}
 export function rehydrationComplete() {
     return {
         type:REHYDRATION_COMPLETE
-    }
-}
-export function setTokenStatus(tokenStatus) {
-    return {
-        type:SET_TOKEN_STATUS,
-        claimed: tokenStatus
     }
 }
 
@@ -259,8 +246,6 @@ export const SET_USER_NAME = 'SET_USER_NAME'
 export const LISTEN_TO_SET_USER_NAME = 'LISTEN_TO_SET_USER_NAME'
 export const FIND_COUNSELLOR = 'FIND_COUNSELLOR'
 export const LISTEN_TO_FIND_COUNSELLOR = 'LISTEN_TO_FIND_COUNSELLOR'
-export const CLAIM_ID = 'CLAIM_ID'
-export const LISTEN_TO_CLAIM_ID = 'LISTEN_TO_CLAIM_ID'
 export const MY_ROOMS = 'MY_ROOMS'
 export const LISTEN_TO_MY_ROOMS = 'LISTEN_TO_MY_ROOMS'
 export const REMOVE_LISTENERS = 'REMOVE_LISTENERS'
@@ -656,27 +641,6 @@ export function findCounsellor(userId, faculty) {
 export function listenToFindCounsellor(callback) {
     return {
         type: LISTEN_TO_FIND_COUNSELLOR,
-        callback: callback
-    }
-}
-
-// claimID requires payload:
-//     oldSocketId: string
-export function claimID(oldSocketId) {
-    const claimRequest = {
-        oldSocketId: oldSocketId
-    }
-    return {
-        type: CLAIM_ID,
-        payload: claimRequest
-    }
-}
-
-// listenToClaimID provides to emitter:
-//     oldSocketId: string
-export function listenToClaimID(callback) {
-    return {
-        type: LISTEN_TO_CLAIM_ID,
         callback: callback
     }
 }
