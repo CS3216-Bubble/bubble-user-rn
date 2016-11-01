@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import PushNotification from 'react-native-push-notification';
+// import PushNotification from 'react-native-push-notification';
 import { connect as connectRedux } from 'react-redux';
 
 class PushController extends Component {
     componentDidMount() {
-        PushNotification.configure({
-            onRegister: function (token) {
-                // TODO send this token to backend
-                // console.log( 'TOKEN:', token );
-            },
-            onNotification: function (notification) {
-                // console.log( 'NOTIFICATION:', notification );
-            },
-            senderID: "101248374354",
-            requestPermissions: true,
-        })
+        // PushNotification.configure({
+        //     onRegister: function (token) {
+        //         // TODO send this token to backend
+        //         // console.log( 'TOKEN:', token );
+        //     },
+        //     onNotification: function (notification) {
+        //         // console.log( 'NOTIFICATION:', notification );
+        //     },
+        //     senderID: "101248374354",
+        //     requestPermissions: true,
+        // })
     }
 
     render() {

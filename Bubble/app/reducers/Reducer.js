@@ -69,16 +69,16 @@ import {
 import './UserAgent';
 
 const io = require('socket.io-client/socket.io');
-const host = "http://getbubblechat.com/";
+const host = "http://getbubblechat.com";
 
 function socketInit() {
     var socket = io(host, {
-        transports: ['websocket'], reconnection: true,
+        transports: ['websocket', 'xhr-polling'], reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
         timeout: 20000
     });
-    console.log("THIS IS MY SOCAT!!!", socket);
+    console.log("SOCKET_INITIALIZED", socket);
     return socket;
 }
 

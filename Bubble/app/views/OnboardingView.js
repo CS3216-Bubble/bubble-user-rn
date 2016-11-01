@@ -40,7 +40,6 @@ export class OnboardingView extends Component {
         img: (<Image style={styles.ssImg} source={require('../img/ss_chat.png')} />),
         backgroundColor: '#2980b9',
         type: 'slide',
-        type: 'slide'
       },
       {
         title: 'Thank the people who help!',

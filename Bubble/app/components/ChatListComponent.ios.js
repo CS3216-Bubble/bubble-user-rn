@@ -44,9 +44,7 @@ export class ChatListComponent extends Component {
                 ? props.showCategoriesOnCard
                 : true
         };
-        this.updateList = this
-            .updateList
-            .bind(this);
+        this.updateList = this.updateList.bind(this);
 
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -55,14 +53,7 @@ export class ChatListComponent extends Component {
 
     _onRefresh() {
         this.setState({ refreshing: true });
-        this
-            .props
-            .socket
-            .connect();
-        this
-            .props
-            .socket
-            .emit("list_rooms", { user: this.props.socket.id });
+        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
         setTimeout(() => {
             this.setState({ refreshing: false });
         }, 5000);
@@ -71,52 +62,26 @@ export class ChatListComponent extends Component {
     componentDidMount() {
         console.log("MOUNTED");
         // > View Specific Listeners
-        this
-            .props
-            .socket
-            .on('list_rooms', this.updateList);
-        this
-            .props
-            .socket
-            .connect();
+        this.props.socket.on('list_rooms', this.updateList);
+        // this.props.socket.connect();
         console.log(this.props.claimToken);
-        this
-            .props
-            .socket
-            .emit("list_rooms", { user: this.props.socket.id });
+        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     componentWillUnmount() {
-        this
-            .props
-            .socket
-            .removeListener('list_rooms', this.updateList);
-        this
-            .props
-            .socket
-            .removeListener('set_claim_token', (data) => {
-                console.log(data)
-            });
+        this.props.socket.removeListener('list_rooms', this.updateList);
+        this.props.socket.removeListener('set_claim_token', (data) => {console.log(data)});
     }
 
     componentWillReceiveProps(props) {
-        this
-            .props
-            .socket
-            .connect();
-        this
-            .props
-            .socket
-            .emit("list_rooms", { user: this.props.socket.id });
+        // this.props.socket.connect();
+        this.props.socket.emit("list_rooms", { user: this.props.socket.id });
     }
 
     render() {
         var userId = this.props.socket.id;
 
-        var chatRooms = this
-            .state
-            .roomList
-            .slice();
+        var chatRooms = this.state.roomList.slice();
 
         chatRooms.sort(function (a, b) {
             // Sticky chat first

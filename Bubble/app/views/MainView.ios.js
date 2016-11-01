@@ -8,18 +8,25 @@ import InformationView from './InformationView';
 import SettingsView from './SettingsView';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class MainView extends Component {
-    state = {
-        iconSize: 25,
-        refresh: false,
-        selectedTab: 'all',
-        toggleMyChats: false
-    };
+export class MainView extends Component {
+
+    constructor(props) {
+        super(props);
+        const {socket} = this.props;
+        const userId = socket.id;
+        this.state = {
+            iconSize: 25,
+            refresh: false,
+            selectedTab: 'all',
+            toggleMyChats: false
+        };
+    }
+
 
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps);
         if (nextProps.selectedTab) {
-            this.setState({selectedTab: nextProps.selectedTab});
+            this.setState({ selectedTab: nextProps.selectedTab });
         }
     }
 
@@ -32,19 +39,19 @@ export default class MainView extends Component {
             case 'all':
                 return (
                     <ChatListView
-                      key="all"
-                      title="All Chats"
-                      onCreateChatPressed={this.onCreateChatPressed}
-                    />
+                        key="all"
+                        title="All Chats"
+                        onCreateChatPressed={this.onCreateChatPressed}
+                        />
                 );
             case 'open':
                 return (
                     <MyChatListView
-                      key="open"
-                      toggle = {this.state.toggleMyChats}
-                      title="Open Chats"
-                      onCreateChatPressed={this.onCreateChatPressed}
-                    />
+                        key="open"
+                        toggle={this.state.toggleMyChats}
+                        title="Open Chats"
+                        onCreateChatPressed={this.onCreateChatPressed}
+                        />
                 );
             case 'create':
                 return (
@@ -136,6 +143,17 @@ export default class MainView extends Component {
         );
     }
 }
+
+
+// Redux Call
+const mapStateToProps = (state) => {
+    return { socket: state.socket };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(MainView);
+
 
 // TODO: Collate all styles under Styles.js
 var styles = StyleSheet.create({

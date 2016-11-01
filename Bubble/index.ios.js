@@ -13,6 +13,7 @@ import ChatLoadingView from './app/views/ChatLoadingView';
 import CategoryListView from './app/views/CategoryListView';
 import LandingView from './app/views/LandingView';
 import OnboardingView from './app/views/OnboardingView';
+import PushController from './app/PushController';
 import Root from './app/Root';
 
 
@@ -22,6 +23,7 @@ export default class Bubble extends Component {
         return (
             <Provider store={Store}>
                 <Root>
+                <PushController>
                 <Router>
                     <Scene key="modal" component={Modal} >
                         <Scene key="root" hideNavBar={true}>
@@ -37,6 +39,7 @@ export default class Bubble extends Component {
                         <Scene key="modalView" component={ModalView} />
                     </Scene>
                 </Router>
+                </PushController>
                 </Root>
             </Provider>
         );

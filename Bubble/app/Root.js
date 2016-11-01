@@ -5,26 +5,33 @@ import {claimId, claimSuccess, setClaimToken, setClaimTokenSuccess} from './acti
 
 class Root extends Component {
 
-    componentDidMount() {
+    constructor(props, context) {
+        super(props, context);
         const {socket} = this.props;
         socket.on('connect', this.onConnect.bind(this));
         socket.on('claim_id', this.onClaimId.bind(this));
         socket.on('set_claim_token', this.onSetClaimTokenSuccess.bind(this));
         socket.on('add_message', this.toNotify.bind(this));
         // Initiate connection
-        socket.connect();
+        // socket.connect();
+    }
+
+    componentDidMount() {
+        const {socket} = this.props;
+    //     socket.on('connect', this.onConnect.bind(this));
+    //     socket.on('claim_id', this.onClaimId.bind(this));
+    //     socket.on('set_claim_token', this.onSetClaimTokenSuccess.bind(this));
+    //     socket.on('add_message', this.toNotify.bind(this));
+    //     // Initiate connection
+        // socket.connect();
     }
 
     onSetClaimTokenSuccess() {
-        this
-            .props
-            .setClaimTokenSuccess(this.props.claimToken);
+        this.props.setClaimTokenSuccess(this.props.claimToken);
     }
 
     onClaimId() {
-        this
-            .props
-            .claimSuccess();
+        this.props.claimSuccess();
     }
 
     onConnect() {
@@ -38,9 +45,7 @@ class Root extends Component {
             setClaimToken(socket, claimToken);
         }
 
-        this
-            .props
-            .reassignOutbox();
+        this.props.reassignOutbox();
 
         const toClaimId = aliasId.find(aid => aid !== socketId)
         if (typeof toClaimId !== 'undefined') {
