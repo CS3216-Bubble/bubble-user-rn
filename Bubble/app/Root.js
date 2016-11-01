@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {onMyRooms, onListRooms, cacheUserId, setPendingMessages, backupChatRoom, reassignPendingMessages} from './actions/Actions';
+import {
+  backupChatRoom,
+  cacheUserId,
+  onListRooms,
+  onMyRooms,
+  reassignPendingMessages,
+  setPendingMessages,
+} from './actions/Actions';
 
 class Root extends Component {
 
