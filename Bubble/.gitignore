@@ -35,9 +35,6 @@ local.properties
 !node_modules/
 node_modules/*
 !node_modules/react-native-gifted-chat
-!node_modules/react-native-action-button
-!node_modules/react-native-app-intro
-!node_modules/react-native-swipeout
 npm-debug.log
 
 # BUCK
