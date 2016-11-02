@@ -31,6 +31,12 @@ class Root extends Component {
         socket.on('exit_room', this.onExit.bind(this));
         socket.on('typing', this.props.onTyping);
         socket.on('stop_typing', this.props.onStopTyping);
+        socket.on('create_room', this.onCreateRoom.bind(this));
+    }
+
+    onCreateRoom(data) {
+      Actions.chatView({ type: ActionConst.REPLACE, roomId: data.roomId });
+      this.props.onCreateRoom(response);
     }
 
     onError(error) {
@@ -104,6 +110,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onAddReaction: (data) => dispatch(onAddReaction(data)),
         onTyping: (data) => dispatch(onTyping(data)),
         onStopTyping: (data) => dispatch(onStopTyping(data)),
+        onCreateRoom: (data) => dispatch(onCreateRoom(data)),
     };
 };
 
