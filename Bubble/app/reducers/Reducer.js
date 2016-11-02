@@ -547,14 +547,44 @@ export default function Reducer(state = initialState, action) {
             return state;
 
         case `${JOIN_ROOM}_SUCCESS`:
-            if (action.payload.messages) {
-              // i joined room
-              return {
-                ...state,
-                joinedRooms: [action.payload.roomId, ...state.joinedRooms],
-              };
-            }
-            return state;
+            // also need up update messages in rooms
+          var joined = state.joinedRooms;
+          var roomId = action.payload.roomId;
+          if (action.payload.messages) {
+            // i joined room
+            joined = [roomId, ...state.joinedRooms];
+          }
+          var messages = state.rooms.data[roomId].messages;
+          var data = {
+            ...action.payload,
+            messageType: 'JOIN_ROOM',
+            id: guid(),
+          }
+
+          return {
+            ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
+            joinedRooms: joined,
+          }
+
+        case `${EXIT_ROOM}_SUCCESS`:
+          var joined = state.joinedRooms;
+          var roomId = action.payload.roomId;
+          if (action.payload.userId == state.socket.id) {
+            // i exit the room
+            joined = joined.filter(i => i !== roomId)
+          }
+          var messages = state.rooms.data[roomId].messages;
+          var data = {
+            ...action.payload,
+            messageType: 'EXIT_ROOM',
+            id: guid(),
+          }
+          return {
+            ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
+            joinedRooms: joined,
+          }
+
+          return state;
 
         case LISTEN_TO_JOIN_ROOM:
             state.socket.on("join_room", action.callback);

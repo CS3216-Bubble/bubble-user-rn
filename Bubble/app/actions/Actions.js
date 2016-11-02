@@ -354,9 +354,10 @@ export function exitRoom(socket, roomId) {
   }
 }
 
-export function onExitRoom(socket, roomId) {
+export function onExitRoom(data) {
   return {
-      type: `${EXIT_ROOM}_SUCCESS`,
+    type: `${EXIT_ROOM}_SUCCESS`,
+    payload: data,
   }
 }
 

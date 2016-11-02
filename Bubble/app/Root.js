@@ -6,6 +6,7 @@ import {
   backupChatRoom,
   cacheUserId,
   onAddReaction,
+  onExitRoom,
   onJoinRoom,
   onSendMessage,
   onTyping,
@@ -28,6 +29,7 @@ class Root extends Component {
         socket.on('add_reaction', this.props.onAddReaction);
         socket.on('bubble_error', this.onError);
         socket.on('join_room', this.props.onJoinRoom);
+        socket.on('exit_room', this.props.onExitRoom);
         socket.on('typing', this.props.onTyping);
         socket.on('stop_typing', this.props.onStopTyping);
     }
@@ -95,6 +97,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onMyRooms: (data) => dispatch(onMyRooms(data)),
         onSendMessage: (data) => dispatch(onSendMessage(data)),
         onJoinRoom: (data) => dispatch(onJoinRoom(data)),
+        onExitRoom: (data) => dispatch(onExitRoom(data)),
         onAddReaction: (data) => dispatch(onAddReaction(data)),
         onTyping: (data) => dispatch(onTyping(data)),
         onStopTyping: (data) => dispatch(onStopTyping(data)),
