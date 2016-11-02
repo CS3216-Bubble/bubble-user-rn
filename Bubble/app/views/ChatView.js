@@ -10,6 +10,7 @@ import { connect as connectRedux } from 'react-redux';
 import dismissKeyboard from 'dismissKeyboard';
 import { setPendingMessages, backupChatRoom, reassignPendingMessages } from '../actions/Actions';
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
+import { generateName } from '../utils/ProfileHasher';
 
 var _ = require('lodash');
 var adjectives = require('../utils/adjectives');
@@ -50,34 +51,6 @@ export class ChatView extends Component {
         this.onSend = this.onSend.bind(this);
         this.onTriggerModal = this.onTriggerModal.bind(this);
         this.onExit = this.onExit.bind(this);
-        this.hashID = this.hashID.bind(this);
-        this.generateName = this.generateName.bind(this);
-    }
-
-    // Utility function for hashing
-    hashID(userId) {
-        var hash = 0;
-        if (userId && userId.length != 0) {
-            for (i = 0; i < userId.length; i++) {
-                char = userId.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-        }
-        return hash;
-    }
-
-    // Name generator
-    generateName(userId) {
-        var hashCode = this.hashID(userId);
-        var adj = adjectives.adjectives;
-        var ani = animals.animals;
-        // Get adjective
-        var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
-        // Get animal
-        var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
-        // Return result
-        return adjective + " " + animal;
     }
 
     onDisconnect(data) {
@@ -209,7 +182,7 @@ export class ChatView extends Component {
 
     /*  onReceiveTyping is called when someone is typing */
     onReceiveTyping(data) {
-        this.setState({ someoneTyping: this.generateName(data.userId) });
+        this.setState({ someoneTyping: generateName(data.userId) });
     }
 
     /*  onReceiveTypingStop is called when someone stopped typing */
@@ -221,7 +194,7 @@ export class ChatView extends Component {
     onReceiveJoinRoom(data) {
         // Add date property to join event for sorting
         data, updatedAt = new Date();
-        data.userName = this.generateName(data.userId);
+        data.userName = generateName(data.userId);
         data.messageType = 'JOIN_ROOM';
         data.id = (new Date()).toISOString();
         // Append message into message list
@@ -238,7 +211,7 @@ export class ChatView extends Component {
     onReceiveExitRoom(data) {
         // Add date property to join event for sorting
         data.updatedAt = new Date();
-        data.userName = this.generateName(data.userId);
+        data.userName = generateName(data.userId);
         data.messageType = 'EXIT_ROOM';
         data.id = (new Date()).toISOString();
         // Append message into message list
