@@ -44,8 +44,6 @@ export class MyChatListComponent extends Component {
 
     render() {
         const userId = this.props.socket.id;
-      console.log('aslkdfjasljdf');
-      console.log(this.props.myRooms);
         const chatRooms = this.props.myRooms.slice();
         const refreshing = this.props.refreshing;
 
@@ -84,8 +82,6 @@ export class MyChatListComponent extends Component {
                 <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>Disconnected</Text>
             </View>
         );
-
-        console.log(chatsToShow);
 
         // If no search results found
         if (chatsToShow.length == 0 && this.props.searchTerm != '') {
