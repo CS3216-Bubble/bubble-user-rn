@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, UIManager } from 'react-native';
+import { Platform, StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, UIManager } from 'react-native';
 import { Container, Header, Content, Button, Icon, InputGroup, Input } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
@@ -58,6 +58,7 @@ export class MyChatListView extends Component {
 
         return (
             <Container>
+              {Platform.OS === 'ios' ?
                 <Header searchBar rounded>
                   <InputGroup>
                     <Icon name='ios-search' />
@@ -72,6 +73,7 @@ export class MyChatListView extends Component {
                     <Icon name='ios-create-outline' />
                   </Button>
                 </Header>
+                : null }
                 <View style={{flex:1}}>
                   <MyChatListComponent
                     refresh={this.state.refresh}

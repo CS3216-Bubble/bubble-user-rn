@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
 
@@ -47,9 +47,11 @@ export class SettingsView extends Component {
     render() {
         return (
             <Container>
+                {Platform.OS === 'ios' ?
                 <Header>
                     <Title>Settings</Title>
                 </Header>
+                : null }
                 <Content>
                     <SettingsComponent user={this.state.user} style={{ height: 300 }} />
                 </Content>
