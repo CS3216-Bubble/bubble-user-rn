@@ -244,7 +244,6 @@ export const FIND_COUNSELLOR = 'FIND_COUNSELLOR'
 export const LISTEN_TO_FIND_COUNSELLOR = 'LISTEN_TO_FIND_COUNSELLOR'
 export const MY_ROOMS = 'MY_ROOMS'
 export const LISTEN_TO_MY_ROOMS = 'LISTEN_TO_MY_ROOMS'
-export const REMOVE_LISTENERS = 'REMOVE_LISTENERS'
 
 // Action Creators
 export function connect() {
@@ -615,13 +614,5 @@ export function onMyRooms(data) {
     return {
         type: `${MY_ROOMS}_SUCCESS`,
         payload: data,
-    }
-}
-
-// removeListeners helps to remove socket listeners that binds to component callbacks
-export function removeListeners(callback) {
-    return {
-        type: REMOVE_LISTENERS,
-        callback: callback
     }
 }

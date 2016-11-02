@@ -54,7 +54,6 @@ import {
     LISTEN_TO_FIND_COUNSELLOR,
     MY_ROOMS,
     LISTEN_TO_MY_ROOMS,
-    REMOVE_LISTENERS,
     SET_TOKEN_STATUS,
     TYPING,
     STOP_TYPING,
@@ -71,7 +70,6 @@ function socketInit() {
         reconnectionDelayMax: 5000,
         timeout: 20000
     });
-    console.log("SOCKET_INITIALIZED", socket);
     return socket;
 }
 
@@ -81,7 +79,6 @@ function guid() {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
-    // console.log(uuid);
     return uuid;
 }
 
@@ -258,6 +255,7 @@ export default function Reducer(state = initialState, action) {
               messages = [ackedMessage].concat(messages);
           }
           return updateRoomWithMessages(state, roomId, messages);
+
         case TYPING:
           var roomId = action.payload.roomId;
           var oldTyping = state.typing[roomId];
@@ -274,6 +272,7 @@ export default function Reducer(state = initialState, action) {
               [action.payload.roomId]: newTyping,
             }
           }
+
         case STOP_TYPING:
           var roomId = action.payload.roomId;
           var oldTyping = state.typing[roomId];
@@ -441,7 +440,6 @@ export default function Reducer(state = initialState, action) {
                 outbox.keys(obj).forEach(function (key, index) {
                     for (var i = 0; i < outbox[key].length; ++i) {
                         outbox[key][i].userId = state.aliasId[0];
-                        // console.log("HOORARH:", key, i, outbox[key][i]);
                     }
                 });
                 return Object.assign({}, state, {
@@ -472,8 +470,6 @@ export default function Reducer(state = initialState, action) {
         // Sockets
         case CONNECT:
             if (state.connection !== "CONNECTED") {
-                // console.log(state.socket.connect);
-                // state.socket.connect();
                 return Object.assign({}, state, {
                     connection: "CONNECTING"
                 });
@@ -587,42 +583,6 @@ export default function Reducer(state = initialState, action) {
 
           return state;
 
-        case LISTEN_TO_JOIN_ROOM:
-            state.socket.on("join_room", action.callback);
-            return state;
-
-        case EXIT_ROOM:
-            state.socket.emit("exit_room", action.payload);
-            return state;
-
-        case LIST_ROOMS:
-            state.socket.emit("list_rooms", action.payload);
-            return state;
-
-        case VIEW_ROOM:
-            state.socket.emit("view_room", action.payload);
-            return state;
-
-        case LISTEN_TO_VIEW_ROOM:
-            state.socket.on("view_room", action.callback);
-            return state;
-
-        case DID_BEGIN_TYPING:
-            state.socket.emit("typing", action.payload);
-            return state;
-
-        case DID_STOP_TYPING:
-            state.socket.emit("stop_typing", action.payload);
-            return state;
-
-        case LISTEN_TO_START_TYPING:
-            state.socket.on("typing", action.callback);
-            return state;
-
-        case LISTEN_TO_STOP_TYPING:
-            state.socket.on("stop_typing", action.callback);
-            return state;
-
         case REPORT_USER:
             state.socket.emit("report_user", action.payload);
             return state;
@@ -646,11 +606,6 @@ export default function Reducer(state = initialState, action) {
 
         // Call completion callback, if available
         // Handle exception with failure callback
-
-
-        case REMOVE_LISTENERS:
-            action.callback(state.socket);
-            return state;
 
         default:
             return state;
