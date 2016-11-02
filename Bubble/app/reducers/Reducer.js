@@ -95,6 +95,7 @@ function updateRoomWithMessages(state, roomId, messages) {
       data: {
         ...state.rooms.data,
         [roomId]: {
+          ...state.rooms.data[roomId],
           messages: messages,
         }
       }
@@ -206,12 +207,12 @@ export default function Reducer(state = initialState, action) {
         case `${SEND_MESSAGE}_PENDING`:
           var roomId = action.payload.roomRoomId; // note this weird key name
           var messages = state.rooms.data[roomId].messages;
-          var ackedMessage = {
+          var toSend = {
             id: guid(), // random id first
             ...action.payload,
             received: false,
           };
-          messages = [ackedMessage].concat(messages);
+          messages = [toSend].concat(messages);
           return updateRoomWithMessages(state, roomId, messages);
 
           return state;
