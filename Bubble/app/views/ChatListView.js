@@ -15,7 +15,6 @@ import {
     Content,
     Button,
     Icon,
-    Title,
     InputGroup,
     Input
 } from 'native-base';
@@ -26,7 +25,6 @@ import ChatListComponent from '../components/ChatListComponent';
 
 export default class ChatListView extends Component {
     static propTypes = {
-        title: PropTypes.string.isRequired,
         onCreateChatPressed: PropTypes.func.isRequired
     }
 

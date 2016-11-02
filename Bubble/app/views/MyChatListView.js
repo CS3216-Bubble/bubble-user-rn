@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, Text, View, RefreshControl, ScrollView, LayoutAnimation, UIManager } from 'react-native';
-import { Container, Header, Content, Button, Icon, Title, InputGroup, Input } from 'native-base';
+import { Container, Header, Content, Button, Icon, InputGroup, Input } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
 import Globals from '../globals';
@@ -8,7 +8,6 @@ import MyChatListComponent from '../components/MyChatListComponent';
 
 export class MyChatListView extends Component {
     static propTypes = {
-      title: PropTypes.string.isRequired,
       onCreateChatPressed: PropTypes.func.isRequired,
     }
 
