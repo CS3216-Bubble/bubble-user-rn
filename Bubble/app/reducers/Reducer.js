@@ -54,8 +54,9 @@ import {
     TYPING,
     STOP_TYPING,
 } from '../actions/Actions';
-import './UserAgent';
+import {createGUID} from "../utils/GUIDGenerator";
 
+window.navigator.userAgent = 'react-native';
 const io = require('socket.io-client/socket.io');
 const host = "wss://getbubblechat.com";
 
@@ -68,17 +69,6 @@ function socketInit() {
     });
     return socket;
 }
-
-function guid() {
-
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-    return uuid;
-}
-
-const initUUID = guid();
 
 function updateRoomWithMessages(state, roomId, messages) {
   return {
@@ -99,7 +89,7 @@ function updateRoomWithMessages(state, roomId, messages) {
 // Initialise State
 const initialState = {
     socket: socketInit(),
-    bubbleId: initUUID,
+    bubbleId: createGUID(),
     settings: {
         isFirstTimeUser: true,
         gender: null,
@@ -201,7 +191,7 @@ export default function Reducer(state = initialState, action) {
           var roomId = action.payload.roomRoomId; // note this weird key name
           var messages = state.rooms.data[roomId].messages;
           var toSend = {
-            id: guid(), // random id first
+            id: state.bubbleId, // random id first
             ...action.payload,
             received: false,
           };
@@ -407,29 +397,6 @@ export default function Reducer(state = initialState, action) {
                 outbox: outbox
             });
 
-        // case ENQUEUE_PENDING_MESSAGE:
-        //     var outbox = Object.assign({}, state.outbox);
-        //     outbox.push(action.message);
-        //     return Object.assign({}, state, {
-        //         outbox: outbox
-        //     });
-
-        // case DEQUEUE_PENDING_MESSAGE:
-        //     var outbox = Object.assign({}, state.outbox);
-        //     for (var i = 0; i < outbox.length; ++i) {
-        //         if (message.content == outbox[i].content) {
-        //             outbox.splice(outbox, i);
-        //             return Object.assign({}, state, {
-        //                 outbox: outbox
-        //             });
-        //         }
-        //     }
-        //     return state;
-        // case CLEAR_PENDING_MESSAGES:
-        //     return Object.assign({}, state, {
-        //         outbox: {}
-        //     });
-
         case REASSIGN_PENDING_MESSAGES:
             if (state.connection === "CONNECTED" && state.aliasId.length > 0) {
                 var outbox = Object.assign({}, state.outbox);
@@ -497,7 +464,7 @@ export default function Reducer(state = initialState, action) {
           var data = {
             ...action.payload,
             messageType: 'JOIN_ROOM',
-            id: guid(),
+            id: state.bubbleId,
           }
 
           return {
@@ -516,7 +483,7 @@ export default function Reducer(state = initialState, action) {
           var data = {
             ...action.payload,
             messageType: 'EXIT_ROOM',
-            id: guid(),
+            id: state.bubbleId,
           }
           return {
             ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
