@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { Platform, StyleSheet, Image, View } from 'react-native';
 import { Container, Header, Content, Button, Icon, Title, Text, Thumbnail } from 'native-base';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { Actions } from 'react-native-router-flux';
+import CustomTheme from '../themes/bubble';
 
 import Globals from '../globals';
 
@@ -70,7 +71,7 @@ export default class CategoryListView extends Component {
     return (
           <ParallaxScrollView
             parallaxHeaderHeight={200}
-            stickyHeaderHeight={64}
+            stickyHeaderHeight={Platform.OS === 'ios' ? 64 : 56}
             backgroundSpeed={10}
             renderBackground={() => (
               <View>
@@ -85,13 +86,14 @@ export default class CategoryListView extends Component {
               </View>
             )}
             renderStickyHeader={() =>(
-              <Header>
+              <Header theme={CustomTheme}>
+              <Button transparent><Text></Text></Button>
               <Title>{this.props.selectedCategory}</Title>
               </Header>)}
             renderFixedHeader={() => (
               <View key="fixed-header" style={styles.fixedSection}>
                 <Button transparent onPress={Actions.pop}>
-                    <Icon style={styles.fixedSectionText} size={30} name='ios-arrow-back' color="#0E7AFE"/>
+                    <Icon style={styles.fixedSectionText} size={30} name='ios-arrow-back' color="#FFFFFF"/>
                 </Button>
               </View>
             )}
@@ -109,10 +111,10 @@ const styles = StyleSheet.create({
   },
   fixedSection: {
     position: 'absolute',
-    top: 19,
+    top: Platform.OS === 'ios' ? 19 : 10,
     left: 8
   },
   fixedSectionText: {
-    color: '#0E7AFE',
+    color: Platform.OS === 'ios' ? '#0E7AFE' : '#FFFFFF'
   },
 });
