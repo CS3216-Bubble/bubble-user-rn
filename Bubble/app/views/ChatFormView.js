@@ -41,6 +41,12 @@ export default class ChatFormView extends Component {
     this.createChat = this.createChat.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isBackButtonVisible) {
+      this.setState({isBackButtonVisible: nextProps.isBackButtonVisible});
+    }
+  }
+
   // Form logic
   onNameChange = (name) => {
     var form = this.state.form;
@@ -102,6 +108,11 @@ export default class ChatFormView extends Component {
       const fontStyle = this.state.isFormValid ?
                     (Platform.OS === 'ios' ? {color:'#0E7AFE'} : {color:'#FFFFFF'})
                     : {color: '#999999'};
+
+      console.log('----');
+      console.log(this.state.isBackButtonVisible);
+      console.log(this.props.isBackButtonVisible);
+
 
       return (
           <Container theme={CustomTheme}>

@@ -57,7 +57,7 @@ export class MainView extends Component {
                     <ChatFormView
                         key="open"
                         title="Create Chat"
-                        isBackButtonVisible={true}
+                        isBackButtonVisible={false}
                         />
                 );
             case 'info':
