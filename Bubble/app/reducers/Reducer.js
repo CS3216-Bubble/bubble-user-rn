@@ -38,7 +38,6 @@ import {
     JOIN_ROOM,
     LISTEN_TO_JOIN_ROOM,
     EXIT_ROOM,
-    LISTEN_TO_EXIT_ROOM,
     LIST_ROOMS,
     VIEW_ROOM,
     LISTEN_TO_VIEW_ROOM,
@@ -439,10 +438,6 @@ export default function Reducer(state = initialState, action) {
 
         case EXIT_ROOM:
             state.socket.emit("exit_room", action.payload);
-            return state;
-
-        case LISTEN_TO_EXIT_ROOM:
-            state.socket.on("exit_room", action.callback);
             return state;
 
         case LIST_ROOMS:

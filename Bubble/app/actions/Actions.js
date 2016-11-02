@@ -227,7 +227,6 @@ export const CREATE_ROOM = 'CREATE_ROOM'
 export const JOIN_ROOM = 'JOIN_ROOM'
 export const LISTEN_TO_JOIN_ROOM = 'LISTEN_TO_JOIN_ROOM'
 export const EXIT_ROOM = 'EXIT_ROOM'
-export const LISTEN_TO_EXIT_ROOM = 'LISTEN_TO_EXIT_ROOM'
 export const LIST_ROOMS = 'LIST_ROOMS'
 export const VIEW_ROOM = 'VIEW_ROOM'
 export const LISTEN_TO_VIEW_ROOM = 'LISTEN_TO_VIEW_ROOM'
@@ -370,28 +369,17 @@ export function listenToJoinRoom(callback) {
     }
 }
 
-// exitRoom requires payload:
-//     roomId: string,
-//     user: string
-export function exitRoom(roomId, userId) {
-    const exitRequest = {
-        roomId: roomId,
-        user: userId
-    }
-    return {
-        type: EXIT_ROOM,
-        payload: exitRequest
-    }
+export function exitRoom(socket, roomId) {
+  socket.emit('exit_room', { roomId });
+  return {
+      type: `${EXIT_ROOM}_PENDING`,
+  }
 }
 
-// listenToExitRoom provides:
-//     roomId: string,
-//     user: string
-export function listenToExitRoom(callback) {
-    return {
-        type: LISTEN_TO_EXIT_ROOM,
-        callback: callback
-    }
+export function onExitRoom(socket, roomId) {
+  return {
+      type: `${EXIT_ROOM}_SUCCESS`,
+  }
 }
 
 // listRooms requires payload:

@@ -5,6 +5,7 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import CustomTheme from '../themes/bubble';
 import ChatInfoComponent from '../components/ChatInfoComponent';
 import { connect as connectRedux } from 'react-redux';
+import { exitRoom } from '../actions/Actions';
 
 export class ChatInfoView extends Component {
     static propTypes = {
@@ -14,28 +15,14 @@ export class ChatInfoView extends Component {
     constructor(props, context) {
         super(props, context);
         this.onQuit = this.onQuit.bind(this);
-        this.onExited = this.onExited.bind(this);
         this.state = {
             status: 'normal'
         };
     }
 
     onQuit() {
-        console.log(this.props.chat);
-        this.props.socket.emit('exit_room', { roomId: this.props.chat.roomId, user: this.props.aliasId[0] });
+        this.props.exitRoom(this.props.socket, this.props.chat.roomId);
         this.setState({ status: "waiting" });
-    }
-
-    onExited() {
-        if (Platform.OS === 'ios') {
-            Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
-        } else {
-            Actions.main({ type: ActionConst.REPLACE, selectedTab: 0 });
-        }
-    }
-
-    componentDidMount() {
-        this.props.socket.on('exit_room', this.onExited);
     }
 
     render() {
@@ -72,7 +59,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-
+      exitRoom: (socket, roomId) => dispatch(exitRoom(socket, roomId)),
     };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatInfoView);

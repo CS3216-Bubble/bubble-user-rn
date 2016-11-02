@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { Platform } from 'react-native';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {
   backupChatRoom,
@@ -16,6 +18,15 @@ class Root extends Component {
         socket.on('connect', this.onConnect.bind(this));
         socket.on('list_rooms', this.props.onListRooms);
         socket.on('my_rooms', this.props.onMyRooms);
+        socket.on('exit_room', this.onExited);
+    }
+
+    onExited() {
+        if (Platform.OS === 'ios') {
+            Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
+        } else {
+            Actions.main({ type: ActionConst.REPLACE, selectedTab: 0 });
+        }
     }
 
     onConnect() {
