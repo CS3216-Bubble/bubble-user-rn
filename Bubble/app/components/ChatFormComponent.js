@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { ScrollView, View } from 'react-native';
-import { List, ListItem, Icon, Input, InputGroup, Text, Button } from 'native-base';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { List, ListItem, Icon, Input, InputGroup, Text, Button, Thumbnail } from 'native-base';
 import MultipleChoice from 'react-native-multiple-choice';
 
 import Globals from '../globals';
+
+const thumbnailSize = 40;
 
 export default class ChatFormComponent extends Component {
 
@@ -32,10 +34,48 @@ export default class ChatFormComponent extends Component {
   }
 
   render() {
+
+    var categoryName;
+    if (this.props.form.categories.length > 0) {
+      categoryName = this.props.form.categories[0];
+    } else {
+      categoryName = 'Default';
+    }
+
+    var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} style={styles.profileContainerImage}/>);
+    switch (categoryName) {
+      case 'Advice':
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} style={styles.profileContainerImage}/>);
+        break;
+      case 'Funny':
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/funny.png')} style={styles.profileContainerImage}/>);
+        break;
+      case 'Nostalgia':
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/nostalgia.png')} style={styles.profileContainerImage} />);
+        break;
+      case 'Rant':
+        thumbnail = (<Thumbnail square square size={thumbnailSize} source={require('../img/rant.png')} style={styles.profileContainerImage} />);
+        break;
+      case 'Relationship':
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/relationship.png')} style={styles.profileContainerImage}/>);
+        break;
+      case 'School':
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/school.png')} style={styles.profileContainerImage}/>);
+        break;
+      default:
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} style={styles.profileContainerImage}/>);
+        break;
+    }
+
+    const categoryBackground = {
+      backgroundColor: Globals.CATEGORY_BG_COLOURS[categoryName]
+    }
+
     return (
       <ScrollView>
-        <List>
-          <ListItem>
+        <View style={[styles.profileContainer, categoryBackground]}>
+          { thumbnail }
+          <View style={styles.profileContainerName}>
             <InputGroup iconRight={!this.isNameValid()} error={!this.isNameValid()}>
               <Input
                 value={this.props.form.name}
@@ -45,8 +85,9 @@ export default class ChatFormComponent extends Component {
               { this.isNameValid() ? null :
                 <Icon name='ios-close-circle' style={{color:'red'}}/>}
             </InputGroup>
-          </ListItem>
-
+          </View>
+        </View>
+        <List>
           <ListItem>
             <InputGroup>
               <Input
@@ -84,3 +125,31 @@ export default class ChatFormComponent extends Component {
     );
   }
 }
+
+var styles = StyleSheet.create({
+    profileContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 10,
+      paddingTop: 20,
+      borderBottomColor: '#bbb',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      backgroundColor: '#A7DBD8'
+    },
+    profileContainerName: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    profileContainerText: {
+      fontSize: 20
+    },
+    profileContainerImage: {
+      marginBottom: 15,
+      height: 80,
+      width: 80,
+    }
+});

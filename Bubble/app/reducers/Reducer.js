@@ -63,7 +63,7 @@ import {
 import './UserAgent';
 
 const io = require('socket.io-client/socket.io');
-const host = "http://getbubblechat.com";
+const host = "wss://getbubblechat.com";
 
 function socketInit() {
     var socket = io(host, {
@@ -522,4 +522,3 @@ export default function Reducer(state = initialState, action) {
             return state;
     }
 }
-

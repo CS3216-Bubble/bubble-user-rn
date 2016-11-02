@@ -84,6 +84,7 @@ export default class ChatFormView extends Component {
   onCategoriesChange = (categories) => {
     var form = this.state.form;
     form.categories = categories;
+    categories.sort();
 
     this.setState({form: form});
   }
