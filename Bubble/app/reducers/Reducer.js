@@ -55,7 +55,9 @@ import {
     MY_ROOMS,
     LISTEN_TO_MY_ROOMS,
     REMOVE_LISTENERS,
-    SET_TOKEN_STATUS
+    SET_TOKEN_STATUS,
+    TYPING,
+    STOP_TYPING,
 } from '../actions/Actions';
 import './UserAgent';
 
@@ -138,6 +140,7 @@ const initialState = {
     },
     creatingRoom: false,
     joinedRooms: [],
+    typing: {},
 };
 
 // Reducer Definition
@@ -243,7 +246,34 @@ export default function Reducer(state = initialState, action) {
               messages = [ackedMessage].concat(messages);
           }
           return updateRoomWithMessages(state, roomId, messages);
-        return state;
+        case TYPING:
+          var roomId = action.payload.roomId;
+          var oldTyping = state.typing[roomId];
+          var newTyping = [];
+
+          if (Array.isArray(oldTyping)) {
+            newTyping = [action.payload.userId, ...oldTyping];
+          }
+
+          return {
+            ...state,
+            typing: {
+              ...state.typing,
+              [action.payload.roomId]: newTyping,
+            }
+          }
+        case STOP_TYPING:
+          var roomId = action.payload.roomId;
+          var oldTyping = state.typing[roomId];
+          var newTyping = oldTyping.filter(i => i != action.payload.userId);
+          return {
+            ...state,
+            typing: {
+              ...state.typing,
+              [action.payload.roomId]: newTyping,
+            }
+          }
+
         // Settings
         case SET_FIRST_TIME_USER:
             var settings = Object.assign({}, state.settings);

@@ -8,6 +8,8 @@ import {
   onAddReaction,
   onJoinRoom,
   onSendMessage,
+  onTyping,
+  onStopTyping,
   onListRooms,
   onMyRooms,
   reassignPendingMessages,
@@ -26,6 +28,8 @@ class Root extends Component {
         socket.on('add_reaction', this.props.onAddReaction);
         socket.on('bubble_error', this.onError);
         socket.on('join_room', this.props.onJoinRoom);
+        socket.on('typing', this.props.onTyping);
+        socket.on('stop_typing', this.props.onStopTyping);
     }
 
     onError(error) {
@@ -92,6 +96,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onSendMessage: (data) => dispatch(onSendMessage(data)),
         onJoinRoom: (data) => dispatch(onJoinRoom(data)),
         onAddReaction: (data) => dispatch(onAddReaction(data)),
+        onTyping: (data) => dispatch(onTyping(data)),
+        onStopTyping: (data) => dispatch(onStopTyping(data)),
     };
 };
 

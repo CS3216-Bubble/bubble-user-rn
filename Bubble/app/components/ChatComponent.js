@@ -44,7 +44,6 @@ export default class ChatComponent extends Component {
                         _id: messageOrg.userId,
                         name: generateName(messageOrg.userId),
                         avatar: avatar,
-                        isMe: _.indexOf(this.props.myIds, messageOrg.userId) >= 0
                     },
                 };
                 parsed.push(messageParsed);

@@ -25,15 +25,12 @@ export class ChatView extends Component {
             queue: [],
             toggleModal: false,
             modalInfo: { userId: "userId", otherUserId: "otherUserId", roomId: "roomId", otherUserName: "otherUserName" },
-            someoneTyping: '',
         };
 
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
         }
         // Link functions
-        this.onReceiveTyping = this.onReceiveTyping.bind(this);
-        this.onReceiveTypingStop = this.onReceiveTypingStop.bind(this);
         this.onEmitThanks = this.onEmitThanks.bind(this);
         this.onEmitCheers = this.onEmitCheers.bind(this);
         this.onEmitTyping = this.onEmitTyping.bind(this);
@@ -41,16 +38,6 @@ export class ChatView extends Component {
         this.onSend = this.onSend.bind(this);
         this.onTriggerModal = this.onTriggerModal.bind(this);
         this.onExit = this.onExit.bind(this);
-    }
-
-    /*  onReceiveTyping is called when someone is typing */
-    onReceiveTyping(data) {
-        this.setState({ someoneTyping: generateName(data.userId) });
-    }
-
-    /*  onReceiveTypingStop is called when someone stopped typing */
-    onReceiveTypingStop(data) {
-        this.setState({ someoneTyping: '' });
     }
 
     // when another user join rooms data.messageType = 'JOIN_ROOM';
@@ -119,18 +106,11 @@ export class ChatView extends Component {
     }
 
     componentDidMount() {
-      this.props.socket.on('typing', this.onReceiveTyping);
-      this.props.socket.on('stop_typing', this.onReceiveTypingStop);
       if (this.props.joinedRooms.includes(this.props.chat.roomId)) {
         // alr joined, dont' join
       } else {
         this.props.joinRoom(this.props.socket, this.props.chat.roomId);
       }
-    }
-
-    componentWillUnmount() {
-        this.props.socket.removeListener('typing', this.onReceiveTyping);
-        this.props.socket.removeListener('stop_typing', this.onReceiveTypingStop);
     }
 
     render() {
@@ -177,9 +157,9 @@ export class ChatView extends Component {
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
                                 <TextInput style={Styles.titleContainer} note maxLength={20} editable={false} value={chat.roomName} />
-                                {(this.state.someoneTyping !== '') ? <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
+                                {(this.props.someoneTyping !== '') ? <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
                                     <Text style={{ fontSize: 12, fontWeight: "300" }}>
-                                        {this.state.someoneTyping}is typing...
+                                        {this.props.someoneTyping}is typing...
       </Text>
                                 </View> : []}
                             </View>
@@ -197,7 +177,6 @@ export class ChatView extends Component {
                             messages={this.props.messages}
                             roomId={this.props.roomId}
                             user={this.props.socket.id}
-                            myIds={this.props.aliasId}
                             style={{ flex: 1 }}
                             onTyping={this.onEmitTyping}
                             onTypingStop={this.onEmitTypingStop}
@@ -238,7 +217,6 @@ export class ChatView extends Component {
                             roomId={this.props.roomId}
                             user={this.props.bubbleId}
                             style={{ flex: 1 }}
-                            myIds={this.props.aliasId}
                             onTyping={this.onEmitTyping}
                             onTypingStop={this.onEmitTypingStop}
                             />
@@ -256,19 +234,15 @@ export class ChatView extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-    var outboxCached = [];
-    if (state.outbox[ownProps.roomId]) {
-        outboxCached = state.outbox[ownProps.roomId];
-    }
+    const typing = state.typing[ownProps.roomId] || [];
 
     return {
         socket: state.socket,
         bubbleId: state.socket.id,
-        aliasId: state.aliasId,
-        outbox: outboxCached,
         chat: state.rooms.data[ownProps.roomId],
         messages: state.rooms.data[ownProps.roomId].messages,
         joinedRooms: state.joinedRooms,
+        someoneTyping: typing.join(', '),
     }
         ;
 }

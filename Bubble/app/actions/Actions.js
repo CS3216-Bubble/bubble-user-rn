@@ -513,6 +513,23 @@ export function onSendMessage(data) {
     }
 }
 
+export const TYPING = 'TYPING';
+
+export function onTyping(data) {
+  return {
+        type: TYPING,
+        payload: data,
+  }
+}
+
+export const STOP_TYPING = 'TYPING';
+export function onStopTyping(data) {
+  return {
+        type: STOP_TYPING,
+        payload: data,
+  }
+}
+
 // listenToSendMessage provides to other parties:
 //     user: string
 //     roomId: string
