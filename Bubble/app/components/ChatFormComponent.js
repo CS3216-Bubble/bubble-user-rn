@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { List, ListItem, Icon, Input, InputGroup, Text, Button, Thumbnail } from 'native-base';
 import MultipleChoice from 'react-native-multiple-choice';
+import * as Animatable from 'react-native-animatable';
 
 import Globals from '../globals';
 
@@ -18,11 +19,21 @@ export default class ChatFormComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({categories: nextProps.form.categories});
+    const newCat = nextProps.form.categories.length > 0 ? nextProps.form.categories[0] : 'Default';
+    this.setState({
+      categories: nextProps.form.categories,
+      currentCategory: newCat
+    });
+
+    // If category has changed, animate to new colour
+    if (this.state.currentCategory != newCat) {
+      this.refs.backgroundContainer.transitionTo({backgroundColor: Globals.CATEGORY_BG_COLOURS[newCat]});
+    }
   }
 
   state = {
-    categories: this.props.form.categories
+    categories: this.props.form.categories,
+    currentCategory: this.props.form.categories.length > 0 ? this.props.form.categories[0] : 'Default'
   }
 
   onSelectCategory = (category) => {
@@ -35,15 +46,8 @@ export default class ChatFormComponent extends Component {
 
   render() {
 
-    var categoryName;
-    if (this.props.form.categories.length > 0) {
-      categoryName = this.props.form.categories[0];
-    } else {
-      categoryName = 'Default';
-    }
-
     var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} style={styles.profileContainerImage}/>);
-    switch (categoryName) {
+    switch (this.state.currentCategory) {
       case 'Advice':
         thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} style={styles.profileContainerImage}/>);
         break;
@@ -68,12 +72,12 @@ export default class ChatFormComponent extends Component {
     }
 
     const categoryBackground = {
-      backgroundColor: Globals.CATEGORY_BG_COLOURS[categoryName]
+      backgroundColor: Globals.CATEGORY_BG_COLOURS[this.state.currentCategory]
     }
 
     return (
       <ScrollView>
-        <View style={[styles.profileContainer, categoryBackground]}>
+        <Animatable.View ref="backgroundContainer" style={[styles.profileContainer, categoryBackground]}>
           { thumbnail }
           <View style={styles.profileContainerName}>
             <InputGroup iconRight={!this.isNameValid()} error={!this.isNameValid()}>
@@ -86,7 +90,7 @@ export default class ChatFormComponent extends Component {
                 <Icon name='ios-close-circle' style={{color:'red'}}/>}
             </InputGroup>
           </View>
-        </View>
+        </Animatable.View>
         <List>
           <ListItem>
             <InputGroup>
