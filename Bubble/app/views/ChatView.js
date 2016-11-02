@@ -338,19 +338,11 @@ export class ChatView extends Component {
     /* onExit is called when the user attempts to return to the previous page.
        This will not make the user leave the room */
     onExit() {
-        if (Platform.OS === 'ios') {
-            Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
-        } else {
-            Actions.pop();
-        }
+        Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
     }
 
-        onQuit() {
-        if (Platform.OS === 'ios') {
-            Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
-        } else {
-            Actions.pop();
-        }
+    onQuit() {
+        Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
     }
 
     componentWillReceiveProps(props) {
