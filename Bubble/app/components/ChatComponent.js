@@ -5,6 +5,7 @@ import { Button } from 'native-base';
 import { Styles } from '../styles/Styles';
 import { Actions } from 'react-native-router-flux';
 import { connect as connectRedux } from 'react-redux';
+import { generateName } from '../utils/ProfileHasher';
 
 var _ = require('lodash');
 var adjectives = require('../utils/adjectives');
@@ -16,71 +17,8 @@ export default class ChatComponent extends Component {
     // Initialise
     constructor(props, context) {
         super(props, context);
-        this.state = { 
-            messages: [],
-            someoneTyping: '',
-            onTyping: () => {},
-            onTypingStop: () => {},
-        };
         this.onSend = this.onSend.bind(this);
         this.parseMessages = this.parseMessages.bind(this);
-        this.hashID = this.hashID.bind(this);
-        this.generateName = this.generateName.bind(this);
-        this.generateAvatar = this.generateAvatar.bind(this);
-    }
-
-    // Initial update
-    componentDidMount() {
-        this.setState({ 
-            messages: this.parseMessages(this.props.messages),
-            someoneTyping: this.props.someoneTyping,
-            onTyping: this.props.onTyping,
-            onTypingStop: this.props.onTyping
-        });
-    }
-
-    // Subsequent updates
-    componentWillReceiveProps(props) {
-        this.setState({ 
-            messages: this.parseMessages(props.messages),
-            someoneTyping: props.someoneTyping,
-            onTyping: props.onTyping,
-            onTypingStop: props.onTypingStop,
-         });
-    }
-
-    hashID(userId) {
-        var hash = 0;
-        if (userId && userId.length != 0) {
-            for (i = 0; i < userId.length; i++) {
-                char = userId.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-        }
-        return hash;
-    }
-
-    // Name generator
-    generateName(userId) {
-        var hashCode = this.hashID(userId);
-        var adj = adjectives.adjectives;
-        var ani = animals.animals;
-        // Get adjective
-        var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
-        // Get animal
-        var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
-        // Return result
-        return adjective + " " + animal;
-    }
-
-    // Avatar generator
-    generateAvatar(userId) {
-        var hashCode = this.hashID(userId);
-        // Get animal
-        var avatarIndex = (((hashCode % numAvatars) + numAvatars) % numAvatars) + 1;
-        // Return result
-        return ("image!" + avatarIndex.toString());
     }
 
     // For converting API form to GiftedChat form
@@ -104,7 +42,7 @@ export default class ChatComponent extends Component {
                     target: messageOrg.targetUser,
                     user: {
                         _id: messageOrg.userId,
-                        name: this.generateName(messageOrg.userId),
+                        name: generateName(messageOrg.userId),
                         avatar: avatar,
                         isMe: _.indexOf(this.props.myIds, messageOrg.userId) >= 0
                     },
@@ -129,13 +67,11 @@ export default class ChatComponent extends Component {
     render() {
         return (
             <GiftedChat
-                messages={this.state.messages}
+                messages={this.parseMessages(this.props.messages)}
                 onSend={this.onSend}
                 user={{ _id: this.props.user }}
                 isAnimated={true}
-                someoneTyping={this.state.someoneTyping}
-                onTyping={this.state.onTyping}
-                onTypingStop={this.state.onTypingStop}
+                onType={this.props.onTyping}
                 onAvatarPress={(otherUserId, otherUserName) => { this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId, otherUserName) } }
                 />
         );

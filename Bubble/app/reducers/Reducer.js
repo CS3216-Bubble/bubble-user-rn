@@ -47,9 +47,7 @@ import {
     LISTEN_TO_STOP_TYPING,
     REPORT_USER,
     SEND_MESSAGE,
-    LISTEN_TO_SEND_MESSAGE,
-    SEND_REACTION,
-    LISTEN_TO_SEND_REACTION,
+    ADD_REACTION,
     SET_USER_NAME,
     LISTEN_TO_SET_USER_NAME,
     FIND_COUNSELLOR,
@@ -87,9 +85,25 @@ function guid() {
 
 const initUUID = guid();
 
+function updateRoomWithMessages(state, roomId, messages) {
+  return {
+    ...state,
+    rooms: {
+      ...state.rooms,
+      data: {
+        ...state.rooms.data,
+        [roomId]: {
+          messages: messages,
+        }
+      }
+    }
+  }
+}
+
 // Initialise State
 const initialState = {
     socket: socketInit(),
+    bubbleId: initUUID,
     settings: {
         isFirstTimeUser: true,
         gender: null,
@@ -114,11 +128,16 @@ const initialState = {
       refreshing: false,
       data: [],
     },
+    rooms: {
+      refreshing: false,
+      data: {},
+    },
     myRooms: {
       refreshing: false,
       data: [],
     },
     creatingRoom: false,
+    joinedRooms: [],
 };
 
 // Reducer Definition
@@ -131,15 +150,26 @@ export default function Reducer(state = initialState, action) {
             roomList: {
               refreshing: true,
               data: [],
-            }
+            },
+            rooms: {
+              refreshing: true,
+              data: {},
+            },
           }
         case `${LIST_ROOMS}_SUCCESS`:
+          let rooms = {};
+          action.payload.forEach(r => rooms[r.roomId] = r);
+
           return {
             ...state,
             roomList: {
               refreshing: false,
               data: action.payload,
-            }
+            },
+            rooms: {
+              refreshing: false,
+              data: rooms,
+            },
           }
         case `${MY_ROOMS}_PENDING`:
           return {
@@ -170,6 +200,50 @@ export default function Reducer(state = initialState, action) {
               data: [action.payload, ...state.roomList.data]
             }
           }
+        case `${SEND_MESSAGE}_PENDING`:
+          return state;
+        case `${SEND_MESSAGE}_SUCCESS`:
+          // have to find the old pending message and change it
+          var roomId = action.payload.roomRoomId; // note this weird key name
+          var messages = state.rooms.data[roomId].messages;
+          var ackedMessage = action.payload;
+
+          if (ackedMessage.sentByMe) {
+            let i = messages.findIndex(m => m.messageType === 'PENDING');
+            let myMessage = {
+              ...action.payload,
+              userId: state.socket.id,
+            }
+            if (i >= 0) {
+              messages[i] = myMessage;
+            } else {
+              messages = [myMessage].concat(messages);
+            }
+          } else {
+              messages = [ackedMessage].concat(messages);
+          }
+
+          return updateRoomWithMessages(state, roomId, messages);
+        case `${ADD_REACTION}_SUCCESS`:
+          var roomId = action.payload.roomRoomId; // note this weird key name
+          var messages = state.rooms.data[roomId].messages;
+          var ackedMessage = action.payload;
+          if (ackedMessage.sentByMe) {
+            let i = messages.findIndex(m => m.messageType === 'PENDING');
+            let myMessage = {
+              ...action.payload,
+              userId: state.socket.id,
+            }
+            if (i >= 0) {
+              messages[i] = myMessage;
+            } else {
+              messages = [myMessage].concat(messages);
+            }
+          } else {
+              messages = [ackedMessage].concat(messages);
+          }
+          return updateRoomWithMessages(state, roomId, messages);
+        return state;
         // Settings
         case SET_FIRST_TIME_USER:
             var settings = Object.assign({}, state.settings);
@@ -428,8 +502,17 @@ export default function Reducer(state = initialState, action) {
             state.socket.on("bubble_error", action.callback);
             return state;
 
-        case JOIN_ROOM:
-            state.socket.emit("join_room", action.payload);
+        case `${JOIN_ROOM}_PENDING`:
+            return state;
+
+        case `${JOIN_ROOM}_SUCCESS`:
+            if (action.payload.messages) {
+              // i joined room
+              return {
+                ...state,
+                joinedRooms: [action.payload.roomId, ...state.joinedRooms],
+              };
+            }
             return state;
 
         case LISTEN_TO_JOIN_ROOM:
@@ -470,22 +553,6 @@ export default function Reducer(state = initialState, action) {
 
         case REPORT_USER:
             state.socket.emit("report_user", action.payload);
-            return state;
-
-        case SEND_MESSAGE:
-            state.socket.emit("add_message", action.payload);
-            return state;
-
-        case LISTEN_TO_SEND_MESSAGE:
-            state.socket.on("add_message", action.callback);
-            return state;
-
-        case SEND_REACTION:
-            state.socket.emit("add_reaction", action.payload);
-            return state;
-
-        case LISTEN_TO_SEND_REACTION:
-            state.socket.on("add_reaction", action.callback);
             return state;
 
         case SET_USER_NAME:

@@ -237,8 +237,7 @@ export const LISTEN_TO_STOP_TYPING = 'LISTEN_TO_STOP_TYPING'
 export const REPORT_USER = 'REPORT_USER'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const LISTEN_TO_SEND_MESSAGE = 'LISTEN_TO_SEND_MESSAGE'
-export const SEND_REACTION = 'SEND_REACTION'
-export const LISTEN_TO_SEND_REACTION = 'LISTEN_TO_SEND_REACTION'
+export const ADD_REACTION = 'ADD_REACTION'
 export const SET_USER_NAME = 'SET_USER_NAME'
 export const LISTEN_TO_SET_USER_NAME = 'LISTEN_TO_SET_USER_NAME'
 export const FIND_COUNSELLOR = 'FIND_COUNSELLOR'
@@ -334,39 +333,18 @@ export function onCreateRoom(data) {
     }
 }
 
-// joinRoom requires payload:
-//     roomId: string,
-//     user: string
-export function joinRoom(roomId, userId) {
-    const joinRequest = {
-        roomId: roomId,
-        user: userId,
-    }
-    return {
-        type: JOIN_ROOM,
-        payload: joinRequest
-    }
+export function joinRoom(socket, roomId) {
+  socket.emit('join_room', { roomId });
+  return {
+    type: `${JOIN_ROOM}_PENDING`,
+  }
 }
 
-// listenToJoinRoom provides to other parties:
-//     roomId: string,
-//     user: string
-// and to emitter:
-//     roomId: string,
-//     roomName: string,
-//     roomType: string,
-//     userLimit: number,
-//     roomDescription: string,
-//     categories: string[],
-//     numUsers: number,
-//     lastActive: ISO date string,
-//     messages: Object[],
-//     participants: string[]
-export function listenToJoinRoom(callback) {
-    return {
-        type: LISTEN_TO_JOIN_ROOM,
-        callback: callback
-    }
+export function onJoinRoom(data) {
+  return {
+    type: `${JOIN_ROOM}_SUCCESS`,
+    payload: data,
+  }
 }
 
 export function exitRoom(socket, roomId) {
@@ -497,19 +475,41 @@ export function reportUser(userId, targetUserId, roomId, reason, reportType) {
     }
 }
 
-// sendMessage requires payload:
-//     roomId: string
-//     user: string
-//     message: Object
-export function sendMessage(roomId, userId, message) {
-    const messageToAdd = {
-        roomId: roomId,
-        user: userId,
-        message: message
-    }
+export function addReaction(socket, reaction) {
+  socket.emit('add_reaction', reaction);
+  return {
+    type: `${ADD_REACTION}_PENDING`,
+    payload: reaction,
+  }
+}
+
+export function onAddReaction(data) {
     return {
-        type: SEND_MESSAGE,
-        payload: messageToAdd
+        type: `${ADD_REACTION}_SUCCESS`,
+        payload: data,
+    }
+}
+
+export function sendMessage(socket, roomId, message) {
+    socket.emit('add_message', {
+      roomId,
+      message,
+    })
+
+    return {
+        type: `${SEND_MESSAGE}_PENDING`,
+        payload: {
+          roomRoomId: roomId, // weird key name for server
+          message,
+          sentByMe: true,
+          messageType: 'PENDING' },
+    }
+}
+
+export function onSendMessage(data) {
+    return {
+        type: `${SEND_MESSAGE}_SUCCESS`,
+        payload: data,
     }
 }
 
@@ -525,38 +525,6 @@ export function sendMessage(roomId, userId, message) {
 export function listenToSendMessage(callback) {
     return {
         type: LISTEN_TO_SEND_MESSAGE,
-        callback: callback
-    }
-}
-
-// sendReaction requires payload:
-//     user: string
-//     roomId: string
-//     reaction: string
-export function sendReaction(user, roomId, reactionType) {
-    const reaction = {
-        user: userId,
-        roomId: roomId,
-        reaction: reactionType
-    }
-    return {
-        type: SEND_REACTION,
-        payload: reaction
-    }
-}
-
-// listenToSendReaction provides to all other parties:
-//     user: string
-//     roomId: string
-//     reaction: string
-// add to emitter:
-//     user: string
-//     roomId: string
-//     reaction: string
-//     sendByMe: boolean
-export function listenToSendReaction(callback) {
-    return {
-        type: LISTEN_TO_SEND_REACTION,
         callback: callback
     }
 }

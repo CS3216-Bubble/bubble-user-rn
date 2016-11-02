@@ -5,6 +5,9 @@ import {connect} from 'react-redux';
 import {
   backupChatRoom,
   cacheUserId,
+  onAddReaction,
+  onJoinRoom,
+  onSendMessage,
   onListRooms,
   onMyRooms,
   reassignPendingMessages,
@@ -19,6 +22,24 @@ class Root extends Component {
         socket.on('list_rooms', this.props.onListRooms);
         socket.on('my_rooms', this.props.onMyRooms);
         socket.on('exit_room', this.onExited);
+        socket.on('add_message', this.props.onSendMessage);
+        socket.on('add_reaction', this.props.onAddReaction);
+        socket.on('bubble_error', this.onError);
+        socket.on('join_room', this.props.onJoinRoom);
+    }
+
+    onError(error) {
+        switch (error.code) {
+            case 'room_closed':
+                console.log("Room closed", error);
+                break;
+            case 'user_not_in_room':
+                console.log("User has not joined this room", error);
+                break;
+            default:
+                console.log("Generic socket error", error);
+                break;
+        }
     }
 
     onExited() {
@@ -68,6 +89,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         onListRooms: (data) => dispatch(onListRooms(data)),
         onMyRooms: (data) => dispatch(onMyRooms(data)),
+        onSendMessage: (data) => dispatch(onSendMessage(data)),
+        onJoinRoom: (data) => dispatch(onJoinRoom(data)),
+        onAddReaction: (data) => dispatch(onAddReaction(data)),
     };
 };
 
