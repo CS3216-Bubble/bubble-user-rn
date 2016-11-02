@@ -9,8 +9,6 @@ class ChatLoadingView extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.onRoomCreated = this.onRoomCreated.bind(this);
-    this.props.socket.on('create_room', this.onRoomCreated);
   }
 
   componentDidMount() {
@@ -21,17 +19,6 @@ class ChatLoadingView extends Component {
       categories: this.props.form.categories
     }
     this.props.createRoom(this.props.socket, chatInfo)
-  }
-
-  onRoomCreated = (response) => {
-    // console.log(response);
-    Actions.chatView({ type: ActionConst.REPLACE, roomId: response.roomId });
-    this.props.onCreateRoom(response)
-    // Actions.chatView({roomId: response.roomId});
-  }
-
-  componentWillUnmount() {
-    this.props.socket.removeListener('create_room', this.onRoomCreated);
   }
 
   render() {

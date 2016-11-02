@@ -28,10 +28,6 @@ import {
     REHYDRATION_COMPLETE,
     CONNECT,
     DISCONNECT,
-    LISTEN_TO_CONNECT,
-    LISTEN_TO_DISCONNECT,
-    LISTEN_TO_TIMEOUT,
-    LISTEN_TO_RECONNECTING,
     LISTEN_TO_RECONNECT_FAILED,
     LISTEN_TO_ERROR,
     CREATE_ROOM,
@@ -484,60 +480,6 @@ export default function Reducer(state = initialState, action) {
             if (state.connection !== "DISCONNECTED") {
                 state.socket.emit("disconnect");
             }
-            return state;
-
-        case LISTEN_TO_CONNECT:
-            /* To-do in the callback:
-                1. Set socket listeners for other primary events
-                2. Set connection status
-                3. Save current id
-            */
-            state.socket.on("connect", action.callback);
-            return state;
-        case LISTEN_TO_DISCONNECT:
-            /* To-do:
-                1. Set connection status
-            */
-            state.socket.on("disconnect", action.callback);
-            return state;
-        case LISTEN_TO_TIMEOUT:
-            state.socket.on("timeout", action.callback);
-            return state;
-
-        case LISTEN_TO_RECONNECTING:
-            /* To-do:
-                1. Set connection status
-            */
-            state.socket.on("reconnecting", action.callback);
-            return state;
-
-        case LISTEN_TO_RECONNECT_FAILED:
-            /* To-do:
-                1. Set connection status
-            */
-            state.socket.on("reconnect_failed", action.callback);
-            return state;
-
-        case LISTEN_TO_ERROR:
-            // Handle cases:
-            // - NO_MESSAGE
-            // - NO_REACTION
-            // - NO_NAME
-            // - NO_ROOM_ID
-            // - NO_ROOM_NAME
-            // - ROOM_FULL
-            // - ROOM_ID_NOT_FOUND
-            // - USER_ALREADY_IN_ROOM
-            // - USER_NOT_IN_ROOM
-            // - COUNSELLOR_UNAVAILABLE
-            // - NO_USER_TO_REPORT
-            // - ROOM_CLOSED
-            // - NO_TARGET_USER
-            // - INVALID_ROOM_ID
-            // - INVALID_ROOM_NAME
-            // - NO_OLD_SOCKET_ID
-            // - OLD_SOCKET_ID_NOT_FOUND
-            state.socket.on("bubble_error", action.callback);
             return state;
 
         case `${JOIN_ROOM}_PENDING`:

@@ -217,12 +217,6 @@ export function rehydrationComplete() {
 // Action Types
 export const CONNECT = 'CONNECT'
 export const DISCONNECT = 'DISCONNECT'
-export const LISTEN_TO_CONNECT = 'LISTEN_TO_CONNECT'
-export const LISTEN_TO_DISCONNECT = 'LISTEN_TO_DISCONNECT'
-export const LISTEN_TO_TIMEOUT = 'LISTEN_TO_TIMEOUT'
-export const LISTEN_TO_RECONNECTING = 'LISTEN_TO_RECONNECTING'
-export const LISTEN_TO_RECONNECT_FAILED = 'LISTEN_TO_RECONNECT_FAILED'
-export const LISTEN_TO_ERROR = 'LISTEN_FOR_ERROR'
 export const CREATE_ROOM = 'CREATE_ROOM'
 export const JOIN_ROOM = 'JOIN_ROOM'
 export const LISTEN_TO_JOIN_ROOM = 'LISTEN_TO_JOIN_ROOM'
@@ -268,49 +262,7 @@ export function listenToDisconnect(callback) {
         callback: callback
     }
 }
-export function listenToTimeout(callback) {
-    return {
-        type: LISTEN_TO_TIMEOUT,
-        callback: callback
-    }
-}
-export function listenToReconnecting(callback) {
-    return {
-        type: LISTEN_TO_RECONNECTING,
-        callback: callback
-    }
-}
-export function listenToReconnectFailed(callback) {
-    return {
-        type: LISTEN_TO_RECONNECT_FAILED,
-        callback: callback
-    }
-}
 
-// listenToError listens to the following:
-// - NO_MESSAGE
-// - NO_REACTION
-// - NO_NAME
-// - NO_ROOM_ID
-// - NO_ROOM_NAME
-// - ROOM_FULL
-// - ROOM_ID_NOT_FOUND
-// - USER_ALREADY_IN_ROOM
-// - USER_NOT_IN_ROOM
-// - COUNSELLOR_UNAVAILABLE
-// - NO_USER_TO_REPORT
-// - ROOM_CLOSED
-// - NO_TARGET_USER
-// - INVALID_ROOM_ID
-// - INVALID_ROOM_NAME
-// - NO_OLD_SOCKET_ID
-// - OLD_SOCKET_ID_NOT_FOUND
-export function listenToError(callback) {
-    return {
-        type: LISTEN_TO_ERROR,
-        callback: callback
-    }
-}
 
 // createRoom requires payload:
 //     user: string,
