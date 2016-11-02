@@ -63,7 +63,7 @@ import {
 import './UserAgent';
 
 const io = require('socket.io-client/socket.io');
-const host = "192.168.1.17:3000";
+const host = "http://getbubblechat.com";
 
 function socketInit() {
     var socket = io(host, {
