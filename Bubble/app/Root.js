@@ -24,12 +24,11 @@ class Root extends Component {
         socket.on('connect', this.onConnect.bind(this));
         socket.on('list_rooms', this.props.onListRooms);
         socket.on('my_rooms', this.props.onMyRooms);
-        socket.on('exit_room', this.onExited);
         socket.on('add_message', this.props.onSendMessage);
         socket.on('add_reaction', this.props.onAddReaction);
         socket.on('bubble_error', this.onError);
         socket.on('join_room', this.props.onJoinRoom);
-        socket.on('exit_room', this.props.onExitRoom);
+        socket.on('exit_room', this.onExit.bind(this));
         socket.on('typing', this.props.onTyping);
         socket.on('stop_typing', this.props.onStopTyping);
     }
@@ -48,11 +47,15 @@ class Root extends Component {
         }
     }
 
-    onExited() {
-        if (Platform.OS === 'ios') {
-            Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
-        } else {
-            Actions.main({ type: ActionConst.REPLACE, selectedTab: 0 });
+    onExit(data) {
+        this.props.onExitRoom(data);
+        if (data.userId === this.props.socket.id) {
+            // only navigate if this event if for me
+            if (Platform.OS === 'ios') {
+                Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
+            } else {
+                Actions.main({ type: ActionConst.REPLACE, selectedTab: 0 });
+            }
         }
     }
 
@@ -97,7 +100,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onMyRooms: (data) => dispatch(onMyRooms(data)),
         onSendMessage: (data) => dispatch(onSendMessage(data)),
         onJoinRoom: (data) => dispatch(onJoinRoom(data)),
-        onExitRoom: (data) => dispatch(onExitRoom(data)),
+        onExitRoom: (data) => dispatch(onExitRoom(data, ownProps.socket)),
         onAddReaction: (data) => dispatch(onAddReaction(data)),
         onTyping: (data) => dispatch(onTyping(data)),
         onStopTyping: (data) => dispatch(onStopTyping(data)),

@@ -131,7 +131,7 @@ export class ChatView extends Component {
                     <Title ellipsizeMode='middle' numberOfLines={1}>
                         <Text style={Styles.titleContainer}> Not Available </Text>
                     </Title>
-                    <Button transparent onPress={() => Actions.chatInfoView({ chat: chat })}>
+                    <Button transparent onPress={() => {}}>
                         <Icon size={32}
                             name='ios-information-circle-outline'
                             color="#0E7AFE" />
@@ -141,8 +141,7 @@ export class ChatView extends Component {
                     <Text>You're offline! Come back later.</Text>
                 </View>
             </Container>);
-        } else if (chat == null) {
-          console.log('chat is null');
+        } else if (chat === null || typeof chat === 'undefined') {
             // When chat is not yet available, display placeholder and|or loader
             return null;
         } else if (Platform.OS === 'ios') {
@@ -174,7 +173,7 @@ export class ChatView extends Component {
                         <ChatComponent key={chat.roomId}
                             onSend={this.onSend}
                             onTriggerModal={this.onTriggerModal}
-                            messages={this.props.messages}
+                            messages={chat.messages}
                             roomId={this.props.roomId}
                             user={this.props.socket.id}
                             style={{ flex: 1 }}
@@ -213,7 +212,7 @@ export class ChatView extends Component {
                         <ChatComponent key={chat.roomId}
                             onSend={this.onSend}
                             onTriggerModal={this.onTriggerModal}
-                            messages={this.props.messages}
+                            messages={chat.messages}
                             roomId={this.props.roomId}
                             user={this.props.bubbleId}
                             style={{ flex: 1 }}
@@ -240,7 +239,6 @@ const mapStateToProps = (state, ownProps) => {
         socket: state.socket,
         bubbleId: state.socket.id,
         chat: state.rooms.data[ownProps.roomId],
-        messages: state.rooms.data[ownProps.roomId].messages,
         joinedRooms: state.joinedRooms,
         someoneTyping: typing.join(', '),
     }

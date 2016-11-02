@@ -5,6 +5,7 @@ import { Styles } from '../styles/Styles';
 
 import moment from 'moment';
 import Globals from '../globals';
+import { generateName } from '../utils/ProfileHasher';
 
 var adjectives = require('../utils/adjectives');
 var animals = require('../utils/animals');
@@ -42,40 +43,6 @@ export default class ChatInfoComponent extends Component {
                 { text: 'Cancel' },
             ]
         );
-    }
-
-    hashID(userId) {
-        var hash = 0;
-        if (userId && userId.length != 0) {
-            for (i = 0; i < userId.length; i++) {
-                char = userId.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-        }
-        return hash;
-    }
-
-    // Name generator
-    generateName(userId) {
-        var hashCode = this.hashID(userId);
-        var adj = adjectives.adjectives;
-        var ani = animals.animals;
-        // Get adjective
-        var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
-        // Get animal
-        var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
-        // Return result
-        return adjective + " " + animal;
-    }
-
-    // Avatar generator
-    generateAvatar(userId) {
-        var hashCode = this.hashID(userId);
-        // Get animal
-        var avatarIndex = (((hashCode % numAvatars) + numAvatars) % numAvatars) + 1;
-        // Return result
-        return ("image!" + avatarIndex.toString());
     }
 
     render() {
@@ -162,7 +129,7 @@ export default class ChatInfoComponent extends Component {
                                             <Image
                                                 source={{ uri: 'http://flathash.com/' + person }}
                                                 style={{ height: 30, width: 30, margin: 10 }} />
-                                            <Text>{this.generateName(person)}</Text>
+                                            <Text>{generateName(person)}</Text>
                                         </View>
                                     </ListItem>
                                 }>
