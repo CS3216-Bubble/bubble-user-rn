@@ -121,9 +121,14 @@ import { AsyncStorage } from 'react-native';
 export const BACKUP_KEY = '@bubble:all'
 
 export function backup(store) {
-  let state = { ...store.getState() };
-  // socket creates a ciruclar ref
-  delete state.socket;
+  let currentState = store.getState();
+  let state = {
+      bubbleId: currentState.bubbleId,
+      settings: currentState.settings,
+      rooms: currentState.rooms,
+      myRooms: currentState.myRooms,
+      myRooms: currentState.myRooms,
+  };
   return dispatch => {
     dispatch(backupStart(state));
     return AsyncStorage.setItem(BACKUP_KEY, JSON.stringify(state))
