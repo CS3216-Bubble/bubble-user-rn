@@ -55,7 +55,7 @@ export class ChatListComponent extends Component {
 
     render() {
         const userId = this.props.socket.id;
-        const chatRooms = this.props.roomList.slice();
+        const chatRooms = this.props.rooms.slice();
         const refreshing = this.props.refreshing;
 
         chatRooms.sort(function (a, b) {
@@ -161,8 +161,8 @@ export class ChatListComponent extends Component {
 const mapStateToProps = (state) => {
     return {
       socket: state.socket,
-      roomList: state.roomList.data,
-      refreshing: state.roomList.refreshing,
+      rooms: Object.values(state.rooms.data),
+      refreshing: state.rooms.refreshing,
     };
 }
 const mapDispatchToProps = (dispatch) => {

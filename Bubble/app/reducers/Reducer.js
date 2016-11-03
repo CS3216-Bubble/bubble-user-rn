@@ -111,10 +111,6 @@ const initialState = {
     outbox: {},
     rehydrated: false,
      // used by ChatListComponent as part of migration from state to redux
-    roomList: {
-      refreshing: false,
-      data: [],
-    },
     rooms: {
       refreshing: false,
       data: {},
@@ -135,10 +131,6 @@ export default function Reducer(state = initialState, action) {
         case `${LIST_ROOMS}_PENDING`:
           return {
             ...state,
-            roomList: {
-              ...state.roomList,
-              refreshing: true,
-            },
             rooms: {
               ...state.rooms,
               refreshing: true,
@@ -150,10 +142,6 @@ export default function Reducer(state = initialState, action) {
 
           return {
             ...state,
-            roomList: {
-              refreshing: false,
-              data: action.payload,
-            },
             rooms: {
               refreshing: false,
               data: rooms,
@@ -183,14 +171,18 @@ export default function Reducer(state = initialState, action) {
         case `${CREATE_ROOM}_SUCCESS`:
           return {
             ...state,
-            roomList: {
-              ...state.roomList,
-              data: [action.payload, ...state.roomList.data]
+            joinedRooms: [action.payload.roomId, ...state.joinedRooms],
+            rooms: {
+              ...state.rooms,
+              data: {
+                ...state.rooms.data,
+                [action.payload.roomId]: action.payload,
+              }
             }
           }
         case `${SEND_MESSAGE}_PENDING`:
           var roomId = action.payload.roomRoomId; // note this weird key name
-          var messages = state.rooms.data[roomId].messages;
+          var messages = state.rooms.data[roomId].messages || [];
           var toSend = {
             id: state.bubbleId, // random id first
             ...action.payload,
@@ -459,7 +451,9 @@ export default function Reducer(state = initialState, action) {
           var roomId = action.payload.roomId;
           if (action.payload.messages) {
             // i joined room
-            joined = [roomId, ...state.joinedRooms];
+            if (!state.joinedRooms.includes(roomId)) {
+              joined = [roomId, ...state.joinedRooms];
+            }
           }
           var messages = state.rooms.data[roomId].messages;
           var data = {

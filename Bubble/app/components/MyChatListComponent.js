@@ -61,7 +61,7 @@ export class MyChatListComponent extends Component {
 
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function (chatId) {
-          const chat = this.props.roomList.filter(
+          const chat = this.props.rooms.filter(
             cc => cc.roomId = chatId
           )[0]
 
@@ -120,7 +120,7 @@ export class MyChatListComponent extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         socket: state.socket,
-        roomList: state.roomList.data,
+        rooms: Object.values(state.rooms.data),
         myRooms: state.myRooms.data,
         refreshing: state.myRooms.refreshing,
     };

@@ -6,6 +6,7 @@ import {
   backupChatRoom,
   cacheUserId,
   onAddReaction,
+  onCreateRoom,
   onExitRoom,
   onIExit,
   onJoinRoom,
@@ -46,8 +47,8 @@ class Root extends Component {
     }
 
     onCreateRoom(data) {
+      this.props.onCreateRoom(data);
       Actions.chatView({ type: ActionConst.REPLACE, roomId: data.roomId });
-      this.props.onCreateRoom(response);
     }
 
     onError(error) {
