@@ -125,55 +125,9 @@ export class ChatListComponent extends Component {
             </View>
         );
 
-        var content = null;
-
-        // SOMETHING TO SHOW
-        if (chatsToShow.length > 0) {
-            content = chatsToShow;
-        }
-
-        // NOTHING TO SHOW
-
-        // because disconnected 
-        else if (this.props.connection == "DISCONNECTED") {
-            content = (<View
-                style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                <Text>Chat list cannot be loaded as you are offline.</Text>
-            </View>);
-        }
-
-        // because really nothing
-        else if (this.props.connection == "CONNECTED" && !this.props.refreshing) {
-            content = (<ChatPlaceholderComponent
-                style={{
-                    flex: 1
-                }}
-                onCreateChatPressed={this.props.onCreateChatPressed} />);
-        }
-
-        // because no search results
-        else if (this.props.searchTerm != '') {
-            content = (<View
-                style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                <Text>No results found for {this.props.searchTerm}.</Text>
-            </View>);
-        }
-
-        return (
-            <View style={{
-                flex: 1
-            }}>
-                {this.props.searchTerm == '' ? categoryFilter : null}
+        // If no search results found
+        if (chatsToShow.length == 0 && this.props.searchTerm != '') {
+            return (
                 <ScrollView
                     style={{
                         flex: 1
@@ -187,10 +141,49 @@ export class ChatListComponent extends Component {
                     {userId
                         ? null
                         : disconnected}
-                    {content}
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Text>No results found for {this.props.searchTerm}.</Text>
+                    </View>
                 </ScrollView>
-            </View>
-        );
+            );
+        } else {
+            return (
+                <View style={{
+                    flex: 1
+                }}>
+                    {this.props.searchTerm == ''
+                        ? categoryFilter
+                        : null}
+                    <ScrollView
+                        style={{
+                            flex: 1
+                        }}
+                        refreshControl={< RefreshControl refreshing={refreshing}
+                            onRefresh={
+                                this
+                                    ._onRefresh
+                                    .bind(this)
+                            } />}>
+                        {userId
+                            ? null
+                            : disconnected}
+                        {chatsToShow.length == 0
+                            ? <ChatPlaceholderComponent
+                                style={{
+                                    flex: 1
+                                }}
+                                onCreateChatPressed={this.props.onCreateChatPressed} />
+                            : chatsToShow}
+                    </ScrollView>
+                </View>
+            );
+        }
     }
 }
 
@@ -211,16 +204,16 @@ var styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        socket: state.socket,
-        roomList: state.roomList.data,
-        refreshing: state.roomList.refreshing,
-        connection: state.connection
+      socket: state.socket,
+      roomList: state.roomList.data,
+      refreshing: state.roomList.refreshing,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        listRooms: (socket) => dispatch(listRooms(socket)),
+      listRooms: (socket) => dispatch(listRooms(socket)),
     };
 };
+
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatListComponent);

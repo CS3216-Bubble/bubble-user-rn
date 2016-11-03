@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {Container, Content, Header, Title, Tabs} from 'native-base';
+import {connect as connectRedux} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 import ChatListView from '../views/ChatListView';
 import MyChatListView from '../views/MyChatListView';
 import SettingsView from '../views/SettingsView';
+// import ChatListComponent from '../components/ChatListComponent';
+// import MyChatListComponent from '../components/MyChatListComponent';
+// import SettingsComponent from '../components/SettingsComponent';
 import {Styles} from '../styles/Styles';
 import CustomTheme from '../themes/bubble';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -12,11 +16,17 @@ import ActionButton from 'react-native-action-button';
 import {ThemeProvider, Toolbar, Button} from 'react-native-material-ui';
 import {generateName, genOnlineProfImgSrc} from '../utils/ProfileHasher';
 
-export default class MainView extends Component {
+export class MainView extends Component {
 
     constructor(props) {
         super(props);
+        const {socket} = this.props;
+        const userId = socket.id;
         this.state = {
+            user: {
+                name: generateName(userId),
+                imgSrc: genOnlineProfImgSrc(userId)
+            },
             selectedTab: 0,
             searchTerm: '',
             toggleMyChats: false
@@ -77,7 +87,7 @@ export default class MainView extends Component {
                                 tabLabel='My Chats'
                                 searchTerm={this.state.searchTerm}
                                 onCreateChatPressed={this.onCreateChatPressed}/>
-                            <SettingsView tabLabel='Settings'/>
+                            <SettingsView tabLabel='Settings' user={this.state.user}/>
                         </Tabs>
                     </View>
                     {this.state.selectedTab === 0
@@ -90,6 +100,15 @@ export default class MainView extends Component {
         );
     }
 }
+
+// Redux Call
+const mapStateToProps = (state) => {
+    return {socket: state.socket};
+}
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(MainView);
 
 // TODO: Collate all styles under Styles.js
 const uiTheme = {

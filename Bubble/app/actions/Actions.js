@@ -206,7 +206,7 @@ export function cacheUserId(userId) {
 }
 export function rehydrationComplete() {
     return {
-        type: REHYDRATION_COMPLETE
+        type:REHYDRATION_COMPLETE
     }
 }
 
@@ -285,31 +285,31 @@ export function onCreateRoom(data) {
 }
 
 export function joinRoom(socket, roomId) {
-    socket.emit('join_room', { roomId });
-    return {
-        type: `${JOIN_ROOM}_PENDING`,
-    }
+  socket.emit('join_room', { roomId });
+  return {
+    type: `${JOIN_ROOM}_PENDING`,
+  }
 }
 
 export function onJoinRoom(data) {
-    return {
-        type: `${JOIN_ROOM}_SUCCESS`,
-        payload: data,
-    }
+  return {
+    type: `${JOIN_ROOM}_SUCCESS`,
+    payload: data,
+  }
 }
 
 export function exitRoom(socket, roomId) {
-    socket.emit('exit_room', { roomId });
-    return {
-        type: `${EXIT_ROOM}_PENDING`,
-    }
+  socket.emit('exit_room', { roomId });
+  return {
+      type: `${EXIT_ROOM}_PENDING`,
+  }
 }
 
 export function onExitRoom(data) {
-    return {
-        type: `${EXIT_ROOM}_SUCCESS`,
-        payload: data,
-    }
+  return {
+    type: `${EXIT_ROOM}_SUCCESS`,
+    payload: data,
+  }
 }
 
 // listRooms requires payload:
@@ -428,11 +428,11 @@ export function reportUser(userId, targetUserId, roomId, reason, reportType) {
 }
 
 export function addReaction(socket, reaction) {
-    socket.emit('add_reaction', reaction);
-    return {
-        type: `${ADD_REACTION}_PENDING`,
-        payload: reaction,
-    }
+  socket.emit('add_reaction', reaction);
+  return {
+    type: `${ADD_REACTION}_PENDING`,
+    payload: reaction,
+  }
 }
 
 export function onAddReaction(data) {
@@ -444,19 +444,18 @@ export function onAddReaction(data) {
 
 export function sendMessage(socket, roomId, message) {
     socket.emit('add_message', {
-        roomId,
-        message,
+      roomId,
+      message,
     })
 
     return {
         type: `${SEND_MESSAGE}_PENDING`,
         payload: {
-            roomRoomId: roomId, // weird key name for server
-            userId: socket.id,
-            message,
-            sentByMe: true,
-            messageType: 'PENDING'
-        },
+          roomRoomId: roomId, // weird key name for server
+          userId: socket.id,
+          message,
+          sentByMe: true,
+          messageType: 'PENDING' },
     }
 }
 
@@ -470,18 +469,18 @@ export function onSendMessage(data) {
 export const TYPING = 'TYPING';
 
 export function onTyping(data) {
-    return {
+  return {
         type: TYPING,
         payload: data,
-    }
+  }
 }
 
 export const STOP_TYPING = 'TYPING';
 export function onStopTyping(data) {
-    return {
+  return {
         type: STOP_TYPING,
         payload: data,
-    }
+  }
 }
 
 // listenToSendMessage provides to other parties:

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TabBarIOS, Text, View } from 'react-native';
+import { connect as connectRedux } from 'react-redux';
 import ChatListView from './ChatListView';
 import MyChatListView from './MyChatListView';
 import ChatFormView from './ChatFormView';
@@ -7,19 +8,22 @@ import InformationView from './InformationView';
 import SettingsView from './SettingsView';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class MainView extends Component {
+export class MainView extends Component {
 
     constructor(props) {
         super(props);
+        const {socket} = this.props;
+        const userId = socket.id;
         this.state = {
             iconSize: 25,
             refresh: false,
             selectedTab: 'all',
-            toggleMyChats: false    // To invoke refreshing of my chats filter ... to be refactored
+            toggleMyChats: false
         };
     }
 
     componentWillReceiveProps(nextProps) {
+        // console.log(nextProps);
         if (nextProps.selectedTab) {
             this.setState({ selectedTab: nextProps.selectedTab });
         }
@@ -72,10 +76,7 @@ export default class MainView extends Component {
 
     render() {
         return (
-            <TabBarIOS
-                barTintColor='#dcdcdc'
-                tintColor='#2E94B9'>
-
+            <TabBarIOS>
                 <Icon.TabBarItemIOS
                     title="All"
                     iconName="comments"
@@ -95,8 +96,7 @@ export default class MainView extends Component {
                     selected={this.state.selectedTab === 'open'}
                     onPress={() => {
                         this.setState({
-                            selectedTab: 'open',
-                            toggleMyChats: !this.state.toggleMyChats
+                            selectedTab: 'open', toggleMyChats: !this.state.toggleMyChats
                         });
                     } }>
                     {this._renderContent()}
@@ -142,6 +142,15 @@ export default class MainView extends Component {
         );
     }
 }
+
+// Redux Call
+const mapStateToProps = (state) => {
+    return { socket: state.socket };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+export default connectRedux(mapStateToProps, mapDispatchToProps)(MainView);
 
 // TODO: Collate all styles under Styles.js
 var styles = StyleSheet.create({

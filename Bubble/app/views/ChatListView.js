@@ -35,7 +35,7 @@ export default class ChatListView extends Component {
             searchTerm: '',
             showCategoryFilter: true
         };
-        // LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
         this.clearSearchBar = this
             .clearSearchBar
             .bind(this);
@@ -102,31 +102,18 @@ export default class ChatListView extends Component {
                     </Header>
                 }
 
-                {Platform.OS == 'ios' &&
-                    <View style={{
-                        flex: 1
-                    }}>
+                <View style={{
+                    flex: 1
+                }}>
+                    {Platform.OS == 'ios' &&
                         <View style={styles.categoryButtonContainer}>{categoryButtons}</View>
-                        <ChatListComponent
-                            refresh={this.state.refresh}
-                            searchTerm={this.state.searchTerm}
-                            showOpenChatsOnly={this.props.showOpenChatsOnly}
-                            onCreateChatPressed={this.props.onCreateChatPressed} />
-                    </View>
-                }
-
-                {Platform.OS == 'android' &&
-                    <View style={{
-                        flex: 1
-                    }}>
-                        <ChatListComponent
-                            refresh={this.state.refresh}
-                            searchTerm={this.props.searchTerm}
-                            showOpenChatsOnly={this.props.showOpenChatsOnly}
-                            onCreateChatPressed={this.props.onCreateChatPressed} />
-                    </View>
-                }
-
+                    }
+                    <ChatListComponent
+                        refresh={this.state.refresh}
+                        searchTerm={this.state.searchTerm}
+                        showOpenChatsOnly={this.props.showOpenChatsOnly}
+                        onCreateChatPressed={this.props.onCreateChatPressed} />
+                </View>
             </Container>
         );
     }
