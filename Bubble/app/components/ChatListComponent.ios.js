@@ -99,62 +99,71 @@ export class ChatListComponent extends Component {
             </View>
         );
 
-        // If no search results found
-        if (chatsToShow.length == 0 && this.props.searchTerm != '') {
-            return (
-                <ScrollView
-                    style={{
-                        flex: 1
-                    }}
-                    refreshControl={< RefreshControl refreshing={refreshing}
-                        onRefresh={
-                            this
-                                ._onRefresh
-                                .bind(this)
-                        } />}
-                    style={{
-                        backgroundColor: 'red'
-                    }}>
-                    {userId
-                        ? null
-                        : disconnected}
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                        <Text>No results found for {this.props.searchTerm}.</Text>
-                    </View>
-                </ScrollView>
-            );
-        } else {
-            return (
-                <ScrollView
-                    style={{
-                        flex: 1
-                    }}
-                    refreshControl={< RefreshControl refreshing={refreshing}
-                        onRefresh={
-                            this
-                                ._onRefresh
-                                .bind(this)
-                        }
-                        style={{ marginTop: -19 }} />}>
-                    {userId
-                        ? null
-                        : disconnected}
-                    {chatsToShow.length == 0
-                        ? <ChatPlaceholderComponent
-                            style={{
-                                flex: 1
-                            }}
-                            onCreateChatPressed={this.props.onCreateChatPressed} />
-                        : chatsToShow}
-                </ScrollView>
-            );
+        var content = null;
+
+        // SOMETHING TO SHOW
+        if (chatsToShow.length > 0) {
+            content = chatsToShow;
         }
+
+        // NOTHING TO SHOW
+
+        // because disconnected 
+        else if (this.props.connection == "DISCONNECTED") {
+            content = (<View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                <Text>Chat list cannot be loaded as you are offline.</Text>
+            </View>);
+        }
+
+        // because really nothing
+        else if (this.props.connection == "CONNECTED" && !this.props.refreshing) {
+            content = (<ChatPlaceholderComponent
+                style={{
+                    flex: 1
+                }}
+                onCreateChatPressed={this.props.onCreateChatPressed} />);
+        }
+
+        // because no search results
+        else if (this.props.searchTerm != '') {
+            content = (<View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                <Text>No results found for {this.props.searchTerm}.</Text>
+            </View>);
+        }
+
+        return (
+            <View style={{
+                flex: 1
+            }}>
+                <ScrollView
+                    style={{
+                        flex: 1
+                    }}
+                    refreshControl={< RefreshControl refreshing={refreshing}
+                        onRefresh={
+                            this
+                                ._onRefresh
+                                .bind(this)
+                        } />}>
+                    {userId
+                        ? null
+                        : disconnected}
+                    {content}
+                </ScrollView>
+            </View>
+        );
     }
 }
 

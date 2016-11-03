@@ -1,20 +1,21 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
-  backupChatRoom,
-  cacheUserId,
-  onAddReaction,
-  onExitRoom,
-  onJoinRoom,
-  onSendMessage,
-  onTyping,
-  onStopTyping,
-  onListRooms,
-  onMyRooms,
-  reassignPendingMessages,
-  setPendingMessages,
+    setConnectionStatus,
+    backupChatRoom,
+    cacheUserId,
+    onAddReaction,
+    onExitRoom,
+    onJoinRoom,
+    onSendMessage,
+    onTyping,
+    onStopTyping,
+    onListRooms,
+    onMyRooms,
+    reassignPendingMessages,
+    setPendingMessages,
 } from './actions/Actions';
 
 class Root extends Component {
@@ -22,6 +23,8 @@ class Root extends Component {
     componentDidMount() {
         const {socket} = this.props;
         socket.on('connect', this.onConnect.bind(this));
+        socket.on('disconnect', this.onDisconnect.bind(this));
+        socket.on('reconnect', this.onReconnect.bind(this));
         socket.on('list_rooms', this.props.onListRooms);
         socket.on('my_rooms', this.props.onMyRooms);
         socket.on('add_message', this.props.onSendMessage);
@@ -35,8 +38,8 @@ class Root extends Component {
     }
 
     onCreateRoom(data) {
-      Actions.chatView({ type: ActionConst.REPLACE, roomId: data.roomId });
-      this.props.onCreateRoom(response);
+        Actions.chatView({ type: ActionConst.REPLACE, roomId: data.roomId });
+        this.props.onCreateRoom(response);
     }
 
     onError(error) {
@@ -67,12 +70,25 @@ class Root extends Component {
 
     onConnect() {
         const { socket } = this.props;
-
         const socketId = this.props.socket.id;
         console.log("Connected", socketId);
-
+        this.props.setConnectionStatus("CONNECTED");
         this.props.reassignOutbox();
         this.props.memoId(socketId);
+    }
+
+    onDisconnect() {
+        const { socket } = this.props;
+        const socketId = this.props.socket.id;
+        console.log("Disconnected", socketId);
+        this.props.setConnectionStatus("DISCONNECTED");
+    }
+
+    onReconnect() {
+        const { socket } = this.props;
+        const socketId = this.props.socket.id;
+        console.log("Reconnecting", socketId);
+        this.props.setConnectionStatus("CONNECTING");
     }
 
     render() {
@@ -102,6 +118,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         reassignOutbox: () => {
             dispatch(reassignPendingMessages())
         },
+        setConnectionStatus: (status) => dispatch(setConnectionStatus(status)),
         onListRooms: (data) => dispatch(onListRooms(data)),
         onMyRooms: (data) => dispatch(onMyRooms(data)),
         onSendMessage: (data) => dispatch(onSendMessage(data)),

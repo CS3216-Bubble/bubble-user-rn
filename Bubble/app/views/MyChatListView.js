@@ -19,7 +19,7 @@ export class MyChatListView extends Component {
           showCategoryFilter: true,
           listing: []
         };
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+        // LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
         this.clearSearchBar = this.clearSearchBar.bind(this);
     }
 
