@@ -120,7 +120,6 @@ export class ChatView extends Component {
         } = this.props;
 
         if (typeof socket.id == 'undefined') {
-          console.log('undefined ocket');
             return (<Container>
                 <Header>
                     <Button transparent onPress={this.onExit}>

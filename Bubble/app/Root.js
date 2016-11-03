@@ -3,7 +3,9 @@ import { Platform } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {
+  backup,
   cacheUserId,
+  hydrateStore,
   onAddReaction,
   onCreateRoom,
   onExitRoom,
@@ -19,9 +21,15 @@ import {
 } from './actions/Actions';
 
 class Root extends Component {
+    static contextTypes = {
+      store: React.PropTypes.object
+    }
 
     componentDidMount() {
+        this.props.hydrateStore(); // hydrate redux store
+
         const {socket} = this.props;
+
         socket.on('connect', this.onConnect.bind(this));
         socket.on('list_rooms', this.props.onListRooms);
         socket.on('my_rooms', this.props.onMyRooms);
@@ -34,6 +42,18 @@ class Root extends Component {
         socket.on('typing', this.props.onTyping);
         socket.on('stop_typing', this.props.onStopTyping);
         socket.on('create_room', this.onCreateRoom.bind(this));
+
+        this.backup = this.backup.bind(this);
+        const backupIntervalId = setInterval(this.backup, 10000);
+        this.setState({ backupIntervalId });
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.state.backupIntervalId);
+    }
+
+    backup() {
+        this.props.backup(this.context.store);
     }
 
     onIExit(data) {
@@ -108,6 +128,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onStopTyping: (data) => dispatch(onStopTyping(data)),
         onCreateRoom: (data) => dispatch(onCreateRoom(data)),
         onIExit: (data) => dispatch(onIExit(data)),
+        hydrateStore: () => dispatch(hydrateStore()),
+        backup: (state) => dispatch(backup(state)),
     };
 };
 

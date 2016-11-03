@@ -93,22 +93,95 @@ export function unmuteAllChatRooms() {
 //----------- Cached Chats --------------
 
 // Action Types
-export const SET_CHATLIST = 'SET_CHATLIST'
-export const BACKUP_CHATROOM = 'BACKUP_CHATROOM'
 
-// Action Creators
-export function setChatList(chatList) {
-    return {
-        type: SET_CHATLIST,
-        chatList: chatList
-    }
+export const BACKUP_START = 'BACKUP_START';
+export function backupStart(state) {
+  return {
+    type: BACKUP_START,
+    state,
+  }
 }
-export function backupChatRoom(roomId, chatRoomState) {
+
+export const BACKUP_DONE = 'BACKUP_DONE';
+export function backupDone() {
+  return {
+    type: BACKUP_DONE,
+  }
+}
+
+export const BACKUP_ERROR = 'BACKUP_ERROR';
+export function backupError(error) {
+  return {
+    type: BACKUP_ERROR,
+    error,
+  }
+}
+
+import { AsyncStorage } from 'react-native';
+export const BACKUP_KEY = '@bubble:all'
+
+export function backup(store) {
+  let state = { ...store.getState() };
+  // socket creates a ciruclar ref
+  delete state.socket;
+  return dispatch => {
+    dispatch(backupStart(state));
+    return AsyncStorage.setItem(BACKUP_KEY, JSON.stringify(state))
+      .then(dispatch(backupDone()))
+      .catch((e) => dispatch(backupError(e)))
+  }
+}
+
+const HYDRATE = 'HYDRATE'
+export const HYDRATE_PENDING = `${HYDRATE}_PENDING`;
+export const HYDRATE_SUCCESS = `${HYDRATE}_SUCCESS`;
+export const HYDRATE_ERROR = `${HYDRATE}_ERROR`;
+
+export function hydrateStart() {
+  return {
+    type: HYDRATE_PENDING,
+  }
+}
+
+export function hydrateDone(state) {
+  console.log(`got ${state.length} bytes from backup`);
+
+  if (typeof state === 'undefined') {
     return {
-        type: BACKUP_CHATROOM,
-        roomId: roomId,
-        chatRoomState: chatRoomState
+      type: HYDRATE_SUCCESS,
+      payload: {},
     }
+  }
+
+  try {
+    var parsed = JSON.parse(state);
+  } catch (error) {
+    return {
+      type: HYDRATE_ERROR,
+      error,
+    }
+  }
+
+  return {
+    type: HYDRATE_SUCCESS,
+    payload: parsed,
+  }
+}
+export function hydrateError(error) {
+  return {
+    type: `${HYDRATE}_ERROR`,
+    error,
+  }
+}
+
+export function hydrateStore(state) {
+  // state is just the redux state
+  return dispatch => {
+    dispatch(hydrateStart())
+    return AsyncStorage.getItem(BACKUP_KEY)
+      .then(v => { dispatch(hydrateDone(v))})
+      .catch(e => dispatch(hydrateError(e)))
+  }
 }
 
 

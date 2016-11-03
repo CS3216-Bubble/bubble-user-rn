@@ -53,6 +53,8 @@ import {
     SET_TOKEN_STATUS,
     TYPING,
     STOP_TYPING,
+    HYDRATE_PENDING,
+    HYDRATE_SUCCESS,
 } from '../actions/Actions';
 import {createGUID} from "../utils/GUIDGenerator";
 
@@ -120,12 +122,29 @@ const initialState = {
     creatingRoom: false,
     joinedRooms: [],
     typing: {},
+    hydrating: false,
 };
 
 // Reducer Definition
 export default function Reducer(state = initialState, action) {
 
     switch (action.type) {
+        case HYDRATE_PENDING:
+          return {
+            ...state,
+            hydrating: true,
+          }
+        case HYDRATE_SUCCESS:
+          if (Object.keys(action.payload).length === 0) {
+            return state;
+          }
+
+          return {
+            ...state,
+            ...action.payload,
+            hydrating: false,
+          }
+
         case `${LIST_ROOMS}_PENDING`:
           return {
             ...state,
@@ -135,14 +154,14 @@ export default function Reducer(state = initialState, action) {
             },
           }
         case `${LIST_ROOMS}_SUCCESS`:
-          let rooms = {};
-          action.payload.forEach(r => rooms[r.roomId] = r);
+          let roomsById = {};
+          action.payload.forEach(r => roomsById[r.roomId] = r);
 
           return {
             ...state,
             rooms: {
               refreshing: false,
-              data: rooms,
+              data: roomsById, // overwrite all data
             },
           }
         case `${MY_ROOMS}_PENDING`:
