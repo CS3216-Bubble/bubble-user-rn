@@ -9,6 +9,7 @@ import moment from 'moment';
 import ChatCardComponent from './ChatCardComponent';
 
 import { listRooms } from '../actions/Actions';
+import roomByTypeLastActive from '../utils/sort';
 
 export class CategoryListComponent extends Component {
     static propTypes = {
@@ -41,17 +42,7 @@ export class CategoryListComponent extends Component {
         var chatRooms = this.props.rooms.slice();
         const refreshing = this.props.refreshing;
 
-        chatRooms.sort(function(a, b) {
-          // Sticky chat first
-          if (a.roomType == 'HOT' && b.roomType != 'HOT') {
-            return -1;
-          } else if ((b.roomType == 'HOT' && a.roomType != 'HOT')) {
-            return 1;
-          } else {
-            // Chat types are the same, sort by time
-            return new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime();
-          }
-        });
+        chatRooms.sort(roomByTypeLastActive);
 
         // Create list of chats to show
         const chatsToShow = chatRooms.map(function(chat) {
