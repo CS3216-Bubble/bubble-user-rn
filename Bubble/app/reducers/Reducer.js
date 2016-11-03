@@ -468,11 +468,11 @@ export default function Reducer(state = initialState, action) {
           }
           var messages = state.rooms.data[roomId].messages;
           var data = {
-            ...action.payload,
             messageType: 'JOIN_ROOM',
-            id: state.bubbleId,
-          }
-
+            id: createGUID(),
+            roomRoomId: action.payload.roomId,
+            userId: action.payload.userId,
+          };
           return {
             ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
             joinedRooms: joined,
@@ -487,10 +487,11 @@ export default function Reducer(state = initialState, action) {
           }
           var messages = state.rooms.data[roomId].messages;
           var data = {
-            ...action.payload,
             messageType: 'EXIT_ROOM',
-            id: state.bubbleId,
-          }
+            id: createGUID(),
+            roomRoomId: action.payload.roomId,
+            userId: action.payload.userId,
+          };
           return {
             ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
             joinedRooms: joined,
