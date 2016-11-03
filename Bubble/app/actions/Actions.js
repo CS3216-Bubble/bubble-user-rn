@@ -221,6 +221,7 @@ export const CREATE_ROOM = 'CREATE_ROOM'
 export const JOIN_ROOM = 'JOIN_ROOM'
 export const LISTEN_TO_JOIN_ROOM = 'LISTEN_TO_JOIN_ROOM'
 export const EXIT_ROOM = 'EXIT_ROOM'
+export const I_EXIT = 'I_EXIT'
 export const LIST_ROOMS = 'LIST_ROOMS'
 export const VIEW_ROOM = 'VIEW_ROOM'
 export const LISTEN_TO_VIEW_ROOM = 'LISTEN_TO_VIEW_ROOM'
@@ -308,6 +309,13 @@ export function exitRoom(socket, roomId) {
 export function onExitRoom(data) {
   return {
     type: `${EXIT_ROOM}_SUCCESS`,
+    payload: data,
+  }
+}
+
+export function onIExit(data) {
+  return {
+    type: I_EXIT,
     payload: data,
   }
 }

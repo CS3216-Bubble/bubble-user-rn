@@ -34,6 +34,7 @@ import {
     JOIN_ROOM,
     LISTEN_TO_JOIN_ROOM,
     EXIT_ROOM,
+    I_EXIT,
     LIST_ROOMS,
     VIEW_ROOM,
     LISTEN_TO_VIEW_ROOM,
@@ -135,12 +136,12 @@ export default function Reducer(state = initialState, action) {
           return {
             ...state,
             roomList: {
+              ...state.roomList,
               refreshing: true,
-              data: [],
             },
             rooms: {
+              ...state.rooms,
               refreshing: true,
-              data: {},
             },
           }
         case `${LIST_ROOMS}_SUCCESS`:
@@ -162,8 +163,8 @@ export default function Reducer(state = initialState, action) {
           return {
             ...state,
             myRooms: {
+              ...state.myRooms,
               refreshing: true,
-              data: [],
             }
           }
         case `${MY_ROOMS}_SUCCESS`:
@@ -489,8 +490,11 @@ export default function Reducer(state = initialState, action) {
             ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
             joinedRooms: joined,
           }
-
-          return state;
+        case I_EXIT:
+          return {
+            ...state,
+            joinedRooms: state.joinedRooms.filter(i => i !== roomId)
+          }
 
         case REPORT_USER:
             state.socket.emit("report_user", action.payload);
