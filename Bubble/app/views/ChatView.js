@@ -8,7 +8,7 @@ import UserActionModalComponent from '../components/UserActionModalComponent';
 import { Styles } from '../styles/Styles';
 import { connect as connectRedux } from 'react-redux';
 import dismissKeyboard from 'dismissKeyboard';
-import { addReaction, joinRoom, sendMessage, setPendingMessages, backupChatRoom, reassignPendingMessages } from '../actions/Actions';
+import { addReaction, joinRoom, sendMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 import { generateName } from '../utils/ProfileHasher';
 
@@ -247,7 +247,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveUnsentMsgs: (messages) => { dispatch(setPendingMessages(messages, ownProps.roomId)) },
-        saveChatSession: (chat) => { dispatch(backupChatRoom(ownProps.roomId, chat)) },
         reassignOutbox: () => { dispatch(reassignPendingMessages()) },
         sendMessage: (...args) => dispatch(sendMessage(...args)),
         addReaction: (...args) => dispatch(addReaction(...args)),

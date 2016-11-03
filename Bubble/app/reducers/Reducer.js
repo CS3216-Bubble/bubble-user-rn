@@ -14,7 +14,6 @@ import {
     MUTE_CHATROOM,
     UNMUTE_CHATROOM,
     UNMUTE_ALL_CHATROOMS,
-    SET_CHATLIST,
     BACKUP_CHATROOM,
     SET_CONNECTION_STATUS,
     SET_PENDING_MESSAGES,
@@ -102,7 +101,6 @@ const initialState = {
         mutedChatRooms: []
     },
     chatRooms: {},
-    chatList: [],
     connection: "DISCONNECTED",
     aliasId: [],
     nickNameMap: {},
@@ -357,12 +355,6 @@ export default function Reducer(state = initialState, action) {
                 settings: settings
             });
 
-
-        // Cached Chats
-        case SET_CHATLIST:
-            return Object.assign({}, state, {
-                chatList: action.chatList
-            });
 
         case BACKUP_CHATROOM:
             var chatRooms = Object.assign({}, state.chatRooms);

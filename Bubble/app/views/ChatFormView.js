@@ -110,11 +110,6 @@ export default class ChatFormView extends Component {
                     (Platform.OS === 'ios' ? {color:'#0E7AFE'} : {color:'#FFFFFF'})
                     : {color: '#999999'};
 
-      console.log('----');
-      console.log(this.state.isBackButtonVisible);
-      console.log(this.props.isBackButtonVisible);
-
-
       return (
           <Container theme={CustomTheme}>
               <Header>

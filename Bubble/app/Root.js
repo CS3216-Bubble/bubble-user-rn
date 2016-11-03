@@ -3,7 +3,6 @@ import { Platform } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {
-  backupChatRoom,
   cacheUserId,
   onAddReaction,
   onCreateRoom,
@@ -92,9 +91,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveUnsentMsgs: (messages) => {
             dispatch(setPendingMessages(messages, ownProps.roomId))
-        },
-        saveChatSession: (chat) => {
-            dispatch(backupChatRoom(ownProps.roomId, chat))
         },
         memoId: (userId) => {
             dispatch(cacheUserId(userId))
