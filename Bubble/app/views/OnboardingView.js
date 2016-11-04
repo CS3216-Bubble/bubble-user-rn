@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, AppRegistry, View, Image, Text } from 'react-native';
+import { Platform, StyleSheet, AppRegistry, View, Image, Text } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { unsetFirstTimeUser } from '../actions/Actions';
 import { connect as connectRedux } from 'react-redux';
@@ -22,60 +22,42 @@ export class OnboardingView extends Component {
 
     render() {
 
+        var imgList, imgCreate;
+
+        if (Platform.OS === 'ios') {
+            imgList = (<Image style={styles.ssImg} source={require('../img/ss_list_ios.png')} />);
+            imgCreate = (<Image style={styles.ssImg} source={require('../img/ss_create_ios.png')} />);
+        } else {
+            imgList = (<Image style={styles.ssImg} source={require('../img/ss_list_android.png')} />);
+            imgCreate = (<Image style={styles.ssImg} source={require('../img/ss_create_android.png')} />);
+        }
+
         const pageArray = [
             {
-                title: 'Need to rant about life?',
+                title: 'Talk about anything!',
                 description: '',
-                img: (<Image source={require('../img/rant.png')} />),
-                backgroundColor: '#69D2E7',
-                type: 'header'
-            },
-            {
-                title: 'Create a chatroom',
-                description: '',
-                img: (<Image style={styles.ssImg} source={require('../img/ss_create.png')} />),
-                backgroundColor: '#2980b9',
-                type: 'slide'
-            },
-            {
-                title: 'Talk to people who care!',
-                description: '',
-                img: (<Image style={styles.ssImg} source={require('../img/ss_chat.png')} />),
+                img: imgList,
                 backgroundColor: '#2980b9',
                 type: 'slide',
             },
             {
-                title: 'Thank the people who help!',
+                title: 'Create your own chatroom!',
                 description: '',
-                img: (<Image style={styles.ssImg} source={require('../img/ss_reactions.png')} />),
-                backgroundColor: '#2980b9',
-                type: 'slide'
-            },
-            {
-                title: 'Want to chat with others and hear their worries?',
-                description: '',
-                img: (<Image source={require('../img/advice.png')} />),
+                img: imgCreate,
                 backgroundColor: '#f39c12',
-                type: 'header'
-            },
-            {
-                title: 'Browse through chats',
-                description: 'Find a topic you care about and join in!',
-                img: (<Image style={styles.ssImg} source={require('../img/ss_list.png')} />),
-                backgroundColor: '#e67e22',
                 type: 'slide'
             },
             {
-                title: 'Someone annoying you on chat?',
-                description: '',
-                img: (<Image source={require('../img/worried.png')} />),
-                backgroundColor: '#e74c3c',
-                type: 'header'
+                title: 'Tap on people...',
+                description: 'Cheer them on or thank them for their help!',
+                img: (<Image style={styles.ssImg} source={require('../img/ss_reactions.png')} />),
+                backgroundColor: '#3498db',
+                type: 'slide'
             },
             {
-                title: 'Hide them',
-                description: 'No more troll messages',
-                img: (<Image style={styles.ssImg} source={require('../img/ss_reactions3.png')} />),
+                title: 'Hide the trolls',
+                description: 'No more annoying messages!',
+                img: (<Image style={styles.ssImg} source={require('../img/ss_hide.png')} />),
                 backgroundColor: '#e74c3c',
                 type: 'slide'
             }
@@ -164,6 +146,6 @@ const styles = StyleSheet.create({
     },
     ssImg: {
         width: 9 * 27,
-        height: 16 * 27
+        height: Platform.OS === 'ios' ? 16 * 27 : 389
     }
 });
