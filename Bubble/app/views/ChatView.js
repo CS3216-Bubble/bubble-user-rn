@@ -44,7 +44,8 @@ export class ChatView extends Component {
     // when another user exits room data.messageType = 'EXIT_ROOM';
 
     onSend(message) {
-      this.props.sendMessage(this.props.socket, message.roomId, message.message)
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+      this.props.sendMessage(this.props.socket, message.roomId, message.message, message.createdAt);
     }
 
     /* onSend is called when the user attempts to send a message.
@@ -90,9 +91,8 @@ export class ChatView extends Component {
        These options are presented in the form of a modal. */
     onTriggerModal(userId, otherUserId, roomId, otherUserName) {
 
-        // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         dismissKeyboard();
-
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
         this.setState({
             toggleModal: !this.state.toggleModal,
             modalInfo: { userId: userId, otherUserId: otherUserId, roomId: roomId, otherUserName: otherUserName }
@@ -115,6 +115,10 @@ export class ChatView extends Component {
       } else {
         this.props.joinRoom(this.props.socket, this.props.chat.roomId);
       }
+    }
+
+    componentWillReceiveProps() {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     }
 
     render() {
@@ -212,7 +216,7 @@ export class ChatView extends Component {
                             onTriggerModal={this.onTriggerModal}
                             messages={chat.messages}
                             roomId={this.props.roomId}
-                            user={this.props.bubbleId}
+                            user={this.props.socket.id}
                             style={{ flex: 1 }}
                             onTyping={this.onEmitTyping}
                             onTypingStop={this.onEmitTypingStop}
@@ -235,7 +239,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         socket: state.socket,
-        bubbleId: state.socket.id,
+        bubbleId: state.bubbleId,
         chat: state.rooms.data[ownProps.roomId],
         joinedRooms: state.joinedRooms,
         someoneTyping: typing.join(', '),

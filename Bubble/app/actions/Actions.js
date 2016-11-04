@@ -127,7 +127,6 @@ export function backup(store) {
       settings: currentState.settings,
       rooms: currentState.rooms,
       myRooms: currentState.myRooms,
-      myRooms: currentState.myRooms,
   };
   return dispatch => {
     dispatch(backupStart(state));
@@ -528,7 +527,7 @@ export function onAddReaction(data) {
     }
 }
 
-export function sendMessage(socket, roomId, message) {
+export function sendMessage(socket, roomId, message, dateTime) {
     socket.emit('add_message', {
       roomId,
       message,
@@ -539,7 +538,8 @@ export function sendMessage(socket, roomId, message) {
         payload: {
           roomRoomId: roomId, // weird key name for server
           userId: socket.id,
-          message,
+          content: message,
+          createdAt: dateTime,
           sentByMe: true,
           messageType: 'PENDING' },
     }

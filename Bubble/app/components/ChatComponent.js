@@ -8,6 +8,7 @@ import { connect as connectRedux } from 'react-redux';
 import { generateName } from '../utils/ProfileHasher';
 
 var _ = require('lodash');
+var moment = require('moment');
 var adjectives = require('../utils/adjectives');
 var animals = require('../utils/animals');
 var numAvatars = 160;
@@ -31,19 +32,20 @@ export default class ChatComponent extends Component {
                 var messageOrg = messages[i];
                 var avatar = 'http://flathash.com/' + messageOrg.userId;
                 // var avatar = 'http://api.adorable.io/avatar/' + messageOrg.userId;
-
+                console.log(messageOrg);
                 var messageParsed = {
                     _id: messageOrg.id,
                     text: messageOrg.content,
                     createdAt: messageOrg.createdAt,
                     type: messageOrg.messageType,
-                    sent: messageOrg.messageType != "OPTIMISTIC-MESSAGE",
+                    sent: messageOrg.messageType != "PENDING",
                     received: false,
                     target: messageOrg.targetUser,
                     user: {
                         _id: messageOrg.userId,
                         name: generateName(messageOrg.userId),
                         avatar: avatar,
+                        isMe: messageOrg.userId == this.props.user || messageOrg.sentByMe
                     },
                 };
                 parsed.push(messageParsed);
@@ -58,7 +60,8 @@ export default class ChatComponent extends Component {
         var parsedMessage = {
             roomId: this.props.roomId,
             user: this.props.user,
-            message: message.text
+            message: message.text,
+            createdAt: moment().format()
         };
         this.props.onSend(parsedMessage);
     }
