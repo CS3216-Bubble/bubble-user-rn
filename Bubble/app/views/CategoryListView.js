@@ -18,28 +18,30 @@ export default class CategoryListView extends Component {
 
   render() {
 
+      const bgStyle = {width: 500, resizeMode: 'stretch'};
+
     var image;
     switch (this.props.selectedCategory.toLowerCase()) {
       case 'advice':
-        image = (<Image source={require('../img/advice_bg.png')} />);
+        image = (<Image source={require('../img/advice_bg.png')} style={bgStyle} />);
         break;
       case 'funny':
-        image = (<Image source={require('../img/funny_bg.png')} />);
+        image = (<Image source={require('../img/funny_bg.png')} style={bgStyle} />);
         break;
       case 'nostalgia':
-        image = (<Image source={require('../img/nostalgia_bg.png')} />);
+        image = (<Image source={require('../img/nostalgia_bg.png')} style={bgStyle} />);
         break;
       case 'rant':
-        image = (<Image source={require('../img/rant_bg.png')} />);
+        image = (<Image source={require('../img/rant_bg.png')} style={bgStyle} />);
         break;
       case 'relationship':
-        image = (<Image source={require('../img/relationship_bg.png')} />);
+        image = (<Image source={require('../img/relationship_bg.png')} style={bgStyle} />);
         break;
       case 'school':
-        image = (<Image source={require('../img/school_bg.png')} />);
+        image = (<Image source={require('../img/school_bg.png')} style={bgStyle} />);
         break;
       default:
-        image = (<Image source={require('../img/default_bg.png')} />);
+        image = (<Image source={require('../img/default_bg.png')} style={bgStyle} />);
         break;
     }
 
@@ -71,12 +73,11 @@ export default class CategoryListView extends Component {
     return (
           <ParallaxScrollView
             parallaxHeaderHeight={200}
+            backgroundColor="blue"
             stickyHeaderHeight={Platform.OS === 'ios' ? 64 : 56}
             backgroundSpeed={10}
             renderBackground={() => (
-              <View>
-                { image }
-              </View>
+              image
             )}
             renderForeground={() => (
               <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
