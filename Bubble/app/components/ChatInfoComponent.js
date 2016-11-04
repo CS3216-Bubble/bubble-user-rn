@@ -94,7 +94,7 @@ export default class ChatInfoComponent extends Component {
                                         {thumbnail}
                                     </View>
                                     <View style={{ flexDirection: 'column', justifyContent: "flex-start", alignItems: "flex-start" }}>
-                                        <Text style={{ fontSize: 18, fontWeight: "400", textAlign: 'left' }}>
+                                        <Text numberOfLines={2} style={{ fontSize: 18, fontWeight: "400", textAlign: 'left' }}>
                                             {this.props.chat.roomName}
                                         </Text>
                                         <Text note style={{ fontSize: 12, fontWeight: "300", textAlign: 'left' }} >

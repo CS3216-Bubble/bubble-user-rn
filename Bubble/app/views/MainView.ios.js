@@ -23,7 +23,6 @@ export class MainView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         if (nextProps.selectedTab) {
             this.setState({ selectedTab: nextProps.selectedTab });
         }

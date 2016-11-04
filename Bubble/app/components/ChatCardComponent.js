@@ -88,12 +88,12 @@ export default class ChatCardComponent extends Component {
                       </View>
                       <View style={Styles.cardMainRowText}>
                           <View style={Styles.cardTitle}>
-                              <Text style={Styles.cardTitleText} ellipsizeMode='middle' numberOfLines={1}>
+                              <Text numberOfLines={2} style={Styles.cardTitleText} ellipsizeMode='middle'>
                                   {chat.roomName}
                               </Text>
                               { chat.roomType == 'HOT' ? <Icon name='thumb-tack' style={{fontSize: 20, color: '#FA6900'}}/> : null }
                           </View>
-                          <Text style={Styles.cardDescription}>
+                          <Text numberOfLines={2} style={Styles.cardDescription}>
                               {chat.roomDescription}
                           </Text>
                           <View style={Styles.cardSubRow}>

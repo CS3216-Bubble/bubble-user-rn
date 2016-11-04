@@ -42,7 +42,7 @@ export default class ChatFormView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.isBackButtonVisible) {
+    if (nextProps.isBackButtonVisible) {
       this.setState({isBackButtonVisible: nextProps.isBackButtonVisible});
     }
   }
@@ -97,11 +97,27 @@ export default class ChatFormView extends Component {
     const form = this.state.form;
 
     // Clear form
-    this.setState({form: defaultForm});
+    this.clearForm();
 
     // Remove this ChatFormView from nav stack and replace with chat view
     // Enter chat loading view with chat id/object
-    Actions.chatLoadingView({form: form});
+    if (Platform.OS === 'ios') {
+        Actions.chatLoadingView({form: form});
+    } else {
+        Actions.chatLoadingView({type: ActionConst.REPLACE, form: form});
+    }
+
+  }
+
+  clearForm = () => {
+      this.setState({
+          form: {
+            name: '',
+            description: '',
+            numUsers: '7',
+            categories: [],
+          }
+      });
   }
 
   render() {
