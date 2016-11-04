@@ -42,6 +42,10 @@ export default class ChatListView extends Component {
     }
 
     componentWillReceiveProps(props) {
+        if (props.searchTerm) {
+            this.setState({searchTerm: props.searchTerm});
+        }
+
         this.setState({
             refresh: !this.state.refresh
         });

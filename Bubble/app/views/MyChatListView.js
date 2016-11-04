@@ -24,6 +24,9 @@ export class MyChatListView extends Component {
     }
 
     componentWillReceiveProps(props) {
+        if (props.searchTerm) {
+            this.setState({searchTerm: props.searchTerm});
+        }
         // // console.log("CHATLISTVIEW RECEIVES PROPS", props);
         // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({refresh: !this.state.refresh});
