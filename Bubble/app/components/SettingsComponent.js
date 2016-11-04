@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { Platform, StyleSheet, ScrollView, View, Switch } from 'react-native';
+import { Platform, StyleSheet, ScrollView, TouchableHighlight, View, Switch } from 'react-native';
 import { Picker, Text, Button } from 'native-base';
 import Dropdown from 'react-native-dropdown-android';
+
+import { Actions, ActionConst } from 'react-native-router-flux';
 
 import ProfileComponent from './ProfileComponent';
 
@@ -21,6 +23,8 @@ export default class SettingsComponent extends Component {
   }
 
   render() {
+      const selectedTab = Platform.OS === 'ios' ? 'settings' : 2;
+
       return (
         <View style={styles.fillContainer}>
           <ProfileComponent user={this.props.user} style={styles.profileContainer}/>
@@ -53,6 +57,11 @@ export default class SettingsComponent extends Component {
                />
                 }
             </View>
+            <TouchableHighlight onPress={() => Actions.onboardingView({navigateToNext: () => Actions.pop() })} underlayColor="#E5FEFF">
+              <View style={styles.customListItemRight}>
+                <Text style={styles.customListItemText}>View Tutorial</Text>
+              </View>
+            </TouchableHighlight>
           </ScrollView>
         </View>
       );

@@ -23,7 +23,7 @@ export class MainView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.log(nextProps);
+        console.log(nextProps);
         if (nextProps.selectedTab) {
             this.setState({ selectedTab: nextProps.selectedTab });
         }
@@ -75,6 +75,7 @@ export class MainView extends Component {
     };
 
     render() {
+        console.log(this.props);
         return (
             <TabBarIOS>
                 <Icon.TabBarItemIOS

@@ -9,7 +9,7 @@ export class LandingView extends Component {
     render() {
         setTimeout(() => {
             if (this.props.isFirstTimeUser) {
-                Actions.onboardingView({ type: ActionConst.REPLACE });
+                Actions.onboardingView({ type: ActionConst.REPLACE, navigateToNext: () => Actions.main({ type: ActionConst.REPLACE }) });
             } else {
                 Actions.main({ type: ActionConst.REPLACE });
             }

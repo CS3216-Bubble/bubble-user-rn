@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { StyleSheet, AppRegistry, View, Image, Text } from 'react-native';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import { unsetFirstTimeUser } from '../actions/Actions';
@@ -6,15 +6,18 @@ import { connect as connectRedux } from 'react-redux';
 import AppIntro from 'react-native-app-intro';
 
 export class OnboardingView extends Component {
+    static propTypes = {
+      navigateToNext: PropTypes.func.isRequired,
+    }
 
     onSkipBtnHandle = (index) => {
         this.props.onOnboardingFinished();
-        Actions.main({ type: ActionConst.REPLACE });
+        this.props.navigateToNext();
     }
 
     onDoneBtnHandle = () => {
         this.props.onOnboardingFinished();
-        Actions.main({ type: ActionConst.REPLACE });
+        this.props.navigateToNext();
     }
 
     render() {
