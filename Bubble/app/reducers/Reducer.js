@@ -232,7 +232,6 @@ export default function Reducer(state = initialState, action) {
             let i = messages.findIndex(m => m.messageType === 'PENDING');
             let myMessage = {
               ...action.payload,
-              userId: state.socket.id,
               bubbleId: state.bubbleId,
               received: true,
             }
@@ -254,7 +253,6 @@ export default function Reducer(state = initialState, action) {
             let i = messages.findIndex(m => m.messageType === 'PENDING');
             let myMessage = {
               ...action.payload,
-              userId: state.socket.id,
               bubbleId: state.bubbleId,
             }
             if (i >= 0) {
@@ -476,7 +474,6 @@ export default function Reducer(state = initialState, action) {
             messageType: 'JOIN_ROOM',
             id: createGUID(),
             roomRoomId: action.payload.roomId,
-            userId: action.payload.userId,
             bubbleId: action.payload.bubbleId,
           };
           return {
@@ -487,7 +484,7 @@ export default function Reducer(state = initialState, action) {
         case `${EXIT_ROOM}_SUCCESS`:
           var joined = state.joinedRooms;
           var roomId = action.payload.roomId;
-          if (action.payload.bubbleId == state.bubbleId || action.payload.userId == state.socket.id) {
+          if (action.payload.bubbleId == state.bubbleId) {
             // i exit the room
             joined = joined.filter(i => i !== roomId)
           }
@@ -496,7 +493,6 @@ export default function Reducer(state = initialState, action) {
             messageType: 'EXIT_ROOM',
             id: createGUID(),
             roomRoomId: action.payload.roomId,
-            userId: action.payload.userId,
             bubbleId: action.payload.bubbleId,
           };
           return {
