@@ -189,18 +189,22 @@ export function hydrateStore(state) {
 }
 
 export const CONNECT_SOCKET = 'CONNECT_SOCKET';
-export function connectSocket(token) {
-  const io = require('socket.io-client/socket.io');
-  const host = `wss://getbubblechat.com/?bubble=${token}`;
-  var socket = io(host, {
+export function connectSocket() {
+  return (dispatch, getState) => {
+    let token = getState().token;
+    const io = require('socket.io-client/socket.io');
+    const host = `wss://getbubblechat.com/`;
+    var socket = io(host, {
       transports: ['websocket', 'xhr-polling'], reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
       timeout: 20000
-  });
-  return {
-    type: CONNECT_SOCKET,
-    socket,
+    });
+    socket.on('connect_error', e => console.error(e));
+    return dispatch({
+      type: CONNECT_SOCKET,
+      socket,
+    });
   }
 }
 
