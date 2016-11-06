@@ -73,7 +73,7 @@ export class MainView extends Component {
     };
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         return (
             <TabBarIOS>
                 <Icon.TabBarItemIOS

@@ -11,6 +11,9 @@ import dismissKeyboard from 'dismissKeyboard';
 import { addReaction, joinRoom, addMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 import { generateName } from '../utils/ProfileHasher';
+import CustomLayoutLinear from '../animations/Animations';
+import CustomLayoutSpring from '../animations/Animations';
+
 
 var _ = require('lodash');
 var adjectives = require('../utils/adjectives');
@@ -90,7 +93,7 @@ export class ChatView extends Component {
     onTriggerModal(userId, otherUserId, roomId, otherUserName) {
 
         dismissKeyboard();
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        LayoutAnimation.configureNext(CustomLayoutLinear);
         this.setState({
             toggleModal: !this.state.toggleModal,
             modalInfo: { userId: userId, otherUserId: otherUserId, roomId: roomId, otherUserName: otherUserName }
@@ -100,6 +103,7 @@ export class ChatView extends Component {
     /* onExit is called when the user attempts to return to the previous page.
        This will not make the user leave the room */
     onExit() {
+        dismissKeyboard();
         if (Platform.OS === 'ios') {
             Actions.pop({refresh: {selectedTab: 'all'}});
         } else {
@@ -175,7 +179,7 @@ export class ChatView extends Component {
                             onTriggerModal={this.onTriggerModal}
                             messages={chat.messages}
                             roomId={this.props.roomId}
-                            user={this.props.bubbleId}
+                            userBubbleId={this.props.bubbleId}
                             style={{ flex: 1 }}
                             onTyping={this.onEmitTyping}
                             onTypingStop={this.onEmitTypingStop}
@@ -214,7 +218,7 @@ export class ChatView extends Component {
                             onTriggerModal={this.onTriggerModal}
                             messages={chat.messages}
                             roomId={this.props.roomId}
-                            user={this.props.bubbleId}
+                            userBubbleId={this.props.bubbleId}
                             style={{ flex: 1 }}
                             onTyping={this.onEmitTyping}
                             onTypingStop={this.onEmitTypingStop}

@@ -7,7 +7,7 @@ const defaultId = 1234567890;
 
 // Hash function
 function hashID(userId) {
-    if (userId) {
+    if (userId && userId != null) {
         var hash = 0;
         if (userId.length == 0) 
             return hash;

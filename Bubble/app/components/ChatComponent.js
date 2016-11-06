@@ -43,7 +43,7 @@ export default class ChatComponent extends Component {
                         _id: messageOrg.bubbleId,
                         name: generateName(messageOrg.bubbleId),
                         avatar: avatar,
-                        isMe: messageOrg.bubbleId == this.props.user || messageOrg.sentByMe
+                        isMe: messageOrg.sentByMe || (messageOrg.bubbleId == this.props.userBubbleId)
                     },
                 };
                 parsed.push(messageParsed);
