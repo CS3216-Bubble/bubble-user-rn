@@ -44,7 +44,7 @@ export class MyChatListComponent extends Component {
     }
 
     render() {
-        const userId = this.props.socket.id;
+        const bubbleId = this.props.bubbleId;
         const chatRooms = this.props.myRooms.slice();
         const refreshing = this.props.refreshing;
 
@@ -83,7 +83,7 @@ export class MyChatListComponent extends Component {
                         refreshing={refreshing}
                         onRefresh={this._onRefresh.bind(this)} />}
                     style={{ backgroundColor: 'red' }}>
-                    {userId ? null : disconnected}
+                    {bubbleId ? null : disconnected}
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Text>No results found for {this.props.searchTerm}.</Text>
                     </View>
@@ -98,7 +98,7 @@ export class MyChatListComponent extends Component {
                         onRefresh={this._onRefresh.bind(this)}
                         style={{ marginTop: -19 }} />}
                     >
-                    {userId ? null : disconnected}
+                    {bubbleId ? null : disconnected}
                     {chatsToShow.length == 0 ?
                         <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
                         : chatsToShow}
