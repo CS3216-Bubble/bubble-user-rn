@@ -477,7 +477,7 @@ export default function Reducer(state = initialState, action) {
             id: createGUID(),
             roomRoomId: action.payload.roomId,
             userId: action.payload.userId,
-            bubberId: action.payload.bubbleId,
+            bubbleId: action.payload.bubbleId,
           };
           return {
             ...updateRoomWithMessages(state, roomId, [data].concat(messages)),

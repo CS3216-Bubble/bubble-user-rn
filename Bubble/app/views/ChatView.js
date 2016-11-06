@@ -175,7 +175,7 @@ export class ChatView extends Component {
                             onTriggerModal={this.onTriggerModal}
                             messages={chat.messages}
                             roomId={this.props.roomId}
-                            user={this.props.socket.id}
+                            user={this.props.bubbleId}
                             style={{ flex: 1 }}
                             onTyping={this.onEmitTyping}
                             onTypingStop={this.onEmitTypingStop}
@@ -214,7 +214,7 @@ export class ChatView extends Component {
                             onTriggerModal={this.onTriggerModal}
                             messages={chat.messages}
                             roomId={this.props.roomId}
-                            user={this.props.socket.id}
+                            user={this.props.bubbleId}
                             style={{ flex: 1 }}
                             onTyping={this.onEmitTyping}
                             onTypingStop={this.onEmitTypingStop}

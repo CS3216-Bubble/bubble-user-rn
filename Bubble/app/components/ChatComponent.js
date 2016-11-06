@@ -38,12 +38,12 @@ export default class ChatComponent extends Component {
                     type: messageOrg.messageType,
                     sent: messageOrg.messageType != "PENDING",
                     received: false,
-                    target: messageOrg.targetUser,
+                    target: messageOrg.targetUserBubbleId,
                     user: {
-                        _id: messageOrg.userId,
-                        name: generateName(messageOrg.userId),
+                        _id: messageOrg.bubbleId,
+                        name: generateName(messageOrg.bubbleId),
                         avatar: avatar,
-                        isMe: messageOrg.userId == this.props.user || messageOrg.sentByMe
+                        isMe: messageOrg.bubbleId == this.props.user || messageOrg.sentByMe
                     },
                 };
                 parsed.push(messageParsed);
