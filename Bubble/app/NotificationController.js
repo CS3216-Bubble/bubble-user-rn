@@ -27,10 +27,13 @@ class NotificationController extends Component {
         }
     }
 
-    componentDidMount() {
-        const {socket} = this.props;
-        socket.on('add_message', this.toNotify.bind(this));
+    componentWillReceiveProps(nextProps) {
+        if (typeof nextProps.socket !== 'undefined' && nextProps.socket !== null) {
+            nextProps.socket.on('add_message', this.toNotify.bind(this));
+        }
+    }
 
+    componentDidMount() {
         PushNotification.configure({
             // (optional) Called when Token is generated (iOS and Android)
             onRegister: function (token) {
