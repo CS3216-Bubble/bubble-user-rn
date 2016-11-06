@@ -286,19 +286,10 @@ export function setSearchFilter(searchTerm) {
 //---------------- Utils ----------------
 
 // Action Types
-export const CACHE_NICKNAME = 'CACHE_NICKNAME'
 export const CACHE_USER_ID = 'CACHE_USER_ID'
 export const REHYDRATION_COMPLETE = 'REHYDRATION_COMPLETE'
 export const SET_TOKEN_STATUS = "SET_TOKEN_STATUS"
 
-// Action Creators
-export function cacheNickname(userId, nickname) {
-    return {
-        type: CACHE_NICKNAME,
-        userId: userId,
-        nickname: nickname
-    }
-}
 export function cacheUserId(userId) {
     return {
         type: CACHE_USER_ID,

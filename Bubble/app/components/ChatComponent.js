@@ -30,9 +30,7 @@ export default class ChatComponent extends Component {
         if (messages) {
             for (var i = 0; i < messages.length; ++i) {
                 var messageOrg = messages[i];
-                var avatar = 'http://flathash.com/' + messageOrg.userId;
-                // var avatar = 'http://api.adorable.io/avatar/' + messageOrg.userId;
-                console.log(messageOrg);
+                var avatar = 'http://flathash.com/' + messageOrg.bubbleId;
                 var messageParsed = {
                     _id: messageOrg.id,
                     text: messageOrg.content,

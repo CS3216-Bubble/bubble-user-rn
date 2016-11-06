@@ -23,7 +23,6 @@ import {
     REASSIGN_PENDING_MESSAGES,
     SET_CATEGORIES_FILTER,
     SET_SEARCH_FILTER,
-    CACHE_NICKNAME,
     REHYDRATION_COMPLETE,
     CONNECT,
     DISCONNECT,
@@ -108,7 +107,6 @@ const initialState = {
     chatRooms: {},
     connection: "DISCONNECTED",
     aliasId: [],
-    nickNameMap: {},
     filter: null,
     search: null,
     outbox: {},
@@ -439,16 +437,6 @@ export default function Reducer(state = initialState, action) {
         case SET_SEARCH_FILTER:
             return Object.assign({}, state, {
                 search: action.searchTerm
-            });
-
-        // Utils
-        case CACHE_NICKNAME:
-            var nickNameMap = Object.assign({}, state.nickNameMap);
-            if (action.userId != null && action.nickname != null) {
-                nickNameMap[action.userId] = action.nickname;
-            }
-            return Object.assign({}, state, {
-                nickNameMap: nickNameMap
             });
 
         // Sockets

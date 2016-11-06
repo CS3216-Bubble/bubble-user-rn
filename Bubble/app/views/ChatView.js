@@ -53,27 +53,26 @@ export class ChatView extends Component {
 
     onEmitThanks(context) {
         var request = {
-            user: context.userId,
             roomId: context.roomId,
             reaction: "THANK",
-            targetUser: context.otherUserId
+            targetUser: context.otherUserId,
+            targetUserBubbleId: context.otherUserId,
         };
         this.props.addReaction(this.props.socket, request);
     }
 
     onEmitCheers(context) {
         var request = {
-            user: context.userId,
             roomId: context.roomId,
             reaction: "CHEER",
-            targetUser: context.otherUserId
+            targetUser: context.otherUserId,
+            targetUserBubbleId: context.otherUserId,
         };
         this.props.addReaction(this.props.socket, request);
     }
 
     onEmitTyping() {
         var request = {
-            user: this.props.socket.id,
             roomId: this.props.roomId,
         }
         this.props.socket.emit('typing', request);
@@ -81,7 +80,6 @@ export class ChatView extends Component {
 
     onEmitTypingStop() {
         var request = {
-            user: this.props.socket.id,
             roomId: this.props.roomId,
         }
         this.props.socket.emit('stop_typing', request);
