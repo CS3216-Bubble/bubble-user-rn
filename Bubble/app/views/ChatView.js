@@ -8,7 +8,7 @@ import UserActionModalComponent from '../components/UserActionModalComponent';
 import { Styles } from '../styles/Styles';
 import { connect as connectRedux } from 'react-redux';
 import dismissKeyboard from 'dismissKeyboard';
-import { addReaction, joinRoom, sendMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
+import { addReaction, joinRoom, addMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 import { generateName } from '../utils/ProfileHasher';
 
@@ -45,7 +45,7 @@ export class ChatView extends Component {
 
     onSend(message) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-      this.props.sendMessage(this.props.socket, message.roomId, message.message, message.createdAt);
+      this.props.addMessage(this.props.socket, message.roomId, message.message, message.createdAt);
     }
 
     /* onSend is called when the user attempts to send a message.
@@ -248,7 +248,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveUnsentMsgs: (messages) => { dispatch(setPendingMessages(messages, ownProps.roomId)) },
         reassignOutbox: () => { dispatch(reassignPendingMessages()) },
-        sendMessage: (...args) => dispatch(sendMessage(...args)),
+        addMessage: (...args) => dispatch(addMessage(...args)),
         addReaction: (...args) => dispatch(addReaction(...args)),
         joinRoom: (...args) => dispatch(joinRoom(...args)),
     };

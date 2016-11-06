@@ -448,7 +448,7 @@ export function onAddReaction(data) {
     }
 }
 
-export function sendMessage(socket, roomId, message, dateTime) {
+export function addMessage(socket, roomId, message, dateTime) {
     socket.emit('add_message', {
       roomId,
       message,
