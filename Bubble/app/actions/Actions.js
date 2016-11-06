@@ -458,7 +458,6 @@ export function sendMessage(socket, roomId, message, dateTime) {
         type: `${SEND_MESSAGE}_PENDING`,
         payload: {
           roomRoomId: roomId, // weird key name for server
-          userId: socket.id,
           content: message,
           createdAt: dateTime,
           sentByMe: true,
