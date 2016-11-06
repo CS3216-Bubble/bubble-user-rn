@@ -7,44 +7,19 @@ import { Actions } from 'react-native-router-flux';
 
 import SettingsComponent from '../components/SettingsComponent';
 import { connect as connectRedux } from 'react-redux';
+import { generateName } from '../utils/ProfileHasher';
 
 var adjectives = require('../utils/adjectives');
 var animals = require('../utils/animals');
 
 export class SettingsView extends Component {
-
-    hashID(userId) {
-        var hash = 0;
-        if (userId.length == 0) return hash;
-        for (i = 0; i < userId.length; i++) {
-            char = userId.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-        return hash;
-    }
-
-    // Name generator
-    generateName(userId) {
-        var hashCode = this.hashID(userId);
-        var adj = adjectives.adjectives;
-        var ani = animals.animals;
-        // Get adjective
-        var adjective = adj[((hashCode % adj.length) + adj.length) % adj.length];
-        // Get animal
-        var animal = ani[((hashCode % ani.length) + ani.length) % ani.length];
-        // Return result
-        return adjective + " " + animal;
-    }
-
-    state = {
-        user: {
-            name: this.props.socket.id ? this.generateName(this.props.socket.id) : "Anonymous Bubbler",
-            imgSrc: 'http://flathash.com/' + (this.props.socket.id ?  this.props.socket.id : '1')
-        }
-    }
-
     render() {
+        const { bubbleId } = this.props;
+        const user = {
+          name: generateName(bubbleId) || "Anonymous Bubbler",
+          imgSrc: `http://flathash.com/${bubbleId}`
+        }
+
         return (
             <Container>
                 {Platform.OS === 'ios' ?
@@ -53,7 +28,7 @@ export class SettingsView extends Component {
                 </Header>
                 : null }
                 <Content>
-                    <SettingsComponent user={this.state.user} style={{ height: 300 }} />
+                    <SettingsComponent user={user} style={{ height: 300 }} />
                 </Content>
             </Container>
         );
@@ -62,7 +37,7 @@ export class SettingsView extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    socket: state.socket
+    bubbleId: state.bubbleId
   }
 ;}
 const mapDispatchToProps = (dispatch) => {
