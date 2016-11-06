@@ -307,12 +307,6 @@ export const LISTEN_TO_JOIN_ROOM = 'LISTEN_TO_JOIN_ROOM'
 export const EXIT_ROOM = 'EXIT_ROOM'
 export const I_EXIT = 'I_EXIT'
 export const LIST_ROOMS = 'LIST_ROOMS'
-export const VIEW_ROOM = 'VIEW_ROOM'
-export const LISTEN_TO_VIEW_ROOM = 'LISTEN_TO_VIEW_ROOM'
-export const DID_BEGIN_TYPING = 'DID_BEGIN_TYPING'
-export const DID_STOP_TYPING = 'DID_STOP_TYPING'
-export const LISTEN_TO_START_TYPING = 'LISTEN_TO_START_TYPING'
-export const LISTEN_TO_STOP_TYPING = 'LISTEN_TO_STOP_TYPING'
 export const REPORT_USER = 'REPORT_USER'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const LISTEN_TO_SEND_MESSAGE = 'LISTEN_TO_SEND_MESSAGE'
@@ -417,86 +411,6 @@ export function onListRooms(data) {
     return {
         type: `${LIST_ROOMS}_SUCCESS`,
         payload: data,
-    }
-}
-
-// viewRoom requires payload:
-//     roomId: string,
-//     user: string
-export function viewRoom(roomId, userId) {
-    const viewRequest = {
-        roomId: roomId,
-        user: userId
-    }
-    return {
-        type: VIEW_ROOM,
-        payload: viewRequest
-    }
-}
-
-// listenToViewRoom provides:
-//     roomId: string,
-//     roomName: string,
-//     roomType: string,
-//     userLimit: number,
-//     roomDescription: string,
-//     categories: string[],
-//     numUsers: number,
-//     lastActive: ISO date string,
-//     messages: Object[],
-//     participants: string[]
-export function listenToViewRoom(callback) {
-    return {
-        type: LISTEN_TO_VIEW_ROOM,
-        callback: callback
-    }
-}
-
-// didBeginTyping requires payload:
-//     roomId: string,
-//     user: string
-export function didBeginTyping(roomId, userId) {
-    const typeStatusBroadcast = {
-        roomId: roomId,
-        user: userId
-    }
-    return {
-        type: DID_BEGIN_TYPING,
-        payload: typeStatusBroadcast
-    }
-}
-
-// listenToStartTyping provides:
-//     roomId: string,
-//     user: string
-export function listenToStartTyping(callback) {
-    return {
-        type: LISTEN_TO_START_TYPING,
-        callback: callback
-    }
-}
-
-// didStopTyping requires payload:
-//     roomId: string,
-//     user: string
-export function didStopTyping(roomId, userId) {
-    const typeStatusBroadcast = {
-        roomId: roomId,
-        user: userId
-    }
-    return {
-        type: DID_STOP_TYPING,
-        payload: typeStatusBroadcast
-    }
-}
-
-// listenToStopTyping provides:
-//     roomId: string,
-//     user: string
-export function listenToStopTyping(callback) {
-    return {
-        type: LISTEN_TO_STOP_TYPING,
-        callback: callback
     }
 }
 
@@ -612,38 +526,6 @@ export function setUsername(userId, newName) {
 export function listenToSetUsername(callback) {
     return {
         type: LISTEN_TO_SET_USER_NAME,
-        callback: callback
-    }
-}
-
-// findCounsellor requires payload:
-//     userId: string
-//     faculty: string
-export function findCounsellor(userId, faculty) {
-    const counsellorChatRequest = {
-        userId: userId,
-        faculty: faculty
-    }
-    return {
-        type: FIND_COUNSELLOR,
-        payload: counsellorChatRequest
-    }
-}
-
-// listenToFindCounsellor provides:
-//     counsellorId: string,
-//     counsellorName: string,
-//     roomId: string,
-//     roomName: string,
-//     roomType: string,
-//     userLimit: number,
-//     roomDescription: string,
-//     categories: string[],
-//     numUsers: number,
-//     lastActive: ISO string
-export function listenToFindCounsellor(callback) {
-    return {
-        type: LISTEN_TO_FIND_COUNSELLOR,
         callback: callback
     }
 }
