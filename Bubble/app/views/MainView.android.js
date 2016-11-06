@@ -20,12 +20,11 @@ export class MainView extends Component {
 
     constructor(props) {
         super(props);
-        const {socket} = this.props;
-        const userId = socket.id;
+        const {bubbleId} = this.props;
         this.state = {
             user: {
-                name: generateName(userId),
-                imgSrc: genOnlineProfImgSrc(userId)
+                name: generateName(bubbleId),
+                imgSrc: genOnlineProfImgSrc(bubbleId)
             },
             selectedTab: 0,
             searchTerm: '',
@@ -104,7 +103,6 @@ export class MainView extends Component {
 // Redux Call
 const mapStateToProps = (state) => {
     return {
-      socket: state.socket,
       bubbleId: state.bubbleId,
     };
 }
