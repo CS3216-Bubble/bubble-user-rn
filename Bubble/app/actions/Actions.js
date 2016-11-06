@@ -123,7 +123,6 @@ export const BACKUP_KEY = '@bubble:all'
 export function backup(store) {
   let currentState = store.getState();
   let state = {
-      bubbleId: currentState.bubbleId,
       settings: currentState.settings,
       rooms: currentState.rooms,
       myRooms: currentState.myRooms,
