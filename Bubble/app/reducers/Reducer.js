@@ -55,6 +55,8 @@ import {
     STOP_TYPING,
     HYDRATE_PENDING,
     HYDRATE_SUCCESS,
+    CONNECT_SOCKET,
+    MY_ID,
 } from '../actions/Actions';
 import {createGUID} from "../utils/GUIDGenerator";
 
@@ -90,8 +92,9 @@ function updateRoomWithMessages(state, roomId, messages) {
 
 // Initialise State
 const initialState = {
-    socket: socketInit(),
-    bubbleId: createGUID(),
+    socket: null,
+    bubbleId: null,
+    token: createGUID(),
     settings: {
         isFirstTimeUser: true,
         gender: null,
@@ -129,6 +132,17 @@ const initialState = {
 export default function Reducer(state = initialState, action) {
 
     switch (action.type) {
+        case CONNECT_SOCKET:
+          return {
+            ...state,
+            socket: action.socket,
+          }
+        case MY_ID:
+          return {
+            ...state,
+            bubbleId: action.payload,
+          }
+
         case HYDRATE_PENDING:
           return {
             ...state,

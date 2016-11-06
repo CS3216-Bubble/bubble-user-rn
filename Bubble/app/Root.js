@@ -4,8 +4,10 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {
   backup,
+  connectSocket,
   cacheUserId,
   hydrateStore,
+  myId,
   onAddReaction,
   onCreateRoom,
   onExitRoom,
@@ -26,22 +28,24 @@ class Root extends Component {
     }
 
     componentDidMount() {
-        this.props.hydrateStore(); // hydrate redux store
-
-        const {socket} = this.props;
-
-        socket.on('connect', this.onConnect.bind(this));
-        socket.on('list_rooms', this.props.onListRooms);
-        socket.on('my_rooms', this.props.onMyRooms);
-        socket.on('add_message', this.props.onSendMessage);
-        socket.on('add_reaction', this.props.onAddReaction);
-        socket.on('bubble_error', this.onError);
-        socket.on('join_room', this.props.onJoinRoom);
-        socket.on('exit_room', this.props.onExitRoom);
-        socket.on('i_exit', this.onIExit.bind(this));
-        socket.on('typing', this.props.onTyping);
-        socket.on('stop_typing', this.props.onStopTyping);
-        socket.on('create_room', this.onCreateRoom.bind(this));
+        this.props.hydrateStore()
+          .then(() => this.props.connectSocket(this.props.token))
+          .then(() => {
+            const {socket} = this.props;
+            socket.on('connect', this.onConnect.bind(this));
+            socket.on('my_id', this.props.myId);
+            socket.on('list_rooms', this.props.onListRooms);
+            socket.on('my_rooms', this.props.onMyRooms);
+            socket.on('add_message', this.props.onSendMessage);
+            socket.on('add_reaction', this.props.onAddReaction);
+            socket.on('bubble_error', this.onError);
+            socket.on('join_room', this.props.onJoinRoom);
+            socket.on('exit_room', this.props.onExitRoom);
+            socket.on('i_exit', this.onIExit.bind(this));
+            socket.on('typing', this.props.onTyping);
+            socket.on('stop_typing', this.props.onStopTyping);
+            socket.on('create_room', this.onCreateRoom.bind(this));
+          });
 
         this.backup = this.backup.bind(this);
         const backupIntervalId = setInterval(this.backup, 10000);
@@ -129,6 +133,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onCreateRoom: (data) => dispatch(onCreateRoom(data)),
         onIExit: (data) => dispatch(onIExit(data)),
         hydrateStore: () => dispatch(hydrateStore()),
+        myId: (data) => dispatch(myId(data)),
+        connectSocket: (token) => dispatch(connectSocket(token)),
         backup: (state) => dispatch(backup(state)),
     };
 };

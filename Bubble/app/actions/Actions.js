@@ -136,7 +136,7 @@ export function backup(store) {
   }
 }
 
-const HYDRATE = 'HYDRATE'
+const HYDRATE = 'HYDRATE';
 export const HYDRATE_PENDING = `${HYDRATE}_PENDING`;
 export const HYDRATE_SUCCESS = `${HYDRATE}_SUCCESS`;
 export const HYDRATE_ERROR = `${HYDRATE}_ERROR`;
@@ -185,6 +185,30 @@ export function hydrateStore(state) {
     return AsyncStorage.getItem(BACKUP_KEY)
       .then(v => { dispatch(hydrateDone(v))})
       .catch(e => dispatch(hydrateError(e)))
+  }
+}
+
+export const CONNECT_SOCKET = 'CONNECT_SOCKET';
+export function connectSocket(token) {
+  const io = require('socket.io-client/socket.io');
+  const host = `wss://getbubblechat.com/?bubble=${token}`;
+  var socket = io(host, {
+      transports: ['websocket', 'xhr-polling'], reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      timeout: 20000
+  });
+  return {
+    type: CONNECT_SOCKET,
+    socket,
+  }
+}
+
+export const MY_ID = 'MY_ID';
+export function myId(data) {
+  return {
+    type: MY_ID,
+    payload: data,
   }
 }
 
