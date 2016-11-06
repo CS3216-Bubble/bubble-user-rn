@@ -55,7 +55,7 @@ export class ChatListComponent extends Component {
     }
 
     render() {
-        const userId = this.props.socket.id;
+        const bubbleId = this.props.bubbleId;
         const chatRooms = this.props.rooms.slice();
         const refreshing = this.props.refreshing;
 
@@ -106,7 +106,7 @@ export class ChatListComponent extends Component {
                     style={{
                         backgroundColor: 'red'
                     }}>
-                    {userId
+                    {bubbleId
                         ? null
                         : disconnected}
                     <View
@@ -133,7 +133,7 @@ export class ChatListComponent extends Component {
                                 .bind(this)
                         }
                         style={{ marginTop: -19 }} />}>
-                    {userId
+                    {bubbleId
                         ? null
                         : disconnected}
                     {chatsToShow.length == 0
