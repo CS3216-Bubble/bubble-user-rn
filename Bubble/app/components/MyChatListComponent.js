@@ -111,6 +111,7 @@ export class MyChatListComponent extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         socket: state.socket,
+        bubbleId: state.bubbleId,
         rooms: Object.values(state.rooms.data),
         myRooms: state.myRooms.data,
         refreshing: state.myRooms.refreshing,

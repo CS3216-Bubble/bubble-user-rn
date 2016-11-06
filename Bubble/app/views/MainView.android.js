@@ -103,7 +103,10 @@ export class MainView extends Component {
 
 // Redux Call
 const mapStateToProps = (state) => {
-    return {socket: state.socket};
+    return {
+      socket: state.socket,
+      bubbleId: state.bubbleId,
+    };
 }
 const mapDispatchToProps = (dispatch) => {
     return {};

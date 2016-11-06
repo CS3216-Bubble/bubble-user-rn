@@ -196,6 +196,7 @@ var styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
       socket: state.socket,
+      bubbleId: state.bubbleId,
       rooms: Object.values(state.rooms.data),
       refreshing: state.rooms.refreshing,
     };
