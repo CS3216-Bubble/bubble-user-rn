@@ -215,8 +215,9 @@ export default function Reducer(state = initialState, action) {
           var roomId = action.payload.roomRoomId; // note this weird key name
           var messages = state.rooms.data[roomId].messages || [];
           var toSend = {
-            id: state.bubbleId, // random id first
             ...action.payload,
+            bubbleId: state.bubbleId,
+            id: createGUID(), // random id first
             received: false,
           };
           messages = [toSend].concat(messages);
@@ -234,6 +235,7 @@ export default function Reducer(state = initialState, action) {
             let myMessage = {
               ...action.payload,
               userId: state.socket.id,
+              bubbleId: state.bubbleId,
               received: true,
             }
             if (i >= 0) {
@@ -255,6 +257,7 @@ export default function Reducer(state = initialState, action) {
             let myMessage = {
               ...action.payload,
               userId: state.socket.id,
+              bubbleId: state.bubbleId,
             }
             if (i >= 0) {
               messages[i] = myMessage;
@@ -272,7 +275,7 @@ export default function Reducer(state = initialState, action) {
           var newTyping = [];
 
           if (Array.isArray(oldTyping)) {
-            newTyping = [action.payload.userId, ...oldTyping];
+            newTyping = [action.payload.bubbleId, ...oldTyping];
           }
 
           return {
@@ -286,7 +289,7 @@ export default function Reducer(state = initialState, action) {
         case STOP_TYPING:
           var roomId = action.payload.roomId;
           var oldTyping = state.typing[roomId];
-          var newTyping = oldTyping.filter(i => i != action.payload.userId);
+          var newTyping = oldTyping.filter(i => i != action.payload.bubbleId);
           return {
             ...state,
             typing: {
@@ -486,6 +489,7 @@ export default function Reducer(state = initialState, action) {
             id: createGUID(),
             roomRoomId: action.payload.roomId,
             userId: action.payload.userId,
+            bubberId: action.payload.bubbleId,
           };
           return {
             ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
@@ -495,7 +499,7 @@ export default function Reducer(state = initialState, action) {
         case `${EXIT_ROOM}_SUCCESS`:
           var joined = state.joinedRooms;
           var roomId = action.payload.roomId;
-          if (action.payload.userId == state.socket.id) {
+          if (action.payload.bubbleId == state.bubbleId || action.payload.userId == state.socket.id) {
             // i exit the room
             joined = joined.filter(i => i !== roomId)
           }
@@ -505,6 +509,7 @@ export default function Reducer(state = initialState, action) {
             id: createGUID(),
             roomRoomId: action.payload.roomId,
             userId: action.payload.userId,
+            bubbleId: action.payload.bubbleId,
           };
           return {
             ...updateRoomWithMessages(state, roomId, [data].concat(messages)),
