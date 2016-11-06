@@ -12,8 +12,7 @@ export class MainView extends Component {
 
     constructor(props) {
         super(props);
-        const {socket} = this.props;
-        const userId = socket.id;
+        const { bubbleId } = this.props;
         this.state = {
             iconSize: 25,
             refresh: false,
@@ -145,7 +144,10 @@ export class MainView extends Component {
 
 // Redux Call
 const mapStateToProps = (state) => {
-    return { socket: state.socket };
+    return {
+      socket: state.socket,
+      bubbleId: state.bubbleId,
+    };
 }
 const mapDispatchToProps = (dispatch) => {
     return {};
