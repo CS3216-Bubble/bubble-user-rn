@@ -11,7 +11,6 @@ class NotificationController extends Component {
         console.log(data);
         if (AppState.currentState == 'background' && data.user != this.props.socket.id) {
             PushNotification.localNotification({
-                
                 /* Android Only Properties */
                 largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
                 // smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
@@ -19,7 +18,7 @@ class NotificationController extends Component {
 
                 /* iOS and Android properties */
                 title: data.roomName, // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
-                message: Platform.OS=="ios" 
+                message: Platform.OS=="ios"
                                     ? "[" + data.roomName + "]\n" + generateName(data.userId) + ": " + data.content
                                     :  data.content,
                 soundName: 'default', // (optional) Sound to play when the notification is shown.
