@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {
   backup,
   connectSocket,
-  cacheUserId,
   hydrateStore,
   myId,
   onAddReaction,
@@ -95,7 +94,6 @@ class Root extends Component {
         console.log("Connected", socketId);
 
         this.props.reassignOutbox();
-        this.props.memoId(socketId);
     }
 
     render() {
@@ -115,9 +113,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveUnsentMsgs: (messages) => {
             dispatch(setPendingMessages(messages, ownProps.roomId))
-        },
-        memoId: (userId) => {
-            dispatch(cacheUserId(userId))
         },
         reassignOutbox: () => {
             dispatch(reassignPendingMessages())

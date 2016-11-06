@@ -285,16 +285,9 @@ export function setSearchFilter(searchTerm) {
 //---------------- Utils ----------------
 
 // Action Types
-export const CACHE_USER_ID = 'CACHE_USER_ID'
 export const REHYDRATION_COMPLETE = 'REHYDRATION_COMPLETE'
 export const SET_TOKEN_STATUS = "SET_TOKEN_STATUS"
 
-export function cacheUserId(userId) {
-    return {
-        type: CACHE_USER_ID,
-        userId: userId,
-    }
-}
 export function rehydrationComplete() {
     return {
         type:REHYDRATION_COMPLETE
