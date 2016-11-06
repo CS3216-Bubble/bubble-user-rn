@@ -87,7 +87,7 @@ export default class ChatFormComponent extends Component {
                 placeholder='Name'
               />
               { this.isNameValid() ? null :
-                <Icon name='ios-close-circle' style={{color:'red'}}/>}
+                <Icon name='ios-close-circle' style={{color:'#EA5455'}}/>}
             </InputGroup>
           </View>
         </Animatable.View>
@@ -137,7 +137,7 @@ var styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       padding: 10,
-      paddingTop: 20,
+      paddingTop: 60,
       borderBottomColor: '#bbb',
       borderBottomWidth: StyleSheet.hairlineWidth,
       backgroundColor: '#A7DBD8'

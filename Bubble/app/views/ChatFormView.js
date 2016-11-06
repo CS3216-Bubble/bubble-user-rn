@@ -43,7 +43,7 @@ export default class ChatFormView extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isBackButtonVisible) {
-      this.setState({isBackButtonVisible: nextProps.isBackButtonVisible});
+      this.setState({ isBackButtonVisible: nextProps.isBackButtonVisible });
     }
   }
 
@@ -52,33 +52,31 @@ export default class ChatFormView extends Component {
     var form = this.state.form;
     form.name = name;
 
-    this.setState({form: form, isFormValid: this.isFormValid(form)});
+    this.setState({ form: form, isFormValid: this.isFormValid(form) });
   }
 
   onDescriptionChange = (description) => {
     var form = this.state.form;
     form.description = description;
 
-    this.setState({form: form});
+    this.setState({ form: form });
   }
 
   onNumUsersChange = (number) => {
     // Remove non-numeric characters
-    number = number.replace(/\D/g,'');
+    number = number.replace(/\D/g, '');
 
     var int = parseInt(number);
 
     // Enforce user limit
     if (int > Globals.MAX_USERS) {
       number = '' + Globals.MAX_USERS;
-    } else if (int < Globals.MIN_USERS || number == '') {
-      number = '' + Globals.MIN_USERS;
     }
 
     var form = this.state.form;
     form.numUsers = number;
 
-    this.setState({form: form, isFormValid: this.isFormValid(form)});
+    this.setState({ form: form, isFormValid: this.isFormValid(form) });
   }
 
   onCategoriesChange = (categories) => {
@@ -86,67 +84,71 @@ export default class ChatFormView extends Component {
     form.categories = categories;
     categories.sort();
 
-    this.setState({form: form});
+    this.setState({ form: form });
   }
 
   isFormValid = (form) => {
-    return form.name != '' && form.numUsers != '';
+    return form.name != '' && parseInt(form.numUsers) > Globals.MIN_USERS;
   }
 
   createChat = () => {
+
     const form = this.state.form;
 
-    // Clear form
-    this.clearForm();
+    if (isFormValid(form)) {
 
-    // Remove this ChatFormView from nav stack and replace with chat view
-    // Enter chat loading view with chat id/object
-    if (Platform.OS === 'ios') {
-        Actions.chatLoadingView({form: form});
-    } else {
-        Actions.chatLoadingView({type: ActionConst.REPLACE, form: form});
+      // Clear form
+      this.clearForm();
+
+      // Remove this ChatFormView from nav stack and replace with chat view
+      // Enter chat loading view with chat id/object
+      if (Platform.OS === 'ios') {
+        Actions.chatLoadingView({ form: form });
+      } else {
+        Actions.chatLoadingView({ type: ActionConst.REPLACE, form: form });
+      }
     }
 
   }
 
   clearForm = () => {
-      this.setState({
-          form: {
-            name: '',
-            description: '',
-            numUsers: '7',
-            categories: [],
-          }
-      });
+    this.setState({
+      form: {
+        name: '',
+        description: '',
+        numUsers: '7',
+        categories: [],
+      }
+    });
   }
 
   render() {
 
-      const fontStyle = this.state.isFormValid ?
-                    (Platform.OS === 'ios' ? {color:'#0E7AFE'} : {color:'#FFFFFF'})
-                    : {color: '#999999'};
+    const fontStyle = this.state.isFormValid ?
+      (Platform.OS === 'ios' ? { color: '#0E7AFE' } : { color: '#FFFFFF' })
+      : { color: '#999999' };
 
-      return (
-          <Container theme={CustomTheme}>
-              <Header>
-                  <Title>Create Chat</Title>
-                  <Button transparent onPress={Actions.pop}>
-                      { this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE"/> : <Text></Text> }
-                  </Button>
-                  <Button disabled={!this.state.isFormValid} transparent onPress={this.createChat}>
-                      <Text style={fontStyle}>Create</Text>
-                  </Button>
-              </Header>
-              <Content>
-                  <ChatFormComponent
-                    form={this.state.form}
-                    onNameChange={this.onNameChange}
-                    onDescriptionChange={this.onDescriptionChange}
-                    onNumUsersChange={this.onNumUsersChange}
-                    onCategoriesChange={this.onCategoriesChange}
-                  />
-              </Content>
-          </Container>
-      );
+    return (
+      <Container theme={CustomTheme}>
+        <Header>
+          <Title>Create Chat</Title>
+          <Button transparent onPress={Actions.pop}>
+            {this.state.isBackButtonVisible ? <Icon size={30} name='ios-arrow-back' color="#0E7AFE" /> : <Text></Text>}
+          </Button>
+          <Button disabled={!this.state.isFormValid} transparent onPress={this.createChat}>
+            <Text style={fontStyle}>Create</Text>
+          </Button>
+        </Header>
+        <Content>
+          <ChatFormComponent
+            form={this.state.form}
+            onNameChange={this.onNameChange}
+            onDescriptionChange={this.onDescriptionChange}
+            onNumUsersChange={this.onNumUsersChange}
+            onCategoriesChange={this.onCategoriesChange}
+            />
+        </Content>
+      </Container>
+    );
   }
 }
