@@ -1,46 +1,54 @@
 import React, { Component } from 'react';
 import { Platform, Text, View } from 'react-native';
-
 import { Container, Header, Content, Button, Icon, Title } from 'native-base';
-
 import { Actions } from 'react-native-router-flux';
-
 import SettingsComponent from '../components/SettingsComponent';
 import { connect as connectRedux } from 'react-redux';
 import { generateName } from '../utils/ProfileHasher';
-
-var adjectives = require('../utils/adjectives');
-var animals = require('../utils/animals');
+import { toggleNotificationsDisplayFlag } from '../actions/Actions';
 
 export class SettingsView extends Component {
     render() {
         const { bubbleId } = this.props;
         const user = {
-          name: generateName(bubbleId) || "Anonymous Bubbler",
-          imgSrc: `http://flathash.com/${bubbleId}`
+            name: generateName(bubbleId) || "Anonymous Bubbler",
+            imgSrc: `http://flathash.com/${bubbleId}`
         }
 
-        return (
-            <Container>
-                {Platform.OS === 'ios' ?
-                <Header>
-                    <Title>Settings</Title>
-                </Header>
-                : null }
-                <Content>
-                    <SettingsComponent user={user} style={{ height: 300 }} />
-                </Content>
-            </Container>
-        );
+        if (Platform.OS == 'ios') {
+            return (
+                <Container>
+                    <Header>
+                        <Title>Settings</Title>
+                    </Header>
+                    <Content>
+                        <SettingsComponent user={user}
+                            onChangeNotification={this.props.onChangeNotificationSettings}
+                            notificationStats={this.props.notificationStats} />
+                    </Content>
+                </Container>);
+        } else {
+            return (
+                <SettingsComponent user={user}
+                    onChangeNotification={this.props.onChangeNotificationSettings}
+                    notificationStats={this.props.notificationStats} />
+            );
+        }
     }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    bubbleId: state.bubbleId
-  }
-;}
+    return {
+        bubbleId: state.bubbleId,
+        notificationStats: state.settings.showAllNotifications,
+    }
+        ;
+}
 const mapDispatchToProps = (dispatch) => {
-  return {};
+    return {
+        onChangeNotificationSettings: () => {
+            dispatch(toggleNotificationsDisplayFlag())
+        }
+    };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(SettingsView);

@@ -119,14 +119,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#9DD6EB',
         paddingLeft: 15,
         paddingRight: 15,
-        paddingTop: 70,
+        paddingTop: 50,
+        paddingBottom: 50
     },
     text: {
         color: '#fff',
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 10,
     },
     description: {
         color: '#fff',

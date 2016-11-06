@@ -8,8 +8,9 @@ var PushNotification = require('react-native-push-notification');
 class NotificationController extends Component {
 
     toNotify(data) {
-        console.log(data);
-        if (AppState.currentState == 'background' && data.user != this.props.socket.id) {
+        // console.log(data);
+        // console.log(this.props.shouldNotify);
+        if (AppState.currentState == 'background' && data.user != this.props.socket.id && this.props.shouldNotify) {
             PushNotification.localNotification({
                 /* Android Only Properties */
                 largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
@@ -56,7 +57,8 @@ class NotificationController extends Component {
 /*** Redux Call ***/
 const mapStateToProps = (state) => {
     return {
-        socket: state.socket
+        socket: state.socket,
+        shouldNotify: state.settings.showAllNotifications
     };
 }
 const mapDispatchToProps = (dispatch) => {
