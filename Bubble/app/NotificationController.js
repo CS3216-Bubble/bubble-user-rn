@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { connect as connectRedux } from 'react-redux';
+import { generateName, genLocalProfImg} from './utils/ProfileHasher';
 
 var PushNotification = require('react-native-push-notification');
 
@@ -13,14 +14,14 @@ class NotificationController extends Component {
                 
                 /* Android Only Properties */
                 largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
-                smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
-                subText: "Author", // (optional) default: none
+                // smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
+                subText: "... says " + generateName(data.userId), // (optional) default: none
 
                 /* iOS and Android properties */
-                title: "Author > Room", // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
-                message: Plaform.OS=="ios" 
-                                    ? "IOS VERSION CONTENT" 
-                                    :  "ANDROID VERSION CONTENT",
+                title: data.roomName, // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
+                message: Platform.OS=="ios" 
+                                    ? "[" + data.roomName + "]\n" + generateName(data.userId) + ": " + data.content
+                                    :  data.content,
                 soundName: 'default', // (optional) Sound to play when the notification is shown.
             });
         }

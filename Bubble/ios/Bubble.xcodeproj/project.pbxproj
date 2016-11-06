@@ -27,6 +27,7 @@
 		320671D1BD2645D59AF80FF6 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3179324FD9CD43FCA2F43F39 /* Entypo.ttf */; };
 		3698BD4AA03042DB81658ADD /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE2E261DB54E4CEDAFDA3018 /* Zocial.ttf */; };
 		40D43F3E0EFB49A78BB28860 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F41075E8893A425D81C8A6FD /* Arial Black.ttf */; };
+		4641307B1DCF7B3200C37B43 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A7B1C71DC85849001CEB46 /* libRCTPushNotification.a */; };
 		46A7B1D51DC8586B001CEB46 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46A7B1C71DC85849001CEB46 /* libRCTPushNotification.a */; };
 		46EC63801DC81AE700965CEB /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46EC63781DC81AE700965CEB /* Entypo.ttf */; };
 		46EC63811DC81AE700965CEB /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46EC63781DC81AE700965CEB /* Entypo.ttf */; };
@@ -309,6 +310,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4641307B1DCF7B3200C37B43 /* libRCTPushNotification.a in Frameworks */,
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1155,7 +1157,6 @@
 					"$(SRCROOT)/../node_modules/react-native-picker/ios/RCTBEEPickerManager",
 					"$(SRCROOT)/../node_modules/react-native-textinput-utils/RCTTextInputUtils/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1198,7 +1199,6 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-picker/ios/RCTBEEPickerManager",
 					"$(SRCROOT)/../node_modules/react-native-textinput-utils/RCTTextInputUtils/**",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
