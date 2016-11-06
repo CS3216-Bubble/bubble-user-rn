@@ -37,7 +37,7 @@ export class CategoryListComponent extends Component {
     }
 
     render() {
-        var userId = this.props.socket.id;
+        var bubbleId = this.props.bubbleId;
 
         var chatRooms = this.props.rooms.slice();
         const refreshing = this.props.refreshing;
@@ -70,7 +70,7 @@ export class CategoryListComponent extends Component {
             refreshControl={<RefreshControl
             refreshing={refreshing}
             onRefresh={this._onRefresh.bind(this)} />}>
-              { userId ? null : disconnected }
+              { bubbleId ? null : disconnected }
               {chatsToShow.length == 0 ?
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <Text>No chats found for {this.props.selectedCategory}.</Text>
