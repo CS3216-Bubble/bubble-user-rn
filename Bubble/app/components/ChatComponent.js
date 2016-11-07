@@ -70,6 +70,7 @@ export default class ChatComponent extends Component {
                 messages={this.parseMessages(this.props.messages)}
                 onSend={this.onSend}
                 user={{ _id: this.props.user }}
+                currBubbleId={this.props.userBubbleId}
                 isAnimated={true}
                 onType={this.props.onTyping}
                 onAvatarPress={(otherUserId, otherUserName) => { this.props.onTriggerModal(this.props.user, otherUserId, this.props.roomId, otherUserName) } }
