@@ -17,7 +17,6 @@ export class MainView extends Component {
             iconSize: 25,
             refresh: false,
             selectedTab: 'all',
-            toggleMyChats: false
         };
     }
 
@@ -45,7 +44,6 @@ export class MainView extends Component {
                 return (
                     <MyChatListView
                         key="open"
-                        toggle={this.state.toggleMyChats}
                         title="Open Chats"
                         onCreateChatPressed={this.onCreateChatPressed}
                         />
@@ -95,7 +93,7 @@ export class MainView extends Component {
                     selected={this.state.selectedTab === 'open'}
                     onPress={() => {
                         this.setState({
-                            selectedTab: 'open', toggleMyChats: !this.state.toggleMyChats
+                            selectedTab: 'open'
                         });
                     } }>
                     {this._renderContent()}
@@ -145,8 +143,8 @@ export class MainView extends Component {
 // Redux Call
 const mapStateToProps = (state) => {
     return {
-      socket: state.socket,
-      bubbleId: state.bubbleId,
+        socket: state.socket,
+        bubbleId: state.bubbleId,
     };
 }
 const mapDispatchToProps = (dispatch) => {

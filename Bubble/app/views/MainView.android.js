@@ -28,14 +28,12 @@ export class MainView extends Component {
             },
             selectedTab: 0,
             searchTerm: '',
-            toggleMyChats: false
         }
     }
 
     onChangeTab = (tab) => {
         this.setState({
             selectedTab: tab.i,
-            toggleMyChats: !this.state.toggleMyChats
         });
     }
 
@@ -80,12 +78,15 @@ export class MainView extends Component {
                             <ChatListView
                                 tabLabel='All'
                                 searchTerm={this.state.searchTerm}
-                                onCreateChatPressed={this.onCreateChatPressed}/>
+                                onCreateChatPressed={this.onCreateChatPressed}
+                                selectedTab={this.state.selectedTab}
+                                />
                             <MyChatListView
-                                toggle={this.state.toggleMyChats}
                                 tabLabel='My Chats'
                                 searchTerm={this.state.searchTerm}
-                                onCreateChatPressed={this.onCreateChatPressed}/>
+                                onCreateChatPressed={this.onCreateChatPressed}
+                                selectedTab={this.state.selectedTab}
+/>
                             <SettingsView tabLabel='Settings' user={this.state.user}/>
                         </Tabs>
                     </View>

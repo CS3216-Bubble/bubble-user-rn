@@ -95,7 +95,7 @@ export default class ChatFormView extends Component {
 
     const form = this.state.form;
 
-    if (isFormValid(form)) {
+    if (this.isFormValid(form)) {
 
       // Clear form
       this.clearForm();

@@ -48,30 +48,35 @@ export class ChatListComponent extends Component {
 
     }
 
-    _onRefresh() {
+    onRefresh() {
         this.props.listRooms(this.props.socket);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.listRooms(this.props.socket);
+    }
+
+    componentWillUnmount() {
+        // console.log ("I AM UNMOUNTING!!! [CHAT LIST COMPONENT]");
     }
 
     render() {
         const bubbleId = this.props.bubbleId;
-        const chatRooms = this.props.rooms.slice();
+        var chatRooms = this.props.rooms.slice();
+        // const chatRooms = this.props.rooms;
         const refreshing = this.props.refreshing;
 
         chatRooms.sort(roomByTypeLastActive);
 
         // Create list of chats to show
-        const chatsToShow = chatRooms.map(function (chat) {
+        var chatsToShow = chatRooms.map(function (chat) {
 
             const chatContainsSearchTerm = (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 || chat.roomDescription.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1);
 
             if (chatContainsSearchTerm) {
                 // Create chat card
                 return (<ChatCardComponent
-                    key={chat.roomId}
+                    key={chat.roomId+'-list'}
                     chat={chat}
                     showCategoriesOnCard={this.state.showCategoriesOnCard} />);
             }
@@ -85,7 +90,7 @@ export class ChatListComponent extends Component {
                         style={{
                             backgroundColor: Globals.CATEGORY_COLOURS[name]
                         }}
-                        key={index}
+                        key={name}
                         onPress={() => Actions.categoryListView({ selectedCategory: name })}>
                         <Text
                             style={{
@@ -123,12 +128,8 @@ export class ChatListComponent extends Component {
                     style={{
                         flex: 1
                     }}
-                    refreshControl={< RefreshControl refreshing={refreshing}
-                        onRefresh={
-                            this
-                                ._onRefresh
-                                .bind(this)
-                        } />}>
+                    refreshControl={<RefreshControl refreshing={refreshing}
+                        onRefresh={this.onRefresh.bind(this)} />}>
                     {bubbleId
                         ? null
                         : disconnected}
@@ -155,12 +156,8 @@ export class ChatListComponent extends Component {
                         style={{
                             flex: 1
                         }}
-                        refreshControl={< RefreshControl refreshing={refreshing}
-                            onRefresh={
-                                this
-                                    ._onRefresh
-                                    .bind(this)
-                            } />}>
+                        refreshControl={<RefreshControl refreshing={refreshing}
+                            onRefresh={this.onRefresh.bind(this)} />}>
                         {bubbleId
                             ? null
                             : disconnected}

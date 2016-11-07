@@ -69,7 +69,7 @@ export default class ChatListView extends Component {
                         style={{
                             backgroundColor: Globals.CATEGORY_COLOURS[name]
                         }}
-                        key={index}
+                        key={name}
                         onPress={() => Actions.categoryListView({ selectedCategory: name })}>
                         <Text
                             style={{
@@ -116,7 +116,8 @@ export default class ChatListView extends Component {
                         refresh={this.state.refresh}
                         searchTerm={this.state.searchTerm}
                         showOpenChatsOnly={this.props.showOpenChatsOnly}
-                        onCreateChatPressed={this.props.onCreateChatPressed} />
+                        onCreateChatPressed={this.props.onCreateChatPressed}
+                        selectedTab={this.props.selectedTab} />
                 </View>
             </Container>
         );

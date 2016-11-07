@@ -23,19 +23,14 @@ export class MyChatListView extends Component {
         this.clearSearchBar = this.clearSearchBar.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if (props.searchTerm) {
-            this.setState({searchTerm: props.searchTerm});
-        }
-        // // console.log("CHATLISTVIEW RECEIVES PROPS", props);
-        // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({refresh: !this.state.refresh});
-    }
-
-    componentWillUnmount() {
-        console.log("UNMOUNTING MY VIEW LIST");
-        this.props.socket.removeListener('my_rooms', this.onReceiveRoomListing);
-    }
+    // componentWillReceiveProps(props) {
+    //     if (props.searchTerm) {
+    //         this.setState({searchTerm: props.searchTerm});
+    //     }
+    //     // // console.log("CHATLISTVIEW RECEIVES PROPS", props);
+    //     // LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    //     this.setState({refresh: !this.state.refresh});
+    // }
 
     onSearchBarTextChange = (text) => {
       const showCategoryFilter = text == '';
@@ -53,7 +48,7 @@ export class MyChatListView extends Component {
     render() {
         const categoryButtons = Globals.CATEGORIES.map(function(name, index) {
           return (
-            <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} rounded info key={index} onPress={() => Actions.categoryListView({selectedCategory: name})}>
+            <Button style={{backgroundColor: Globals.CATEGORY_COLOURS[name]}} rounded info key={name} onPress={() => Actions.categoryListView({selectedCategory: name})}>
                 <Text style={{fontSize: 10, color: 'white', fontWeight: "600"}} >{name}</Text>
             </Button>
           );
@@ -82,7 +77,8 @@ export class MyChatListView extends Component {
                     refresh={this.state.refresh}
                     searchTerm={this.state.searchTerm}
                     onCreateChatPressed={this.props.onCreateChatPressed}
-                    listing={this.state.listing} />
+                    listing={this.state.listing}
+                    selectedTab={this.props.selectedTab} />
                 </View>
             </Container>
         );

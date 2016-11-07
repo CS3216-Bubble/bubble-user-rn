@@ -35,26 +35,27 @@ export class MyChatListComponent extends Component {
         }
     }
 
-    _onRefresh() {
+    onRefresh() {
         this.props.fetchMyRooms(this.props.socket);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.fetchMyRooms(this.props.socket);
     }
 
     render() {
+
         const bubbleId = this.props.bubbleId;
-        const chatRooms = this.props.myRooms.slice();
+        var chatRooms = this.props.myRooms.slice();
         const refreshing = this.props.refreshing;
 
         chatRooms.sort(roomByTypeLastActive);
 
         // Create list of chats to show
-        const chatsToShow = chatRooms.map(function (chatId) {
-          const chat = this.props.rooms.filter(
-            cc => cc.roomId = chatId
-          )[0]
+        var myChatsToShow = chatRooms.map(function (chatId) {
+            const chat = this.props.rooms.filter(
+                cc => cc.roomId = chatId
+            )[0]
 
             const chatContainsSearchTerm =
                 (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
@@ -63,7 +64,7 @@ export class MyChatListComponent extends Component {
             if (chatContainsSearchTerm) {
                 // Create chat card
                 return (
-                    <MyChatCardComponent key={chat.roomId} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
+                    <MyChatCardComponent key={chat.roomId + '-open'} chat={chat} showCategoriesOnCard={this.state.showCategoriesOnCard} />
                 );
             }
         }, this);
@@ -75,14 +76,13 @@ export class MyChatListComponent extends Component {
         );
 
         // If no search results found
-        if (chatsToShow.length == 0 && this.props.searchTerm != '') {
+        if (myChatsToShow.length == 0 && this.props.searchTerm != '') {
             return (
                 <ScrollView
                     style={{ flex: 1 }}
                     refreshControl={<RefreshControl
                         refreshing={refreshing}
-                        onRefresh={this._onRefresh.bind(this)} />}
-                    style={{ backgroundColor: 'red' }}>
+                        onRefresh={this.onRefresh.bind(this)} />}>
                     {bubbleId ? null : disconnected}
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Text>No results found for {this.props.searchTerm}.</Text>
@@ -95,13 +95,13 @@ export class MyChatListComponent extends Component {
                     style={{ flex: 1 }}
                     refreshControl={<RefreshControl
                         refreshing={refreshing}
-                        onRefresh={this._onRefresh.bind(this)}
+                        onRefresh={this.onRefresh.bind(this)}
                         style={{ marginTop: -19 }} />}
                     >
                     {bubbleId ? null : disconnected}
-                    {chatsToShow.length == 0 ?
+                    {myChatsToShow.length == 0 ?
                         <ChatPlaceholderComponent style={{ flex: 1 }} onCreateChatPressed={this.props.onCreateChatPressed} />
-                        : chatsToShow}
+                        : myChatsToShow}
                 </ScrollView>
             );
         }
@@ -119,7 +119,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-      fetchMyRooms: (socket) => dispatch(myRooms(socket)),
+        fetchMyRooms: (socket) => dispatch(myRooms(socket)),
     };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(MyChatListComponent);

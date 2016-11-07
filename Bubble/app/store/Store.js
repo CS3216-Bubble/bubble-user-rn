@@ -14,8 +14,8 @@ var storage = undefined;
 let middleware = [thunk]
 if (__DEV__) {
   const logger = createLogger();
-  middleware = [...middleware, logger]
-  // middleware = [...middleware]
+  // middleware = [...middleware, logger]
+  middleware = [...middleware]
 
 }
 

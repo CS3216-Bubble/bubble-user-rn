@@ -160,6 +160,7 @@ export default function Reducer(state = initialState, action) {
             },
           }
         case `${LIST_ROOMS}_SUCCESS`:
+        console.log("MY CHATS: ",action.payload);
           let roomsById = {};
           action.payload.forEach(r => roomsById[r.roomId] = r);
 
@@ -179,6 +180,7 @@ export default function Reducer(state = initialState, action) {
             }
           }
         case `${MY_ROOMS}_SUCCESS`:
+            console.log(action.payload);
           return {
             ...state,
             myRooms: {
