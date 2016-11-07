@@ -44,6 +44,10 @@ class Root extends Component {
             socket.on('typing', this.props.onTyping);
             socket.on('stop_typing', this.props.onStopTyping);
             socket.on('create_room', this.onCreateRoom.bind(this));
+            socket.on('error', this.onError.bind(this));
+            socket.on('disconnect', this.onDisconnect.bind(this));
+            socket.on('reconnecting', this.onReconnecting.bind(this));
+            socket.onError = this.onError.bind(this);
           });
 
         this.backup = this.backup.bind(this);
@@ -57,6 +61,18 @@ class Root extends Component {
 
     backup() {
         this.props.backup(this.context.store);
+    }
+
+    onError() {
+
+    }
+
+    onDisconnect() {
+
+    }
+
+    onReconnecting() {
+
     }
 
     onIExit(data) {

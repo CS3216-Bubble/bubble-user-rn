@@ -57,7 +57,7 @@ export class MyChatListComponent extends Component {
                 cc => cc.roomId == chatId
             )[0]
 
-            console.log("SHOW MAH CHATS YO", chat);
+            // console.log("SHOW MAH CHATS YO", chat);
 
             const chatContainsSearchTerm =
                 (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||

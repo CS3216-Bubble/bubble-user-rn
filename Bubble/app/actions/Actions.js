@@ -200,7 +200,13 @@ export function connectSocket() {
       reconnectionDelayMax: 5000,
       timeout: 20000
     });
-    socket.on('connect_error', e => console.error(e));
+    socket.on('connect_error', e => 
+        // Handle error here and continue
+        // console.error(e)
+        console.log(e)
+
+        // Set connection status
+    );
     return dispatch({
       type: CONNECT_SOCKET,
       socket,

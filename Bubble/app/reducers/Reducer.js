@@ -180,7 +180,7 @@ export default function Reducer(state = initialState, action) {
             }
           }
         case `${MY_ROOMS}_SUCCESS`:
-            console.log(action.payload);
+            // console.log(action.payload);
           return {
             ...state,
             myRooms: {
