@@ -54,8 +54,10 @@ export class MyChatListComponent extends Component {
         // Create list of chats to show
         var myChatsToShow = chatRooms.map(function (chatId) {
             const chat = this.props.rooms.filter(
-                cc => cc.roomId = chatId
+                cc => cc.roomId == chatId
             )[0]
+
+            console.log("SHOW MAH CHATS YO", chat);
 
             const chatContainsSearchTerm =
                 (chat.roomName.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) > -1 ||
