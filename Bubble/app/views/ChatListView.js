@@ -7,7 +7,8 @@ import {
     ScrollView,
     LayoutAnimation,
     UIManager,
-    Platform
+    Platform,
+    TouchableWithoutFeedback
 } from 'react-native';
 import {
     Container,
@@ -43,7 +44,7 @@ export default class ChatListView extends Component {
 
     componentWillReceiveProps(props) {
         if (props.searchTerm) {
-            this.setState({searchTerm: props.searchTerm});
+            this.setState({ searchTerm: props.searchTerm });
         }
 
         this.setState({
@@ -93,12 +94,9 @@ export default class ChatListView extends Component {
                                 onChangeText={this.onSearchBarTextChange}
                                 style={{
                                     paddingBottom: 10
-                                }} /> {this.state.searchTerm.length > 0 && <Icon
-                                    name='ios-close'
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        paddingTop: 2
-                                    }} onPress={this.clearSearchBar} />}
+                                }} />
+                            {this.state.searchTerm.length > 0 && <Icon underlayColor='transparent' transparent onPress={this.clearSearchBar} style={{backgroundColor: 'transparent', marginBottom: 5}}
+                                name='ios-close' />}
                         </InputGroup>
                         <Button transparent onPress={this.props.onCreateChatPressed}>
                             <Icon name='ios-create-outline' />

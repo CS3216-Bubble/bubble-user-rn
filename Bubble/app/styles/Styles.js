@@ -59,7 +59,7 @@ export var Styles = StyleSheet.create({
         width: 36,
         borderRadius: 18,
         justifyContent: 'space-between',
-        marginRight: 10
+        marginRight: 10,
     },
     image: {
         height: 36,
@@ -68,6 +68,7 @@ export var Styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     cardContainer: {
+        flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'stretch',
@@ -84,11 +85,11 @@ export var Styles = StyleSheet.create({
         backgroundColor: '#A7DBD8',
         borderRadius: 30,
         padding: 20,
-        margin: 5
+        margin: 5,
+        marginTop: 10
     },
     cardMainRow: {
         flexDirection: 'row',
-        height: 70,
     },
     cardMainRowText: {
         flex: 1,
@@ -103,11 +104,13 @@ export var Styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        padding: 5
     },
     cardTitleText: {
         flex: 1,
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: '500',
+        textAlign: 'left'
     },
     cardSubRow: {
         flex: 1,
@@ -118,7 +121,11 @@ export var Styles = StyleSheet.create({
     cardSubRowTextLeft: {
         flex: 1,
         fontSize: 12,
-        textAlign: 'left'
+        textAlign: 'left',
+        paddingLeft: 5
+    },
+    cardDescription:{
+        padding: 5
     },
     cardSubRowRight: {
         flex: 1,
@@ -160,7 +167,7 @@ export var Styles = StyleSheet.create({
         textAlign: 'center',
         height: 18,
         width: 200,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '500',
         marginTop: 2
     },
