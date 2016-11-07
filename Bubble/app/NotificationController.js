@@ -8,7 +8,7 @@ var PushNotification = require('react-native-push-notification');
 class NotificationController extends Component {
 
     toNotify(data) {
-        // console.log(data);
+        // console.log("NOTIF",data);
         // console.log(this.props.shouldNotify);
         if (AppState.currentState == 'background' && data.user != this.props.socket.id && this.props.shouldNotify) {
             PushNotification.localNotification({
@@ -37,11 +37,11 @@ class NotificationController extends Component {
         PushNotification.configure({
             // (optional) Called when Token is generated (iOS and Android)
             onRegister: function (token) {
-                console.log('TOKEN:', token);
+                // console.log('TOKEN:', token);
             },
             // (required) Called when a remote or local notification is opened or received
             onNotification: function (notification) {
-                console.log('NOTIFICATION:', notification);
+                // console.log('NOTIFICATION:', notification);
             },
             // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications) 
             senderID: "101248374354",

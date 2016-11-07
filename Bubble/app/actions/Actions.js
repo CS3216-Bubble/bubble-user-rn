@@ -148,7 +148,7 @@ export function hydrateStart() {
 }
 
 export function hydrateDone(state) {
-  console.log(`got ${state.length} bytes from backup`);
+//   console.log(`got ${state.length} bytes from backup`);
 
   if (typeof state === 'undefined') {
     return {

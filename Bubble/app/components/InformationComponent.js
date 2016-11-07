@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Image } from 'react-native';
 import { List, ListItem } from 'native-base';
 
 export default class InformationComponent extends Component {
@@ -10,13 +10,9 @@ export default class InformationComponent extends Component {
 
   render() {
       return (
-        <ScrollView style={styles.fillContainer}>
-          <List>
-            <ListItem>
-              <Text></Text>
-            </ListItem>
-          </List>
-        </ScrollView>
+        <View style={{alignItems:'center', justifyContent:'center', marginTop: 100}}>
+            <Image source={require('../img/coming.jpg')} style={{height: 300, width: 300}} />
+        </View>
       );
   }
 }

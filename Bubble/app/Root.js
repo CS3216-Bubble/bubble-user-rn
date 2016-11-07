@@ -94,13 +94,13 @@ class Root extends Component {
     onError(error) {
         switch (error.code) {
             case 'room_closed':
-                console.log("Room closed", error);
+                // console.log("Room closed", error);
                 break;
             case 'user_not_in_room':
-                console.log("User has not joined this room", error);
+                // console.log("User has not joined this room", error);
                 break;
             default:
-                console.log("Generic socket error", error);
+                // console.log("Generic socket error", error);
                 break;
         }
     }
@@ -109,7 +109,7 @@ class Root extends Component {
         const { socket } = this.props;
 
         const socketId = this.props.socket.id;
-        console.log("Connected", socketId);
+        // console.log("Connected", socketId);
 
         this.props.reassignOutbox();
     }
