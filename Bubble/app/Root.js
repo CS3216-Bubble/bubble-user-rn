@@ -78,9 +78,11 @@ class Root extends Component {
     onIExit(data) {
       this.props.onIExit(data);
       if (Platform.OS === 'ios') {
-          Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
+        //   Actions.main({ type: ActionConst.REPLACE, selectedTab: 'all' });
+        Actions.popTo("main", {selectedTab: 'all'});
       } else {
-          Actions.main({ type: ActionConst.REPLACE, selectedTab: 0 });
+        //   Actions.main({ type: ActionConst.REPLACE, selectedTab: 0 });
+        Actions.popTo("main", {selectedTab: '0'});
       }
     }
 

@@ -32,6 +32,13 @@ export class OnboardingView extends Component {
             imgCreate = (<Image style={styles.ssImg} source={require('../img/ss_create_android.png')} />);
         }
 
+ // {
+            //     title: 'Hide the trolls',
+            //     description: 'No more annoying messages!',
+            //     img: (<Image style={styles.ssImg} source={require('../img/ss_hide.png')} />),
+            //     backgroundColor: '#e74c3c',
+            //     type: 'slide'
+            // }
         const pageArray = [
             {
                 title: 'Talk about anything!',
@@ -54,13 +61,7 @@ export class OnboardingView extends Component {
                 backgroundColor: '#3498db',
                 type: 'slide'
             },
-            {
-                title: 'Hide the trolls',
-                description: 'No more annoying messages!',
-                img: (<Image style={styles.ssImg} source={require('../img/ss_hide.png')} />),
-                backgroundColor: '#e74c3c',
-                type: 'slide'
-            }
+           
         ];
 
         const slides = pageArray.map(function (slide, index) {

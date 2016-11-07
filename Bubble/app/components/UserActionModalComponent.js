@@ -27,6 +27,11 @@ export default class UserActionModalComponent extends Component {
     }
 
     render() {
+        
+        //    <Button style={{ margin: 4, padding: 8, backgroundColor: '#466C95' }} rounded >
+        //        <Text style={{ fontSize: 14, fontWeight: '700', color: 'white' }}> Hide </Text>
+        //    </Button>
+        
         var avatar = 'http://flathash.com/' + this.props.modalInfo.otherUserId;
         return (
             <Modal
@@ -59,9 +64,6 @@ export default class UserActionModalComponent extends Component {
                         </Button>
                         <Button style={{ margin: 4, padding: 8, backgroundColor: '#F9A828' }} rounded onPress={()=> {this.props.onCheers(this.props.modalInfo); this.closeModal();}} >
                             <Text style={{ fontSize: 14, fontWeight: '700', color: 'white' }}> Cheer </Text>
-                        </Button>
-                        <Button style={{ margin: 4, padding: 8, backgroundColor: '#466C95' }} rounded >
-                            <Text style={{ fontSize: 14, fontWeight: '700', color: 'white' }}> Hide </Text>
                         </Button>
                     </View>
                 </View>

@@ -193,7 +193,8 @@ export function connectSocket() {
   return (dispatch, getState) => {
     let token = getState().token;
     const io = require('socket.io-client/socket.io');
-    const host = `wss://getbubblechat.com/`;
+    // const host = `wss://getbubblechat.com/`;
+    const host = `wss://getbubblechat.com/?bubble=${token}`;
     var socket = io(host, {
       transports: ['websocket', 'xhr-polling'], reconnection: true,
       reconnectionDelay: 1000,

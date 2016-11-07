@@ -64,13 +64,14 @@ export class CategoryListComponent extends Component {
           </View>
         );
 
+        //  { bubbleId ? null : disconnected }
         return (
           <ScrollView
             style={{ flex: 1 }}
             refreshControl={<RefreshControl
             refreshing={refreshing}
             onRefresh={this._onRefresh.bind(this)} />}>
-              { bubbleId ? null : disconnected }
+             
               {chatsToShow.length == 0 ?
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <Text>No chats found for {this.props.selectedCategory}.</Text>
