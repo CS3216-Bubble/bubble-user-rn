@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Image, Text, TouchableHighlight } from 'react-native';
 import { Button, Thumbnail } from 'native-base';
-import Swipeout from 'react-native-swipeout';
 import { Styles } from '../styles/Styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -83,19 +82,7 @@ export default class MyChatCardComponent extends Component {
           backgroundColor: Globals.CATEGORY_BG_COLOURS[categoryName]
         }
 
-        const swipeoutBtns = [
-          {
-            text: 'Leave',
-            backgroundColor: 'red',
-            onPress: this.onLeaveBtnPressed
-          }
-        ];
-
         return (
-          <Swipeout
-            right={swipeoutBtns}
-            backgroundColor="#FFFFFF"
-          >
             <TouchableHighlight
               key={chat.roomId}
               onPress={() => {Actions.chatView(chatProps);}}
@@ -138,7 +125,6 @@ export default class MyChatCardComponent extends Component {
                   }
               </View>
             </TouchableHighlight>
-          </Swipeout>
         );
     }
 }
