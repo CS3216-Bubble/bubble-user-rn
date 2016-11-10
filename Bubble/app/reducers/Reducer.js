@@ -245,20 +245,20 @@ export default function Reducer(state = initialState, action) {
           var roomId = action.payload.roomRoomId; // note this weird key name
           var messages = state.rooms.data[roomId].messages;
           var ackedMessage = action.payload;
-          if (ackedMessage.sentByMe) {
-            let i = messages.findIndex(m => m.messageType === 'PENDING');
-            let myMessage = {
-              ...action.payload,
-              bubbleId: state.bubbleId,
-            }
-            if (i >= 0) {
-              messages[i] = myMessage;
-            } else {
-              messages = [myMessage].concat(messages);
-            }
-          } else {
+        //   if (ackedMessage.sentByMe) {
+        //     let i = messages.findIndex(m => m.messageType === 'PENDING');
+        //     let myMessage = {
+        //       ...action.payload,
+        //       bubbleId: state.bubbleId,
+        //     }
+        //     if (i >= 0) {
+        //       messages[i] = myMessage;
+        //     } else {
+        //       messages = [myMessage].concat(messages);
+        //     }
+        //   } else {
               messages = [ackedMessage].concat(messages);
-          }
+        //   }
           return updateRoomWithMessages(state, roomId, messages);
 
         case TYPING:
