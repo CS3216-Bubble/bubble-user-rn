@@ -8,7 +8,7 @@ import UserActionModalComponent from '../components/UserActionModalComponent';
 import { Styles } from '../styles/Styles';
 import { connect as connectRedux } from 'react-redux';
 import dismissKeyboard from 'dismissKeyboard';
-import { addReaction, joinRoom, addMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
+import { addReaction, joinRoom, viewRoom, addMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 import { generateName } from '../utils/ProfileHasher';
 import CustomLayoutLinear from '../animations/Animations';
@@ -28,6 +28,7 @@ export class ChatView extends Component {
             queue: [],
             toggleModal: false,
             modalInfo: { userId: "userId", otherUserId: "otherUserId", roomId: "roomId", otherUserName: "otherUserName" },
+            firstLoad: 3
         };
 
         if (Platform.OS === 'android') {
@@ -47,8 +48,8 @@ export class ChatView extends Component {
     // when another user exits room data.messageType = 'EXIT_ROOM';
 
     onSend(message) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-      this.props.addMessage(this.props.socket, message.roomId, message.message, message.createdAt);
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        this.props.addMessage(this.props.socket, message.roomId, message.message, message.createdAt);
     }
 
     /* onSend is called when the user attempts to send a message.
@@ -105,28 +106,31 @@ export class ChatView extends Component {
     onExit() {
         dismissKeyboard();
         if (Platform.OS === 'ios') {
-            Actions.pop({refresh: {selectedTab: 'all'}});
+            Actions.pop({ refresh: { selectedTab: 'all' } });
         } else {
             Actions.pop();
         }
     }
 
-    componentDidMount() {
-      if (this.props.joinedRooms.includes(this.props.chat.roomId)) {
-        // alr joined, dont' join
-      } else {
-        this.props.joinRoom(this.props.socket, this.props.chat.roomId);
-      }
+    componentWillMount() {
+        if (!this.props.joinedRooms.includes(this.props.chat.roomId)) {
+            this.props.joinRoom(this.props.socket, this.props.chat.roomId);
+            this.props.viewRoom(this.props.socket, this.props.chat.roomId);
+        }
     }
 
-    componentWillReceiveProps() {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    componentWillReceiveProps(props) {
+        if (this.state.firstLoad == 0) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        } else if (this.state.firstLoad > 0) {
+            this.setState({ firstLoad: this.state.firstLoad - 1 });
+        }
     }
 
     render() {
         const {
-          chat,
-          socket,
+            chat,
+            socket,
         } = this.props;
 
         if (typeof socket.id == 'undefined') {
@@ -140,7 +144,7 @@ export class ChatView extends Component {
                     <Title ellipsizeMode='middle' numberOfLines={1}>
                         <Text style={Styles.titleContainer}> Not Available </Text>
                     </Title>
-                    <Button transparent onPress={() => {}}>
+                    <Button transparent onPress={() => { } }>
                         <Icon size={32}
                             name='ios-information-circle-outline'
                             color="#0E7AFE" />
@@ -255,6 +259,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         addMessage: (...args) => dispatch(addMessage(...args)),
         addReaction: (...args) => dispatch(addReaction(...args)),
         joinRoom: (...args) => dispatch(joinRoom(...args)),
+        viewRoom: (...args) => dispatch(viewRoom(...args)),
     };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatView);

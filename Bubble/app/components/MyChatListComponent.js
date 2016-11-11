@@ -43,6 +43,11 @@ export class MyChatListComponent extends Component {
         this.props.fetchMyRooms(this.props.socket);
     }
 
+    componentWillReceiveProps(props) {
+        if (props.refresh != this.props.refresh) {
+            this.onRefresh();
+        }
+    } 
     render() {
 
         const bubbleId = this.props.bubbleId;
@@ -115,7 +120,7 @@ const mapStateToProps = (state, ownProps) => {
         socket: state.socket,
         bubbleId: state.bubbleId,
         rooms: Object.values(state.rooms.data),
-        myRooms: state.myRooms.data,
+        myRooms: state.joinedRooms,
         refreshing: state.myRooms.refreshing,
     };
 }

@@ -12,6 +12,7 @@ import {
   onExitRoom,
   onIExit,
   onJoinRoom,
+  onViewRoom,
   onSendMessage,
   onTyping,
   onStopTyping,
@@ -39,6 +40,7 @@ class Root extends Component {
             socket.on('add_reaction', this.props.onAddReaction);
             socket.on('bubble_error', this.onError);
             socket.on('join_room', this.props.onJoinRoom);
+            socket.on('view_room', this.props.onViewRoom);
             socket.on('exit_room', this.props.onExitRoom);
             socket.on('i_exit', this.onIExit.bind(this));
             socket.on('typing', this.props.onTyping);
@@ -82,7 +84,7 @@ class Root extends Component {
         Actions.popTo("main", {selectedTab: 'all'});
       } else {
         //   Actions.main({ type: ActionConst.REPLACE, selectedTab: 0 });
-        Actions.popTo("main", {selectedTab: '0'});
+        Actions.popTo("main", {selectedTab: 0});
       }
     }
 
@@ -139,6 +141,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onMyRooms: (data) => dispatch(onMyRooms(data)),
         onSendMessage: (data) => dispatch(onSendMessage(data)),
         onJoinRoom: (data) => dispatch(onJoinRoom(data)),
+        onViewRoom: (data) => dispatch(onViewRoom(data)),
         onExitRoom: (data) => dispatch(onExitRoom(data, ownProps.socket)),
         onAddReaction: (data) => dispatch(onAddReaction(data)),
         onTyping: (data) => dispatch(onTyping(data)),
