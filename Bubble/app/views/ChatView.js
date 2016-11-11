@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager, TextInput } from 'react-native';
-import { Container, Header, Content, Button, Icon, Title, Footer } from 'native-base';
+import { Container, Header, Content, Button, Title, Footer } from 'native-base';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import CustomTheme from '../themes/bubble';
 import ChatComponent from '../components/ChatComponent';
@@ -13,7 +13,7 @@ import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 import { generateName } from '../utils/ProfileHasher';
 import CustomLayoutLinear from '../animations/Animations';
 import CustomLayoutSpring from '../animations/Animations';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var _ = require('lodash');
 var adjectives = require('../utils/adjectives');
@@ -139,15 +139,15 @@ export class ChatView extends Component {
                     <Button transparent onPress={this.onExit}>
                         <Icon size={30}
                             name='ios-arrow-back'
-                            color="#0E7AFE" />
+                            color="white" />
                     </Button>
                     <Title ellipsizeMode='middle' numberOfLines={1}>
                         <Text style={Styles.titleContainer}> Not Available </Text>
                     </Title>
                     <Button transparent onPress={() => { } }>
-                        <Icon size={32}
-                            name='ios-information-circle-outline'
-                            color="#0E7AFE" />
+                        <Icon size={30}
+                            name='md-list'
+                            color="white" />
                     </Button>
                 </Header>
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -164,7 +164,7 @@ export class ChatView extends Component {
                         <Button transparent onPress={this.onExit}>
                             <Icon size={30}
                                 name='ios-arrow-back'
-                                color="#0E7AFE" />
+                                color="white" />
                         </Button>
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
@@ -172,9 +172,9 @@ export class ChatView extends Component {
                             </View>
                         </Title>
                         <Button transparent onPress={() => Actions.chatInfoView({ chat: chat })}>
-                            <Icon size={32}
-                                name='ios-information-circle-outline'
-                                color="#0E7AFE" />
+                            <Icon size={30}
+                                name='md-list'
+                                color="white" />
                         </Button>
                     </Header>
                     <View style={{ flex: 1 }}>
@@ -205,15 +205,15 @@ export class ChatView extends Component {
                         <Button transparent onPress={this.onExit}>
                             <Icon size={30}
                                 name='ios-arrow-back'
-                                color="#0E7AFE" />
+                                color="white" />
                         </Button>
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             {chat.roomName}
                         </Title>
                         <Button transparent onPress={() => Actions.chatInfoView({ chat: chat })}>
-                            <Icon size={32}
-                                name='ios-information-circle-outline'
-                                color="#0E7AFE" />
+                            <Icon size={30}
+                                name='md-list'
+                                color="white" />
                         </Button>
                     </Header>
                     <View style={{ flex: 1 }}>

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Switch, TouchableHighlight, Image, Alert } from 'react-native';
 import { Container, Content, List, ListItem, Text, Thumbnail, Icon } from 'native-base';
 import { Styles } from '../styles/Styles';
+import CustomTheme from '../themes/bubble';
 
 import moment from 'moment';
 import Globals from '../globals';
@@ -47,6 +48,9 @@ export default class ChatInfoComponent extends Component {
 
     render() {
         const thumbnailSize = 60;
+
+        // console.log(this.props.chat);
+
         var categoryName;
         if (this.props.chat.categories.length > 0) {
             categoryName = this.props.chat.categories[0];
@@ -85,62 +89,72 @@ export default class ChatInfoComponent extends Component {
         }
 
         return (
-                <Container>
-                    <Content>
-                        <List>
-                            <ListItem>
-                                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: "center" }}>
-                                    <View style={{ height: 80, width: 80, borderRadius: 40, backgroundColor: thumbnailBackgroundStyle.backgroundColor, marginRight: 15, alignItems: 'center', justifyContent: 'center' }}>
-                                        {thumbnail}
-                                    </View>
-                                    <View style={{ flexDirection: 'column', justifyContent: "flex-start", alignItems: "flex-start" }}>
-                                        <Text numberOfLines={2} style={{ fontSize: 18, fontWeight: "400", textAlign: 'left' }}>
-                                            {this.props.chat.roomName}
-                                        </Text>
-                                        <Text note style={{ fontSize: 12, fontWeight: "300", textAlign: 'left' }} >
-                                            Last active {moment.duration(moment().diff(moment(this.props.chat.lastActive))).humanize() + " "}ago
+            <Container>
+                <Content theme={CustomTheme}>
+                    <List>
+                        <ListItem>
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: "center" }}>
+                                <View style={{ height: 80, width: 80, borderRadius: 40, backgroundColor: thumbnailBackgroundStyle.backgroundColor, marginRight: 15, alignItems: 'center', justifyContent: 'center' }}>
+                                    {thumbnail}
+                                </View>
+                                <View style={{ flexDirection: 'column', justifyContent: "flex-start", alignItems: "flex-start", marginRight: 80 }}>
+                                    <Text style={{ fontSize: 18, fontWeight: "400", textAlign: 'left', flexWrap: 'wrap', marginRight: 10 }}>
+                                        {this.props.chat.roomName}
                                     </Text>
-                                    </View>
+                                    <Text note style={{ fontSize: 12, fontWeight: "300", textAlign: 'left' }} >
+                                        Last active {moment.duration(moment().diff(moment(this.props.chat.lastActive))).humanize() + " "}ago
+                                        </Text>
                                 </View>
-                            </ListItem>
-                            <ListItem itemDivider>
-                                <Text>Options</Text>
-                            </ListItem>
-                            <ListItem>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Text style={{ fontSize: 16, fontWeight: "300", textAlign: 'left' }} >Receive notifications for this chat</Text>
-                                    <Switch onValueChange={this.toggleNotification} value={this.state.isNotificationsOn} />
+                            </View>
+                        </ListItem>
+
+                        <ListItem itemDivider style={{ height: 30 }}>
+                            <Text style={{ fontSize: 14, fontWeight: "600", color: "#999999" }}>DESCRIPTION</Text>
+                        </ListItem>
+                        <ListItem>
+                            <View style={{ flexDirection: 'column', justifyContent: "flex-start", alignItems: "flex-start" }}>
+                                <Text style={{ fontSize: 16, fontWeight: "300", textAlign: 'left', flexWrap: 'wrap' }}>
+                                    {this.props.chat.roomDescription}
+                                </Text>
+                            </View>
+                        </ListItem>
+
+                        <ListItem itemDivider style={{ height: 30 }}>
+                            <Text style={{ fontSize: 14, fontWeight: "600", color: "#999999" }}>OPTIONS</Text>
+                        </ListItem>
+                        <ListItem>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 16, fontWeight: "300", textAlign: 'left' }} >Receive notifications for this chat</Text>
+                                <Switch onValueChange={this.toggleNotification} value={this.state.isNotificationsOn} />
+                            </View>
+                        </ListItem>
+                        <ListItem itemDivider style={{ backgroundColor: '#F73859', padding: 0, alignItems: 'center', justifyContent: "center" }}>
+                            <TouchableHighlight onPress={this.triggerQuit} underlayColor="#E84A5F" style={{ flex: 1, margin: 0, padding: 0, alignItems: 'center', justifyContent: "center" }}>
+                                <View>
+                                    <Text style={{ fontSize: 16, fontWeight: "600", textAlign: 'center', color: "white" }} >QUIT CHAT</Text>
                                 </View>
-                            </ListItem>
-                            <ListItem itemDivider style={{ backgroundColor: '#BE3144', padding: 0, alignItems: 'center', justifyContent: "center" }}>
-                                <TouchableHighlight onPress={this.triggerQuit} underlayColor="#E84A5F" style={{ flex: 1, margin: 0, padding: 0, alignItems: 'center', justifyContent: "center" }}>
-                                    <View>
-                                        <Text style={{ fontSize: 16, fontWeight: "400", textAlign: 'center', color: "white" }} >QUIT CHAT</Text>
-                                    </View>
-                                </TouchableHighlight>
-                            </ListItem>
-                            <ListItem itemDivider>
-                                <Text>Active Participants</Text>
-                            </ListItem>
-                            <List dataArray={this.props.chat.participants}
-                                renderRow={(person) =>
-                                    <ListItem>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                                            <Image
-                                                source={{ uri: 'http://flathash.com/' + person }}
-                                                style={{ height: 30, width: 30, margin: 10 }} />
-                                            <Text>{generateName(person)}</Text>
-                                        </View>
-                                    </ListItem>
-                                }>
-                            </List>
-                        </List>
-                    </Content>
-                </Container>
+                            </TouchableHighlight>
+                        </ListItem>
+                    </List>
+                </Content>
+            </Container>
         );
     }
 }
 
-var styles = StyleSheet.create({
+// <ListItem itemDivider style={{ height: 30 }}>
+//     <Text style={{ fontSize: 14, fontWeight: "600", color: "#999999" }}>ACTIVE PARTICIPANTS</Text>
+// </ListItem>
+// <List dataArray={this.props.chat.participants}
+//     renderRow={(person) =>
+//         <ListItem>
+//             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+//                 <Image
+//                     source={{ uri: 'http://flathash.com/' + person }}
+//                     style={{ height: 30, width: 30, margin: 10 }} />
+//                 <Text>{generateName(person)}</Text>
+//             </View>
+//         </ListItem>
+//     }>
+// </List>
 
-});
