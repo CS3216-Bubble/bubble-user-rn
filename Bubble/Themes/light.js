@@ -165,8 +165,8 @@ export default {
 
 
     // List
-    // listBorderColor: '#ddd',
-    listBorderColor:"transparent",
+    listBorderColor: '#ddd',
+    // listBorderColor:"transparent",
     listDividerBg: '#ddd',
     listItemHeight: 45,
     listItemPadding: 9,
