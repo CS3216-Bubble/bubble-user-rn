@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
-import { List, ListItem, Icon, Input, InputGroup, Text, Button, Thumbnail } from 'native-base';
+import { ScrollView, View, StyleSheet, Slider } from 'react-native';
+import { List, ListItem, Input, InputGroup, Text, Button, Thumbnail, Icon } from 'native-base';
 import MultipleChoice from 'react-native-multiple-choice';
 import * as Animatable from 'react-native-animatable';
 
@@ -27,7 +27,7 @@ export default class ChatFormComponent extends Component {
 
     // If category has changed, animate to new colour
     if (this.state.currentCategory != newCat) {
-      this.refs.backgroundContainer.transitionTo({backgroundColor: Globals.CATEGORY_BG_COLOURS[newCat]});
+      this.refs.backgroundContainer.transitionTo({ backgroundColor: Globals.CATEGORY_BG_COLOURS[newCat] });
     }
   }
 
@@ -46,13 +46,13 @@ export default class ChatFormComponent extends Component {
 
   render() {
 
-    var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} style={styles.profileContainerImage}/>);
+    var thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} style={styles.profileContainerImage} />);
     switch (this.state.currentCategory) {
       case 'Advice':
-        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} style={styles.profileContainerImage}/>);
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/advice.png')} style={styles.profileContainerImage} />);
         break;
       case 'Funny':
-        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/funny.png')} style={styles.profileContainerImage}/>);
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/funny.png')} style={styles.profileContainerImage} />);
         break;
       case 'Nostalgia':
         thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/nostalgia.png')} style={styles.profileContainerImage} />);
@@ -61,13 +61,13 @@ export default class ChatFormComponent extends Component {
         thumbnail = (<Thumbnail square square size={thumbnailSize} source={require('../img/rant.png')} style={styles.profileContainerImage} />);
         break;
       case 'Relationship':
-        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/relationship.png')} style={styles.profileContainerImage}/>);
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/relationship.png')} style={styles.profileContainerImage} />);
         break;
       case 'School':
-        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/school.png')} style={styles.profileContainerImage}/>);
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/school.png')} style={styles.profileContainerImage} />);
         break;
       default:
-        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} style={styles.profileContainerImage}/>);
+        thumbnail = (<Thumbnail square size={thumbnailSize} source={require('../img/default.png')} style={styles.profileContainerImage} />);
         break;
     }
 
@@ -78,47 +78,53 @@ export default class ChatFormComponent extends Component {
     return (
       <ScrollView>
         <Animatable.View ref="backgroundContainer" style={[styles.profileContainer, categoryBackground]}>
-          { thumbnail }
+          {thumbnail}
           <View style={styles.profileContainerName}>
             <InputGroup iconRight={!this.isNameValid()} error={!this.isNameValid()}>
               <Input
                 value={this.props.form.name}
                 onChangeText={this.props.onNameChange}
-                placeholder='Name'
-              />
-              { this.isNameValid() ? null :
-                <Icon name='ios-close-circle' style={{color:'#EA5455'}}/>}
+                placeholder='Title'
+                multiline={true}
+                maxLength={39}
+                />
+              {this.isNameValid() ? null :
+                <Icon name='md-alert' style={{color:'#F73859'}}/>}
             </InputGroup>
           </View>
         </Animatable.View>
         <List>
-          <ListItem>
-            <InputGroup>
+          <ListItem iconLeft>
+            <InputGroup iconLeft>
+              <Icon name='md-document' style={{color:'#A9A9A9'}} />
               <Input
                 value={this.props.form.description}
                 onChangeText={this.props.onDescriptionChange}
                 placeholder='Description'
-              />
+                multiline={true}
+                maxLength={140}
+                style={{borderBottomWidth: StyleSheet.hairlineWidth, height: 100}}
+                />
             </InputGroup>
           </ListItem>
 
           <ListItem iconLeft>
-            <InputGroup>
-              <Icon name='ios-person' />
+            <InputGroup iconLeft>
+              <Icon name='md-person' style={{color:'#A9A9A9'}} />
               <Input
                 keyboardType='numeric'
                 value={this.props.form.numUsers}
                 onChangeText={this.props.onNumUsersChange}
                 placeholder='No. of Users'
-              />
+                />
             </InputGroup>
           </ListItem>
 
-          <ListItem itemDivider>
-            <Text>Categories</Text>
+          <ListItem itemDivider style={{ height: 30 }}>
+            <Text style={{ fontSize: 14, fontWeight: "600", color: "#999999" }}>CATEGORIES</Text>
           </ListItem>
         </List>
-        <View style={{paddingLeft: 20}}>
+        <View style={{ paddingLeft: 20 }}>
           <MultipleChoice
             options={Globals.CATEGORIES}
             selectedOptions={this.state.categories}
@@ -131,29 +137,29 @@ export default class ChatFormComponent extends Component {
 }
 
 var styles = StyleSheet.create({
-    profileContainer: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 10,
-      paddingTop: 60,
-      borderBottomColor: '#bbb',
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      backgroundColor: '#A7DBD8'
-    },
-    profileContainerName: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    profileContainerText: {
-      fontSize: 20
-    },
-    profileContainerImage: {
-      marginBottom: 15,
-      height: 80,
-      width: 80,
-    }
+  profileContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    paddingTop: 60,
+    borderBottomColor: '#bbb',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#A7DBD8'
+  },
+  profileContainerName: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  profileContainerText: {
+    fontSize: 20
+  },
+  profileContainerImage: {
+    marginBottom: 15,
+    height: 80,
+    width: 80,
+  }
 });

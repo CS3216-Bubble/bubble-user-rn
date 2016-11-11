@@ -1,4 +1,4 @@
-package com.bubble;
+package com.bubblers.bubble;
 
 import android.app.Application;
 import android.util.Log;

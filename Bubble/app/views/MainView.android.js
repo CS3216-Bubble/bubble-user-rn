@@ -62,7 +62,7 @@ export class MainView extends Component {
                 onSearchClosed: this.clearSearchBar
             }}/>);
         } else {
-            header = (<Toolbar centerElement="Bubble" isSearchActive={false}/>);
+            header = (<Toolbar theme={CustomTheme} centerElement="Bubble" isSearchActive={false}/>);
         }
 
         return (

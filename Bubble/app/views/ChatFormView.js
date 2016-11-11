@@ -88,7 +88,7 @@ export default class ChatFormView extends Component {
   }
 
   isFormValid = (form) => {
-    return form.name != '' && parseInt(form.numUsers) > Globals.MIN_USERS;
+    return form.name != '' && parseInt(form.numUsers) >= Globals.MIN_USERS;
   }
 
   createChat = () => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, PanResponder, LayoutAnimation, Platform, UIManager, TextInput } from 'react-native';
-import { Container, Header, Content, Button, Icon, Title, Footer } from 'native-base';
+import { Container, Header, Content, Button, Title, Footer } from 'native-base';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import CustomTheme from '../themes/bubble';
 import ChatComponent from '../components/ChatComponent';
@@ -8,12 +8,12 @@ import UserActionModalComponent from '../components/UserActionModalComponent';
 import { Styles } from '../styles/Styles';
 import { connect as connectRedux } from 'react-redux';
 import dismissKeyboard from 'dismissKeyboard';
-import { addReaction, joinRoom, addMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
+import { addReaction, joinRoom, viewRoom, addMessage, setPendingMessages, reassignPendingMessages } from '../actions/Actions';
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 import { generateName } from '../utils/ProfileHasher';
 import CustomLayoutLinear from '../animations/Animations';
 import CustomLayoutSpring from '../animations/Animations';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var _ = require('lodash');
 var adjectives = require('../utils/adjectives');
@@ -28,6 +28,7 @@ export class ChatView extends Component {
             queue: [],
             toggleModal: false,
             modalInfo: { userId: "userId", otherUserId: "otherUserId", roomId: "roomId", otherUserName: "otherUserName" },
+            firstLoad: 3
         };
 
         if (Platform.OS === 'android') {
@@ -47,8 +48,8 @@ export class ChatView extends Component {
     // when another user exits room data.messageType = 'EXIT_ROOM';
 
     onSend(message) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-      this.props.addMessage(this.props.socket, message.roomId, message.message, message.createdAt);
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        this.props.addMessage(this.props.socket, message.roomId, message.message, message.createdAt);
     }
 
     /* onSend is called when the user attempts to send a message.
@@ -105,28 +106,31 @@ export class ChatView extends Component {
     onExit() {
         dismissKeyboard();
         if (Platform.OS === 'ios') {
-            Actions.pop({refresh: {selectedTab: 'all'}});
+            Actions.pop({ refresh: { selectedTab: 'all' } });
         } else {
             Actions.pop();
         }
     }
 
-    componentDidMount() {
-      if (this.props.joinedRooms.includes(this.props.chat.roomId)) {
-        // alr joined, dont' join
-      } else {
-        this.props.joinRoom(this.props.socket, this.props.chat.roomId);
-      }
+    componentWillMount() {
+        if (!this.props.joinedRooms.includes(this.props.chat.roomId)) {
+            this.props.joinRoom(this.props.socket, this.props.chat.roomId);
+            this.props.viewRoom(this.props.socket, this.props.chat.roomId);
+        }
     }
 
-    componentWillReceiveProps() {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    componentWillReceiveProps(props) {
+        if (this.state.firstLoad == 0) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        } else if (this.state.firstLoad > 0) {
+            this.setState({ firstLoad: this.state.firstLoad - 1 });
+        }
     }
 
     render() {
         const {
-          chat,
-          socket,
+            chat,
+            socket,
         } = this.props;
 
         if (typeof socket.id == 'undefined') {
@@ -135,15 +139,15 @@ export class ChatView extends Component {
                     <Button transparent onPress={this.onExit}>
                         <Icon size={30}
                             name='ios-arrow-back'
-                            color="#0E7AFE" />
+                            color="white" />
                     </Button>
                     <Title ellipsizeMode='middle' numberOfLines={1}>
                         <Text style={Styles.titleContainer}> Not Available </Text>
                     </Title>
-                    <Button transparent onPress={() => {}}>
-                        <Icon size={32}
-                            name='ios-information-circle-outline'
-                            color="#0E7AFE" />
+                    <Button transparent onPress={() => { } }>
+                        <Icon size={30}
+                            name='md-list'
+                            color="white" />
                     </Button>
                 </Header>
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -160,7 +164,7 @@ export class ChatView extends Component {
                         <Button transparent onPress={this.onExit}>
                             <Icon size={30}
                                 name='ios-arrow-back'
-                                color="#0E7AFE" />
+                                color="white" />
                         </Button>
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 200, height: 28 }}>
@@ -168,9 +172,9 @@ export class ChatView extends Component {
                             </View>
                         </Title>
                         <Button transparent onPress={() => Actions.chatInfoView({ chat: chat })}>
-                            <Icon size={32}
-                                name='ios-information-circle-outline'
-                                color="#0E7AFE" />
+                            <Icon size={30}
+                                name='md-list'
+                                color="white" />
                         </Button>
                     </Header>
                     <View style={{ flex: 1 }}>
@@ -201,15 +205,15 @@ export class ChatView extends Component {
                         <Button transparent onPress={this.onExit}>
                             <Icon size={30}
                                 name='ios-arrow-back'
-                                color="#0E7AFE" />
+                                color="white" />
                         </Button>
                         <Title ellipsizeMode='middle' numberOfLines={1}>
                             {chat.roomName}
                         </Title>
                         <Button transparent onPress={() => Actions.chatInfoView({ chat: chat })}>
-                            <Icon size={32}
-                                name='ios-information-circle-outline'
-                                color="#0E7AFE" />
+                            <Icon size={30}
+                                name='md-list'
+                                color="white" />
                         </Button>
                     </Header>
                     <View style={{ flex: 1 }}>
@@ -255,6 +259,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         addMessage: (...args) => dispatch(addMessage(...args)),
         addReaction: (...args) => dispatch(addReaction(...args)),
         joinRoom: (...args) => dispatch(joinRoom(...args)),
+        viewRoom: (...args) => dispatch(viewRoom(...args)),
     };
 };
 export default connectRedux(mapStateToProps, mapDispatchToProps)(ChatView);

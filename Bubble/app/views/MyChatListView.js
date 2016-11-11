@@ -32,6 +32,12 @@ export class MyChatListView extends Component {
     //     this.setState({refresh: !this.state.refresh});
     // }
 
+    componentWillReceiveProps(props) {
+      if(props.selectedTab == 1) {
+        // setTimeout(() => { this.setState({refresh: !this.state.refresh}); }, 500);
+      }
+    }
+
     onSearchBarTextChange = (text) => {
       const showCategoryFilter = text == '';
       // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);

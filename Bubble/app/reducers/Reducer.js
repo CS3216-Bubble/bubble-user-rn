@@ -29,6 +29,7 @@ import {
     LISTEN_TO_RECONNECT_FAILED,
     LISTEN_TO_ERROR,
     CREATE_ROOM,
+    VIEW_ROOM,
     JOIN_ROOM,
     LISTEN_TO_JOIN_ROOM,
     EXIT_ROOM,
@@ -52,6 +53,7 @@ import {
     MY_ID,
 } from '../actions/Actions';
 import {createGUID} from "../utils/GUIDGenerator";
+var _ = require('lodash');
 
 window.navigator.userAgent = 'react-native';
 const io = require('socket.io-client/socket.io');
@@ -186,7 +188,8 @@ export default function Reducer(state = initialState, action) {
             myRooms: {
               refreshing: false,
               data: action.payload,
-            }
+            },
+            joinedRooms:  action.payload
           }
         case `${CREATE_ROOM}_PENDING`:
           return {
@@ -477,6 +480,15 @@ export default function Reducer(state = initialState, action) {
             joinedRooms: joined,
           }
 
+        case `${VIEW_ROOM}_PENDING`:
+          return state;
+
+        case `${VIEW_ROOM}_SUCCESS`:
+          var roomId = action.payload.roomId;
+          return {
+            ...updateRoomWithMessages(state, roomId, action.payload.messages)
+          }
+
         case `${EXIT_ROOM}_SUCCESS`:
           var joined = state.joinedRooms;
           var roomId = action.payload.roomId;
@@ -498,7 +510,7 @@ export default function Reducer(state = initialState, action) {
         case I_EXIT:
           return {
             ...state,
-            joinedRooms: state.joinedRooms.filter(i => i !== roomId)
+            joinedRooms: state.joinedRooms.filter(i => i != action.payload.roomId)
           }
 
         case REPORT_USER:

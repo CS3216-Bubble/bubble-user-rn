@@ -29,6 +29,7 @@ export default class ChatComponent extends Component {
         // Only parse when messages are valid
         if (messages) {
             for (var i = 0; i < messages.length; ++i) {
+                // console.log(messageOrg);
                 var messageOrg = messages[i];
                 var avatar = 'http://flathash.com/' + messageOrg.bubbleId;
                 var messageParsed = {

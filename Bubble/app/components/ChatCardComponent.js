@@ -113,7 +113,7 @@ export default class ChatCardComponent extends Component {
                                 <View style={Styles.cardSubRowRight}>
 
                                     <Text note style={Styles.cardSubRowTextRight}>
-                                        {chat.numUsers} / {chat.userLimit}
+                                        {chat.numUsers} users active
                                     </Text>
 
                                     <Icon name='user' style={{ fontSize: 16, color: '#BCBCBC' }} />
